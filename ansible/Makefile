@@ -5,4 +5,4 @@ install_ansible:
 	pip install -r requirements.txt
 
 install_collections:
-	ansible-galaxy install -r requirements.yaml
+	ansible-galaxy install -r galaxy-requirements.yaml

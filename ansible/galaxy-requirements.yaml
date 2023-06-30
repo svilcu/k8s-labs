@@ -1,0 +1,7 @@
+---
+collections:
+  - name: community.crypto
+
+#  - name: openwrt
+#   version: master
+#  source: https://github.com/gekmihesg/ansible-openwrt

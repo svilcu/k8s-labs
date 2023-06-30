@@ -1,5 +1,0 @@
----
-collections:
-  - name: openwrt
-    src: https://github.com/gekmihesg/ansible-openwrt
-    version: master
