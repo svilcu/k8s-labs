@@ -1,0 +1,11 @@
+---
+- name: Bootstrap python on Banana PI/OpenWRT
+  hosts: bpi_default
+  gather_facts: false
+  become: false
+  vars:
+    ansible_user: root
+    save_space_with_python3_light: false
+  roles: 
+    - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
+    

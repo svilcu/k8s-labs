@@ -34,14 +34,36 @@ Reboot
 
 ### Boot from NAND and install the image from SD card to eMMC
 
+## Install and configure software
+
+- bootstrap python in order to use Ansible
+- install luci with the default uhttpd server
+- install sftp-server
+- install and configure powerDNS as a replacer for 
 
 opkg update
-opkg install luci-ssl kmod-nvme mmc-utils kmod-mtd-rw lsblk parted uvol autopart
+opkg install kmod-nvme mmc-utils kmod-mtd-rw lsblk parted uvol autopart
 
-openvpn-openssl openvpn-easy-rsa
-pdns pdns-tools pdns-recursor pdns-backend-sqlite3
+opkg install luci-ssl  luci-app-statistics luci-app-upnp 
 
-prometheus-node-exporter-lua prometheus-node-exporter-lua-nat_traffic prometheus-node-exporter-lua-netstat prometheus-node-exporter-lua-openwrt prometheus-node-exporter-lua-wifi prometheus-node-exporter-lua-wifi_stations
+opkg install openvpn-openssl openvpn-easy-rsa luci-app-openvpn
+
+opkg install pdns pdns-tools pdns-recursor pdns-backend-sqlite3
+
+opkg install prometheus-node-exporter-lua prometheus-node-exporter-lua-nat_traffic prometheus-node-exporter-lua-netstat prometheus-node-exporter-lua-openwrt prometheus-node-exporter-lua-wifi prometheus-node-exporter-lua-wifi_stations
+
+opkg install collectd-mod-ethstat collectd-mod-ipstatistics collectd-mod-irq collectd-mod-load collectd-mod-ping collectd-mod-powerdns collectd-mod-sqm collectd-mod-thermal collectd-mod-wireless
+/etc/init.d/collectd enable
+https://openwrt.org/docs/guide-user/luci/luci_app_statistics?s[]=powerdns
+https://openwrt.org/docs/guide-user/base-system/dhcp_configuration
+
+
+## Upgrade to the latest snapshot
+```bash
+    cd /tmp
+    wget https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
+    sysupgrade -v /tmp/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
+```
 ...
 base-files busybox ca-bundle dnsmasq dropbear e2fsprogs f2fsck firewall4 fstools kmod-crypto-hw-safexcel kmod-gpio-button-hotplug kmod-hwmon-pwmfan kmod-i2c-gpio kmod-leds-gpio kmod-mt7915e kmod-mt7986-firmware kmod-nft-offload kmod-sfp kmod-usb3 libc libgcc libustream-wolfssl logd mkf2fs mtd netifd nftables odhcp6c odhcpd-ipv6only opkg ppp ppp-mod-pppoe procd procd-seccomp procd-ujail uboot-envtools uci uclient-fetch urandom-seed urngd wpad-basic-wolfssl
 ...
@@ -49,3 +71,5 @@ base-files busybox ca-bundle dnsmasq dropbear e2fsprogs f2fsck firewall4 fstools
 * [bpi-r3-how-to-flash-openwrt](https://forum.banana-pi.org/t/bpi-r3-how-to-flash-openwrt-snapshot-on-emmc/14055/5)
 * [Firmware download](https://firmware-selector.openwrt.org/?version=SNAPSHOT&target=mediatek%2Ffilogic&id=bananapi_bpi-r3)
 * [How to burn image](https://wiki.banana-pi.org/Getting_Started_with_BPI-R3#How_to_burn_image_to_onboard_eMMC)
+* [Bootstrap Python on OpenWRT](https://github.com/johanneskastl/ansible-role-bootstrap_python_on_OpenWRT.git)
+https://github.com/imp1sh/ansible_openwrt
