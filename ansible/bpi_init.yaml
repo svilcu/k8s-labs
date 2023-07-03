@@ -1,0 +1,94 @@
+---
+- name: Install required packages on newly installed/updated OpenWRT
+  hosts: bpi_default
+  gather_facts: true
+  become: false
+  vars:
+    ansible_user: root
+
+  tasks:
+    - name: Install kmod-nvme mmc-utils kmod-mtd-rw lsblk parted uvol autopart
+      community.general.opkg:
+        name:
+          - kmod-nvme
+          - mmc-utils
+          - kmod-mtd-rw
+          - lsblk
+          - parted
+          - uvol
+          - autopart
+          - openssh-sftp-server
+        state: present
+    
+    - name: Remove dnsmasq
+      community.general.opkg:
+        name: 
+          - dnsmasq 
+          - odhcpd-ipv6only
+        state: absent
+
+    - name: Remove settings related to dnsmasq
+      ansible.builtin.command: uci -q delete dhcp.@dnsmasq[0]
+    
+    - name:  Use odhcpd for both DHCP and DHCPv6
+      ansible.builtin.command: opkg install odhcpd --force-overwrite
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci set dhcp.lan.dhcpv4="server"
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci set dhcp.odhcpd.maindhcp="1"
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci commit dhcp
+
+    - name: Restarting odhcpd
+      ansible.builtin.command: /etc/init.d/odhcpd restart
+     
+    - name: Install Luci
+      community.general.opkg:
+        name:
+          - luci-ssl
+          - luci-app-statistics 
+          - luci-app-upnp
+          - luci-lib-nixio 
+          - luci-lib-ip 
+          - luci-lib-jsonc 
+          - liblucihttp-lua 
+          - luci-lib-base 
+          - ucode-mod-lua 
+          - luci-lua-runtime 
+          - luci-compat 
+          - luci-app-openvpn 
+        state: present
+
+    - name: Install OpenVPN
+      community.general.opkg:
+        name:
+          - openvpn-openssl
+          - openvpn-easy-rsa
+        state: present
+
+    - name: Install PowerDNS
+      community.general.opkg:
+        name:
+          - pdns
+          - pdns-tools
+          - pdns-recursor
+          - pdns-backend-sqlite3
+        state: present
+
+    - name: Install Prometheus exporter
+      community.general.opkg:
+        name:
+          - prometheus-node-exporter-lua
+          - prometheus-node-exporter-lua-nat_traffic
+          - prometheus-node-exporter-lua-netstat
+          - prometheus-node-exporter-lua-openwrt
+          - libiwinfo-lua 
+          - prometheus-node-exporter-lua-wifi
+          - prometheus-node-exporter-lua-wifi_stations
+        state: present
+
+
+

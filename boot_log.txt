@@ -1,0 +1,1552 @@
+spi-nand: spi_nand spi_nand@1: Winbond SPI NAND was found.
+spi-nand: spi_nand spi_nand@1: 128 MiB, block size: 128 KiB, page size: 2048, OO                                                                                                          B size: 64
+jedec_spi_nor spi_nor@0: unrecognized JEDEC id bytes: 00, ef, aa
+'spi-nand0' is now active device
+* spi-nand0
+  - device: spi_nand@1
+  - parent: spi@1100a000
+  - driver: spi_nand
+  - type: NAND flash
+  - block size:        0x20000 bytes
+  - page size:         0x800 bytes
+  - OOB size:          64 bytes
+  - OOB available:     24 bytes
+  - 0x000000000000-0x000008000000 : "spi-nand0"
+          - 0x000000000000-0x000000080000 : "bl2"
+          - 0x000000080000-0x000000380000 : "factory"
+          - 0x000000380000-0x000000580000 : "fip"
+          - 0x000000580000-0x000008000000 : "ubi"
+* spi-nand0
+  - device: spi_nand@1
+  - parent: spi@1100a000
+  - driver: spi_nand
+  - type: NAND flash
+  - block size:        0x20000 bytes
+  - page size:         0x800 bytes
+  - OOB size:          64 bytes
+  - OOB available:     24 bytes
+  - 0x000000000000-0x000008000000 : "spi-nand0"
+          - 0x000000000000-0x000000080000 : "bl2"
+          - 0x000000080000-0x000000380000 : "factory"
+          - 0x000000380000-0x000000580000 : "fip"
+          - 0x000000580000-0x000008000000 : "ubi"
+
+MMC read: dev # 0, block # 131072, count 8 ... 8 blocks read: OK
+
+MMC read: dev # 0, block # 131072, count 20792 ... 20792 blocks read: OK
+## Loading kernel from FIT Image at 46000000 ...
+   Using 'config-mt7986a-bananapi-bpi-r3' configuration
+   Trying 'kernel-1' kernel subimage
+     Description:  ARM64 OpenWrt Linux-5.15.118
+     Type:         Kernel Image
+     Compression:  gzip compressed
+     Data Start:   0x46001000
+     Data Size:    5436756 Bytes = 5.2 MiB
+     Architecture: AArch64
+     OS:           Linux
+     Load Address: 0x44000000
+     Entry Point:  0x44000000
+     Hash algo:    crc32
+     Hash value:   e03149ce
+     Hash algo:    sha1
+     Hash value:   3ecd4262b388bbf42fd0c0d4bff293026601b002
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'config-mt7986a-bananapi-bpi-r3' configuration
+   Trying 'fdt-1' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree blob
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x46531000
+     Data Size:    31229 Bytes = 30.5 KiB
+     Architecture: AArch64
+     Load Address: 0x43ff8603
+     Hash algo:    crc32
+     Hash value:   0be9bbeb
+     Hash algo:    sha1
+     Hash value:   1c1576f840f8a2ef9ff0bf624634dc4ba314a398
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Loading fdt from 0x46531000 to 0x43ff8603
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'mt7986a-bananapi-bpi-r3-emmc' configuration
+   Trying 'fdt-mt7986a-bananapi-bpi-r3-emmc' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-ban                                                                                                          anapi-bpi-r3-emmc
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x46539000
+     Data Size:    477 Bytes = 477 Bytes
+     Architecture: AArch64
+     Load Address: 0x43ff8426
+     Hash algo:    crc32
+     Hash value:   3b84c3d9
+     Hash algo:    sha1
+     Hash value:   dc5798e2c23ca8abeb537a4e64bdcae342e7b800
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'mt7986a-bananapi-bpi-r3-nand' configuration
+   Trying 'fdt-mt7986a-bananapi-bpi-r3-nand' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-ban                                                                                                          anapi-bpi-r3-nand
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x4653a000
+     Data Size:    913 Bytes = 913 Bytes
+     Architecture: AArch64
+     Load Address: 0x43ff8095
+     Hash algo:    crc32
+     Hash value:   86958f9f
+     Hash algo:    sha1
+     Hash value:   2d501f8d9a6b5c04d5929b7c0445766cae06b5c5
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Booting using the fdt blob at 0x43ff8603
+Working FDT set to 43ff8603
+## Loading loadables from FIT Image at 46000000 ...
+   Trying 'rootfs-1' loadables subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 rootfs
+     Type:         Filesystem Image
+     Compression:  uncompressed
+     Data Start:   0x4653d000
+     Data Size:    5152768 Bytes = 4.9 MiB
+     Hash algo:    crc32
+     Hash value:   5d7d268d
+     Hash algo:    sha1
+     Hash value:   81856ef6aebf45181a38174997e696666edbcc68
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Uncompressing Kernel Image
+   Loading Device Tree to 00000000be7d3000, end 00000000be7dcd38 ... OK
+Working FDT set to be7d3000
+Add 'ramoops@42ff0000' node failed: FDT_ERR_EXISTS
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[    0.000000] Linux version 5.15.118 (builder@buildhost) (aarch64-openwrt-linux                                                                                                          -musl-gcc (OpenWrt GCC 12.3.0 r23459-a0ae7a50e0) 12.3.0, GNU ld (GNU Binutils) 2                                                                                                          .40.0) #0 SMP Fri Jun 30 17:24:52 2023
+[    0.000000] Machine model: Bananapi BPI-R3
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x0000000042ffffff]
+[    0.000000]   node   0: [mem 0x0000000043000000-0x000000004302ffff]
+[    0.000000]   node   0: [mem 0x0000000043030000-0x000000004fbfffff]
+[    0.000000]   node   0: [mem 0x000000004fc00000-0x000000004ffbffff]
+[    0.000000]   node   0: [mem 0x000000004ffc0000-0x00000000bfffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.2
+[    0.000000] percpu: Embedded 17 pages/cpu s30040 r8192 d31400 u69632
+[    0.000000] pcpu-alloc: s30040 r8192 d31400 u69632 alloc=17*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] CPU features: kernel page table isolation disabled by kernel conf                                                                                                          iguration
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 516096
+[    0.000000] Kernel command line: root=/dev/mmcblk0p65
+[    0.000000] Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes,                                                                                                           linear)
+[    0.000000] Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes,                                                                                                           linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 2040204K/2097152K available (8384K kernel code, 912K rwda                                                                                                          ta, 2280K rodata, 448K init, 303K bss, 56948K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jif                                                                                                          fies.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 640 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] GICv3: Distributor has no Range Selector support
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: 16 PPIs implemented
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x000000000c080000
+[    0.000000] arch_timer: cp15 timer(s) running at 13.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles:                                                                                                           0x2ff89eacb, max_idle_ns: 440795202429 ns
+[    0.000000] sched_clock: 56 bits at 13MHz, resolution 76ns, wraps every 43980                                                                                                          46511101ns
+[    0.000122] Calibrating delay loop (skipped), value calculated using timer fr                                                                                                          equency.. 26.00 BogoMIPS (lpj=130000)
+[    0.000130] pid_max: default: 32768 minimum: 301
+[    0.000346] Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, line                                                                                                          ar)
+[    0.000359] Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes,                                                                                                           linear)
+[    0.001399] rcu: Hierarchical SRCU implementation.
+[    0.001696] smp: Bringing up secondary CPUs ...
+[    0.001955] Detected VIPT I-cache on CPU1
+[    0.001979] GICv3: CPU1: found redistributor 1 region 0:0x000000000c0a0000
+[    0.002006] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[    0.002269] Detected VIPT I-cache on CPU2
+[    0.002281] GICv3: CPU2: found redistributor 2 region 0:0x000000000c0c0000
+[    0.002293] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[    0.002530] Detected VIPT I-cache on CPU3
+[    0.002540] GICv3: CPU3: found redistributor 3 region 0:0x000000000c0e0000
+[    0.002549] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[    0.002575] smp: Brought up 1 node, 4 CPUs
+[    0.002590] SMP: Total of 4 processors activated.
+[    0.002594] CPU features: detected: 32-bit EL0 Support
+[    0.002597] CPU features: detected: CRC32 instructions
+[    0.002620] CPU features: emulated: Privileged Access Never (PAN) using TTBR0                                                                                                          _EL1 switching
+[    0.002673] CPU: All CPU(s) started at EL2
+[    0.002682] alternatives: patching kernel code
+[    0.005603] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, ma                                                                                                          x_idle_ns: 19112604462750000 ns
+[    0.005626] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.005771] pinctrl core: initialized pinctrl subsystem
+[    0.006398] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.006648] DMA: preallocated 256 KiB GFP_KERNEL pool for atomic allocations
+[    0.006678] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA pool for atomic allo                                                                                                          cations
+[    0.006704] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA32 pool for atomic al                                                                                                          locations
+[    0.006964] thermal_sys: Registered thermal governor 'fair_share'
+[    0.006968] thermal_sys: Registered thermal governor 'bang_bang'
+[    0.006971] thermal_sys: Registered thermal governor 'step_wise'
+[    0.006974] thermal_sys: Registered thermal governor 'user_space'
+[    0.007153] ASID allocator initialised with 65536 entries
+[    0.007464] pstore: Registered ramoops as persistent store backend
+[    0.007467] ramoops: using 0x10000@0x42ff0000, ecc: 0
+[    0.017386] cryptd: max_cpu_qlen set to 1000
+[    0.018963] 1.8vd: supplied by 12vd
+[    0.019130] 3.3vd: supplied by 12vd
+[    0.019392] SCSI subsystem initialized
+[    0.019480] libata version 3.00 loaded.
+[    0.020378] clocksource: Switched to clocksource arch_sys_counter
+[    0.020832] NET: Registered PF_INET protocol family
+[    0.020939] IP idents hash table entries: 32768 (order: 6, 262144 bytes, line                                                                                                          ar)
+[    0.021601] tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 1638                                                                                                          4 bytes, linear)
+[    0.021621] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes,                                                                                                           linear)
+[    0.021630] TCP established hash table entries: 16384 (order: 5, 131072 bytes                                                                                                          , linear)
+[    0.021695] TCP bind hash table entries: 16384 (order: 6, 262144 bytes, linea                                                                                                          r)
+[    0.021872] TCP: Hash tables configured (established 16384 bind 16384)
+[    0.021944] UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.021972] UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.022144] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.022165] PCI: CLS 0 bytes, default 64
+[    0.024210] workingset: timestamp_bits=46 max_order=19 bucket_order=0
+[    0.026863] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.026878] jffs2: version 2.2 (NAND) (SUMMARY) (LZMA) (RTIME) (CMODE_PRIORIT                                                                                                          Y) (c) 2001-2006 Red Hat, Inc.
+[    0.048789] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 2                                                                                                          51)
+[    0.049830] pwm-mediatek 10048000.pwm: clock: top fail: -517
+[    0.050094] mtk-pcie-gen3 11280000.pcie: host bridge /soc/pcie@11280000 range                                                                                                          s:
+[    0.050112] mtk-pcie-gen3 11280000.pcie: Parsing ranges property...
+[    0.050121] mtk-pcie-gen3 11280000.pcie:      MEM 0x0020000000..0x002fffffff                                                                                                           -> 0x0020000000
+[    0.050202] /soc/pcie@11280000: Failed to get clk index: 0 ret: -517
+[    0.050212] mtk-pcie-gen3 11280000.pcie: failed to get clocks
+[    0.053007] Serial: 8250/16550 driver, 16 ports, IRQ sharing enabled
+[    0.054721] printk: console [ttyS0] disabled
+[    0.074871] 11002000.serial: ttyS0 at MMIO 0x11002000 (irq = 122, base_baud =                                                                                                           2500000) is a ST16650V2
+[    0.762138] printk: console [ttyS0] enabled
+[    0.786895] 11003000.serial: ttyS1 at MMIO 0x11003000 (irq = 123, base_baud =                                                                                                           1625000) is a ST16650V2
+[    0.816617] 11004000.serial: ttyS2 at MMIO 0x11004000 (irq = 124, base_baud =                                                                                                           1625000) is a ST16650V2
+[    0.826444] mtk_rng 1020f000.rng: registered RNG driver
+[    0.826503] hwrng: no data available
+[    0.831939] cacheinfo: Unable to detect cache hierarchy for CPU 0
+[    0.843420] loop: module loaded
+[    0.846570] Loading iSCSI transport class v2.0-870.
+[    0.852913] spi-nand spi0.0: Winbond SPI NAND was found.
+[    0.858222] spi-nand spi0.0: 128 MiB, block size: 128 KiB, page size: 2048, O                                                                                                          OB size: 64
+[    0.866469] 4 fixed-partitions partitions found on MTD device spi0.0
+[    0.872818] Creating 4 MTD partitions on "spi0.0":
+[    0.877592] 0x000000580000-0x000008000000 : "ubi"
+[    1.008262] 0x000000380000-0x000000580000 : "fip"
+[    1.015271] 0x000000080000-0x000000380000 : "reserved"
+[    1.023720] 0x000000000000-0x000000080000 : "bl2"
+[    1.163559] mtk_soc_eth 15100000.ethernet eth0: mediatek frame engine at 0xff                                                                                                          ffffc009880000, irq 136
+[    1.173332] mtk_soc_eth 15100000.ethernet eth1: mediatek frame engine at 0xff                                                                                                          ffffc009880000, irq 136
+[    1.182871] i2c_dev: i2c /dev entries driver
+[    1.188661] mtk-wdt 1001c000.watchdog: Watchdog enabled (timeout=31 sec, nowa                                                                                                          yout=0)
+[    1.197186] NET: Registered PF_INET6 protocol family
+[    1.202789] Segment Routing with IPv6
+[    1.206463] In-situ OAM (IOAM) with IPv6
+[    1.210417] NET: Registered PF_PACKET protocol family
+[    1.215471] bridge: filtering via arp/ip/ip6tables is no longer available by                                                                                                           default. Update your scripts to load br_netfilter if you need this.
+[    1.228508] 8021q: 802.1Q VLAN Support v1.8
+[    1.233537] pstore: Using crash dump compression: deflate
+[    1.244761] mtk-pcie-gen3 11280000.pcie: host bridge /soc/pcie@11280000 range                                                                                                          s:
+[    1.252099] mtk-pcie-gen3 11280000.pcie: Parsing ranges property...
+[    1.258351] mtk-pcie-gen3 11280000.pcie:      MEM 0x0020000000..0x002fffffff                                                                                                           -> 0x0020000000
+[    1.327814] mtk-msdc 11230000.mmc: phase: [map:ffffffff] [maxlen:32] [final:1                                                                                                          0]
+[    1.336748] mmc0: new HS400 MMC card at address 0001
+[    1.342486] mmcblk0: mmc0:0001 008GB0 7.28 GiB
+[    1.349652] FIT: Selected configuration: "config-mt7986a-bananapi-bpi-r3" (Op                                                                                                          enWrt bananapi_bpi-r3)
+[    1.358699] FIT:           kernel sub-image 0x00001000..0x00530553 "kernel-1"                                                                                                           (ARM64 OpenWrt Linux-5.15.118)
+[    1.368598] FIT:          flat_dt sub-image 0x00531000..0x005389fc "fdt-1" (A                                                                                                          RM64 OpenWrt bananapi_bpi-r3 device tree blob)
+[    1.379798] FIT:          flat_dt sub-image 0x00539000..0x005391dc "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-emmc" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt79                                                                                                          86a-bananapi-bpi-r3-emmc)
+[    1.396118] FIT:          flat_dt sub-image 0x0053a000..0x0053a390 "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-nand" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt79                                                                                                          86a-bananapi-bpi-r3-nand)
+[    1.412436] FIT:          flat_dt sub-image 0x0053b000..0x0053b38f "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-nor" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt798                                                                                                          6a-bananapi-bpi-r3-nor)
+[    1.426372] mtk-pcie-gen3 11280000.pcie: set MEM trans window[0]: cpu_addr =                                                                                                           0x20000000, pci_addr = 0x20000000, size = 0x10000000
+[    1.428577] FIT:          flat_dt sub-image 0x0053c000..0x0053c146 "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-sd" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986                                                                                                          a-bananapi-bpi-r3-sd)
+[    1.440324] mtk-pcie-gen3 11280000.pcie: PCI host bridge to bus 0000:00
+[    1.456144] FIT:       filesystem sub-image 0x0053d000..0x00a26fff "rootfs-1"                                                                                                           (ARM64 OpenWrt bananapi_bpi-r3 rootfs)
+[    1.462732] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.473312] FIT: selecting configured loadable "rootfs-1" to be root filesyst                                                                                                          em
+[    1.478772] pci_bus 0000:00: root bus resource [mem 0x20000000-0x2fffffff]
+[    1.486067]  mmcblk0: p1 p2 p3 p4 p5 p65(rootfs-1) p66(rootfs_data) p6 p128
+[    1.492910] pci_bus 0000:00: scanning bus
+[    1.501133] mmcblk0boot0: mmc0:0001 008GB0 4.00 MiB
+[    1.503892] pci 0000:00:00.0: [14c3:1f32] type 01 class 0x060400
+[    1.509587] mmcblk0boot1: mmc0:0001 008GB0 4.00 MiB
+[    1.514792] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[    1.519956] mmcblk0rpmb: mmc0:0001 008GB0 4.00 MiB, chardev (250:0)
+[    1.526559] pci 0000:00:00.0: PME# supported from D0 D3hot D3cold
+[    1.538816] pci 0000:00:00.0: PME# disabled
+[    1.543791] pci_bus 0000:00: fixups for bus
+[    1.547960] pci 0000:00:00.0: scanning [bus 00-00] behind bridge, pass 0
+[    1.554648] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), rec                                                                                                          onfiguring
+[    1.562639] pci 0000:00:00.0: scanning [bus 00-00] behind bridge, pass 1
+[    1.569378] pci_bus 0000:01: scanning bus
+[    1.573407] pci 0000:01:00.0: [1987:5013] type 00 class 0x010802
+[    1.579421] pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x00003fff 64bit]
+[    1.586378] pci 0000:01:00.0: 8.000 Gb/s available PCIe bandwidth, limited by                                                                                                           5.0 GT/s PCIe x2 link at 0000:00:00.0 (capable of 31.504 Gb/s with 8.0 GT/s PCI                                                                                                          e x4 link)
+[    1.630962] pci_bus 0000:01: fixups for bus
+[    1.635131] pci_bus 0000:01: bus scan returning with max=01
+[    1.640694] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+[    1.647293] pci_bus 0000:00: bus scan returning with max=01
+[    1.652865] pci 0000:00:00.0: BAR 8: assigned [mem 0x20000000-0x200fffff]
+[    1.659634] pci 0000:00:00.0: BAR 0: assigned [mem 0x20100000-0x20107fff 64bi                                                                                                          t]
+[    1.666932] pci 0000:01:00.0: BAR 0: assigned [mem 0x20000000-0x20003fff 64bi                                                                                                          t]
+[    1.674234] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    1.679183] pci 0000:00:00.0:   bridge window [mem 0x20000000-0x200fffff]
+[    1.686072] pcieport 0000:00:00.0: assign IRQ: got 144
+[    1.691205] pcieport 0000:00:00.0: enabling device (0000 -> 0002)
+[    1.697289] pcieport 0000:00:00.0: enabling bus mastering
+[    1.703077] mtk-pcie-gen3 11280000.pcie: msi#0x0 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 0
+[    1.711506] mtk-pcie-gen3 11280000.pcie: msi#0x1 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 1
+[    1.719920] mtk-pcie-gen3 11280000.pcie: msi#0x2 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 2
+[    1.728337] mtk-pcie-gen3 11280000.pcie: msi#0x3 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 3
+[    1.736754] mtk-pcie-gen3 11280000.pcie: msi#0x4 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 4
+[    1.745171] mtk-pcie-gen3 11280000.pcie: msi#0x5 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 5
+[    1.753591] mtk-pcie-gen3 11280000.pcie: msi#0x6 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 6
+[    1.762009] mtk-pcie-gen3 11280000.pcie: msi#0x7 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 7
+[    1.770426] mtk-pcie-gen3 11280000.pcie: msi#0x8 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 8
+[    1.778839] mtk-pcie-gen3 11280000.pcie: msi#0x9 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 9
+[    1.787257] mtk-pcie-gen3 11280000.pcie: msi#0xa address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 10
+[    1.795761] mtk-pcie-gen3 11280000.pcie: msi#0xb address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 11
+[    1.804265] mtk-pcie-gen3 11280000.pcie: msi#0xc address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 12
+[    1.812769] mtk-pcie-gen3 11280000.pcie: msi#0xd address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 13
+[    1.821272] mtk-pcie-gen3 11280000.pcie: msi#0xe address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 14
+[    1.829773] mtk-pcie-gen3 11280000.pcie: msi#0xf address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 15
+[    1.838276] mtk-pcie-gen3 11280000.pcie: msi#0x10 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 16
+[    1.846867] mtk-pcie-gen3 11280000.pcie: msi#0x11 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 17
+[    1.855458] mtk-pcie-gen3 11280000.pcie: msi#0x12 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 18
+[    1.864049] mtk-pcie-gen3 11280000.pcie: msi#0x13 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 19
+[    1.872642] mtk-pcie-gen3 11280000.pcie: msi#0x14 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 20
+[    1.881233] mtk-pcie-gen3 11280000.pcie: msi#0x15 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 21
+[    1.889820] mtk-pcie-gen3 11280000.pcie: msi#0x16 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 22
+[    1.898409] mtk-pcie-gen3 11280000.pcie: msi#0x17 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 23
+[    1.907001] mtk-pcie-gen3 11280000.pcie: msi#0x18 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 24
+[    1.915592] mtk-pcie-gen3 11280000.pcie: msi#0x19 address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 25
+[    1.924184] mtk-pcie-gen3 11280000.pcie: msi#0x1a address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 26
+[    1.932775] mtk-pcie-gen3 11280000.pcie: msi#0x1b address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 27
+[    1.941367] mtk-pcie-gen3 11280000.pcie: msi#0x1c address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 28
+[    1.949954] mtk-pcie-gen3 11280000.pcie: msi#0x1d address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 29
+[    1.958546] mtk-pcie-gen3 11280000.pcie: msi#0x1e address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 30
+[    1.967137] mtk-pcie-gen3 11280000.pcie: msi#0x1f address_hi 0x0 address_lo 0                                                                                                          x11280c00 data 31
+[    1.976081] mtk-pcie-gen3 11280000.pcie: msi#0x0 address_hi 0x0 address_lo 0x                                                                                                          11280c00 data 0
+[    1.984598] pcieport 0000:00:00.0: PME: Signaling with IRQ 145
+[    1.990601] pcieport 0000:00:00.0: AER: enabled with IRQ 145
+[    1.996300] pcieport 0000:00:00.0: saving config space at offset 0x0 (reading                                                                                                           0x1f3214c3)
+[    2.004469] pcieport 0000:00:00.0: saving config space at offset 0x4 (reading                                                                                                           0x100406)
+[    2.012454] pcieport 0000:00:00.0: saving config space at offset 0x8 (reading                                                                                                           0x6040001)
+[    2.020525] pcieport 0000:00:00.0: saving config space at offset 0xc (reading                                                                                                           0x10000)
+[    2.028418] pcieport 0000:00:00.0: saving config space at offset 0x10 (readin                                                                                                          g 0x20100004)
+[    2.036661] pcieport 0000:00:00.0: saving config space at offset 0x14 (readin                                                                                                          g 0x0)
+[    2.044300] pcieport 0000:00:00.0: saving config space at offset 0x18 (readin                                                                                                          g 0x10100)
+[    2.052286] pcieport 0000:00:00.0: saving config space at offset 0x1c (readin                                                                                                          g 0x1f1)
+[    2.060092] pcieport 0000:00:00.0: saving config space at offset 0x20 (readin                                                                                                          g 0x20002000)
+[    2.068336] pcieport 0000:00:00.0: saving config space at offset 0x24 (readin                                                                                                          g 0x1fff1)
+[    2.076323] pcieport 0000:00:00.0: saving config space at offset 0x28 (readin                                                                                                          g 0x0)
+[    2.083960] pcieport 0000:00:00.0: saving config space at offset 0x2c (readin                                                                                                          g 0x0)
+[    2.091596] pcieport 0000:00:00.0: saving config space at offset 0x30 (readin                                                                                                          g 0x0)
+[    2.099229] pcieport 0000:00:00.0: saving config space at offset 0x34 (readin                                                                                                          g 0x80)
+[    2.106952] pcieport 0000:00:00.0: saving config space at offset 0x38 (readin                                                                                                          g 0x0)
+[    2.114588] pcieport 0000:00:00.0: saving config space at offset 0x3c (readin                                                                                                          g 0x20190)
+[    2.144686] mt7530-mdio mdio-bus:1f: configuring for fixed/2500base-x link mo                                                                                                          de
+[    2.153743] mt7530-mdio mdio-bus:1f: Link is Up - 2.5Gbps/Full - flow control                                                                                                           rx/tx
+[    2.162430] mt7530-mdio mdio-bus:1f wan (uninitialized): PHY [mt7530-0:00] dr                                                                                                          iver [MediaTek MT7531 PHY] (irq=146)
+[    2.182661] mt7530-mdio mdio-bus:1f lan1 (uninitialized): PHY [mt7530-0:01] d                                                                                                          river [MediaTek MT7531 PHY] (irq=147)
+[    2.202689] mt7530-mdio mdio-bus:1f lan2 (uninitialized): PHY [mt7530-0:02] d                                                                                                          river [MediaTek MT7531 PHY] (irq=148)
+[    2.222780] mt7530-mdio mdio-bus:1f lan3 (uninitialized): PHY [mt7530-0:03] d                                                                                                          river [MediaTek MT7531 PHY] (irq=149)
+[    2.242795] mt7530-mdio mdio-bus:1f lan4 (uninitialized): PHY [mt7530-0:04] d                                                                                                          river [MediaTek MT7531 PHY] (irq=150)
+[    2.253909] DSA: tree 0 setup
+[    2.259043] UBI: auto-attach mtd0
+[    2.262367] ubi0: default fastmap pool size: 45
+[    2.266880] ubi0: default fastmap WL pool size: 22
+[    2.271655] ubi0: attaching mtd0
+[    5.882865] ubi0: scanning is finished
+[    5.927994] ubi0: attached mtd0 (name "ubi", size 122 MiB)
+[    5.933481] ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    5.940335] ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+[    5.947105] ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+[    5.954049] ubi0: good PEBs: 980, bad PEBs: 0, corrupted PEBs: 0
+[    5.960035] ubi0: user volume: 6, internal volumes: 1, max. volumes count: 12                                                                                                          8
+[    5.967236] ubi0: max/mean erase counter: 2/1, WL threshold: 4096, image sequ                                                                                                          ence number: 0
+[    5.975565] ubi0: available PEBs: 0, total reserved PEBs: 980, PEBs reserved                                                                                                           for bad PEB handling: 20
+[    5.984766] ubi0: background thread "ubi_bgt0d" started, PID 570
+[    5.996771] FIT: Selected configuration: "config-mt7986a-bananapi-bpi-r3" (Op                                                                                                          enWrt bananapi_bpi-r3)
+[    6.005813] FIT:           kernel sub-image 0x00001000..0x00531013 "kernel-1"                                                                                                           (ARM64 OpenWrt Linux-5.15.114)
+[    6.015710] FIT:          flat_dt sub-image 0x00532000..0x005399fc "fdt-1" (A                                                                                                          RM64 OpenWrt bananapi_bpi-r3 device tree blob)
+[    6.026910] FIT:          flat_dt sub-image 0x0053a000..0x0053a1dc "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-emmc" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt79                                                                                                          86a-bananapi-bpi-r3-emmc)
+[    6.043224] FIT:          flat_dt sub-image 0x0053b000..0x0053b390 "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-nand" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt79                                                                                                          86a-bananapi-bpi-r3-nand)
+[    6.059537] FIT:          flat_dt sub-image 0x0053c000..0x0053c38f "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-nor" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt798                                                                                                          6a-bananapi-bpi-r3-nor)
+[    6.075676] FIT:          flat_dt sub-image 0x0053d000..0x0053d146 "fdt-mt798                                                                                                          6a-bananapi-bpi-r3-sd" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986                                                                                                          a-bananapi-bpi-r3-sd)
+[    6.091640] FIT:       filesystem sub-image 0x0053e000..0x00a26fff "rootfs-1"                                                                                                           (ARM64 OpenWrt bananapi_bpi-r3 rootfs)
+[    6.102226] FIT: selecting configured loadable "rootfs-1" to be root filesyst                                                                                                          em
+[    6.109511]  ubiblock0_2: p1(rootfs-1)
+[    6.109635] block ubiblock0_2: created from ubi0:2(fit)
+[    6.121854] VFS: Mounted root (squashfs filesystem) readonly on device 259:0.
+[    6.129123] Freeing unused kernel memory: 448K
+[    6.180383] Run /sbin/init as init process
+[    6.184464]   with arguments:
+[    6.187415]     /sbin/init
+[    6.190106]   with environment:
+[    6.193236]     HOME=/
+[    6.195581]     TERM=linux
+[    6.284475] init: Console is alive
+[    6.287976] init: - watchdog -
+[    6.502442] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[    6.520785] usbcore: registered new interface driver usbfs
+[    6.526292] usbcore: registered new interface driver hub
+[    6.531630] usbcore: registered new device driver usb
+[    6.537454] mt7986a-pinctrl 1001f000.pinctrl: pin GPIO_4 already requested by                                                                                                           11280000.pcie; cannot claim for pinctrl_moore:420
+[    6.548928] mt7986a-pinctrl 1001f000.pinctrl: pin-9 (pinctrl_moore:420) statu                                                                                                          s -22
+[    6.556498] gpio-keys: probe of gpio-keys failed with error -22
+[    6.564790] xhci-mtk 11200000.usb: supply vbus not found, using dummy regulat                                                                                                          or
+[    6.572196] xhci-mtk 11200000.usb: supply vusb33 not found, using dummy regul                                                                                                          ator
+[    6.580313] xhci-mtk 11200000.usb: xHCI Host Controller
+[    6.585549] xhci-mtk 11200000.usb: new USB bus registered, assigned bus numbe                                                                                                          r 1
+[    6.596002] xhci-mtk 11200000.usb: hcc params 0x01403f99 hci version 0x110 qu                                                                                                          irks 0x0000000000210010
+[    6.605149] xhci-mtk 11200000.usb: irq 128, io mem 0x11200000
+[    6.610975] xhci-mtk 11200000.usb: xHCI Host Controller
+[    6.616185] xhci-mtk 11200000.usb: new USB bus registered, assigned bus numbe                                                                                                          r 2
+[    6.623568] xhci-mtk 11200000.usb: Host supports USB 3.2 Enhanced SuperSpeed
+[    6.630966] hub 1-0:1.0: USB hub found
+[    6.634721] hub 1-0:1.0: 2 ports detected
+[    6.638968] usb usb2: We don't know the algorithms for LPM for this host, dis                                                                                                          abling LPM.
+[    6.647313] hub 2-0:1.0: USB hub found
+[    6.651075] hub 2-0:1.0: 1 port detected
+[    6.657481] kmodloader: done loading kernel modules from /etc/modules-boot.d/                                                                                                          *
+[    6.674958] init: - preinit -
+[    6.835106] mtk_soc_eth 15100000.ethernet eth0: configuring for fixed/2500bas                                                                                                          e-x link mode
+[    6.843560] mtk_soc_eth 15100000.ethernet eth0: Link is Up - 2.5Gbps/Full - f                                                                                                          low control rx/tx
+[    6.852056] mt7530-mdio mdio-bus:1f lan1: configuring for phy/gmii link mode
+[    6.863957] mt7530-mdio mdio-bus:1f lan1: Link is Up - 1Gbps/Full - flow cont                                                                                                          rol off
+[    6.871786] IPv6: ADDRCONF(NETDEV_CHANGE): lan1: link becomes ready
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+[    7.110352] usb 1-1: new high-speed USB device number 2 using xhci-mtk
+[    7.291034] hub 1-1:1.0: USB hub found
+[    7.292118] random: procd: uninitialized urandom read (4 bytes read)
+[    7.294820] hub 1-1:1.0: 4 ports detected
+[    8.902461] mount_root: overlay filesystem in /dev/mmcblk0p66 has not been fo                                                                                                          rmatted yet
+[   11.350595] random: crng init done
+[   11.700856] F2FS-fs (mmcblk0p66): Found nat_bits in checkpoint
+[   11.713406] F2FS-fs (mmcblk0p66): Mounted with checkpoint version = 3999c4e3
+[   11.721335] mount_root: overlay filesystem has not been fully initialized yet
+[   11.728677] mount_root: switching to f2fs overlay
+[   11.735425] overlayfs: null uuid detected in lower fs '/', falling back to xi                                                                                                          no=off,index=off,nfs_export=off.
+- config restore -
+[   11.821455] urandom-seed: Seed file not found (/etc/urandom.seed)
+[   11.847468] mt7530-mdio mdio-bus:1f lan1: Link is Down
+[   11.855978] procd: - early -
+[   11.858902] procd: - watchdog -
+[   12.377579] procd: - watchdog -
+[   12.380896] procd: - ubus -
+[   12.434202] procd: - init -
+Please press Enter to activate this console.
+[   12.542695] urngd: v1.0.2 started.
+[   12.566413] kmodloader: loading kernel modules from /etc/modules.d/*
+[   12.577744] i2c-gpio i2c-gpio-0: using lines 427 (SDA) and 428 (SCL)
+[   12.584400] i2c-gpio i2c-gpio-1: using lines 429 (SDA) and 430 (SCL)
+[   12.593710] crypto-safexcel 10320000.crypto: EIP97:230(0,1,4,4)-HIA:270(0,5,5                                                                                                          ),PE:150/433(alg:7fcdfc00)/0/0/0
+[   12.607750] Loading modules backported from Linux version v6.1.24-0-g0102425a                                                                                                          c76b
+[   12.615250] Backport generated by backports.git v5.15.92-1-44-gd6ea70fafd36
+[   12.626125] sfp sfp-1: Host maximum power 1.0W
+[   12.631357] sfp sfp-2: Host maximum power 1.0W
+[   12.969987] sfp sfp-1: module                                   rev 1.0  sn 2                                                                                                          303280034       dc 230406
+[   13.019158] hwmon hwmon2: temp1_input not attached to any thermal zone
+[   13.103846] mt798x-wmac 18000000.wifi: HW/SW Version: 0x8a108a10, Build Time:                                                                                                           20221012174743a
+[   13.103846]
+[   13.211029] mt798x-wmac 18000000.wifi: WM Firmware Version: ____000000, Build Time: 20221012174805
+[   13.277997] mt798x-wmac 18000000.wifi: WA Firmware Version: DEV_000000, Build Time: 20221012174937
+[   16.044349] PPP generic driver version 2.4.2
+[   16.049321] NET: Registered PF_PPPOX protocol family
+[   16.056788] kmodloader: done loading kernel modules from /etc/modules.d/*
+[   17.689440] mtk_soc_eth 15100000.ethernet eth0: Link is Down
+[   17.701468] mtk_soc_eth 15100000.ethernet eth0: configuring for fixed/2500base-x link mode
+[   17.709882] mtk_soc_eth 15100000.ethernet eth0: Link is Up - 2.5Gbps/Full - flow control rx/tx
+[   17.710947] mt7530-mdio mdio-bus:1f lan1: configuring for phy/gmii link mode
+[   17.728582] br-lan: port 1(lan1) entered blocking state
+[   17.733804] br-lan: port 1(lan1) entered disabled state
+[   17.740370] device lan1 entered promiscuous mode
+[   17.744970] device eth0 entered promiscuous mode
+[   17.751510] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+[   17.763400] mt7530-mdio mdio-bus:1f lan2: configuring for phy/gmii link mode
+[   17.773265] br-lan: port 2(lan2) entered blocking state
+[   17.778497] br-lan: port 2(lan2) entered disabled state
+[   17.785419] device lan2 entered promiscuous mode
+[   17.794191] mt7530-mdio mdio-bus:1f lan3: configuring for phy/gmii link mode
+[   17.804024] br-lan: port 3(lan3) entered blocking state
+[   17.809250] br-lan: port 3(lan3) entered disabled state
+[   17.816316] device lan3 entered promiscuous mode
+[   17.824845] mt7530-mdio mdio-bus:1f lan4: configuring for phy/gmii link mode
+[   17.834791] br-lan: port 4(lan4) entered blocking state
+[   17.840032] br-lan: port 4(lan4) entered disabled state
+[   17.847300] device lan4 entered promiscuous mode
+[   17.855825] mt7530-mdio mdio-bus:1f sfp2: configuring for inband/2500base-x link mode
+[   17.865439] br-lan: port 5(sfp2) entered blocking state
+[   17.870688] br-lan: port 5(sfp2) entered disabled state
+[   17.878064] device sfp2 entered promiscuous mode
+[   17.886551] mtk_soc_eth 15100000.ethernet eth1: configuring for inband/2500base-x link mode
+[   17.896745] br-wan: port 1(eth1) entered blocking state
+[   17.902000] br-wan: port 1(eth1) entered disabled state
+[   17.907396] device eth1 entered promiscuous mode
+[   17.913546] br-wan: port 1(eth1) entered blocking state
+[   17.918779] br-wan: port 1(eth1) entered forwarding state
+[   17.925815] mt7530-mdio mdio-bus:1f wan: configuring for phy/gmii link mode
+[   17.935567] br-wan: port 2(wan) entered blocking state
+[   17.940707] br-wan: port 2(wan) entered disabled state
+[   17.947173] device wan entered promiscuous mode
+[   18.711262] br-wan: port 1(eth1) entered disabled state
+[   20.277280] mt7530-mdio mdio-bus:1f lan1: Link is Up - 1Gbps/Full - flow control off
+[   20.285056] br-lan: port 1(lan1) entered blocking state
+[   20.290266] br-lan: port 1(lan1) entered forwarding state
+[   20.296183] IPv6: ADDRCONF(NETDEV_CHANGE): br-lan: link becomes ready
+[   23.110373] mtk_soc_eth 15100000.ethernet eth1: Link is Up - 2.5Gbps/Full - flow control off
+[   23.118841] br-wan: port 1(eth1) entered blocking state
+[   23.124065] br-wan: port 1(eth1) entered forwarding state
+
+
+
+BusyBox v1.36.1 (2023-06-30 17:24:52 UTC) built-in shell (ash)
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ OpenWrt SNAPSHOT, r23459-a0ae7a50e0
+ -----------------------------------------------------
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/# opkg update
+Downloading https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/packages/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_core
+Downloading https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/packages/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_base
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/kmods/5.15.118-1-3e8c97fbd5248be04ea8c8de18e12cad/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_kmods
+Downloading https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/kmods/5.15.118-1-3e8c97fbd5248be04ea8c8de18e12cad/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_luci
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/packages/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_packages
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/packages/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/routing/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_routing
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/routing/Packages.sig
+Signature check passed.
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/telephony/Packages.gz
+Updated list of available packages in /var/opkg-lists/openwrt_telephony
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/telephony/Packages.sig
+Signature check passed.
+root@OpenWrt:/# opkg install odhcpd
+Installing odhcpd (2023-06-24-52112643-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/odhcpd_2023-06-24-52112643-1_aarch64_cortex-a53.ipk
+Installing libnl-tiny2023-07-01 (2023-07-01-d433990c-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/libnl-tiny2023-07-01_2023-07-01-d433990c-1_aarch64_cortex-a53.ipk
+Collected errors:
+ * check_data_file_clashes: Package libnl-tiny2023-07-01 wants to install file /usr/lib/libnl-tiny.so
+        But that file is already provided by package  * libnl-tiny2023-04-02
+ * opkg_install_cmd: Cannot install package odhcpd.
+root@OpenWrt:/# opkg install odhcpd --help
+opkg: unrecognized option: help
+opkg must have one sub-command argument
+usage: opkg [options...] sub-command [arguments...]
+where sub-command is one of:
+
+Package Manipulation:
+        update                  Update list of available packages
+        upgrade <pkgs>          Upgrade packages
+        install <pkgs>          Install package(s)
+        configure <pkgs>        Configure unpacked package(s)
+        remove <pkgs|regexp>    Remove package(s)
+        flag <flag> <pkgs>      Flag package(s)
+         <flag>=hold|noprune|user|ok|installed|unpacked (one per invocation)
+
+Informational Commands:
+        list                    List available packages
+        list-installed          List installed packages
+        list-upgradable         List installed and upgradable packages
+        list-changed-conffiles  List user modified configuration files
+        files <pkg>             List files belonging to <pkg>
+        search <file|regexp>    List package providing <file>
+        find <regexp>           List packages whose name or description matches <regexp>
+        info [pkg|regexp]       Display all info for <pkg>
+        status [pkg|regexp]     Display all status for <pkg>
+        download <pkg>          Download <pkg> to current directory
+        compare-versions <v1> <op> <v2>
+                            compare versions using <= < > >= = << >>
+        print-architecture      List installable package architectures
+        depends [-A] [pkgname|pat]+
+        whatdepends [-A] [pkgname|pat]+
+        whatdependsrec [-A] [pkgname|pat]+
+        whatrecommends[-A] [pkgname|pat]+
+        whatsuggests[-A] [pkgname|pat]+
+        whatprovides [-A] [pkgname|pat]+
+        whatconflicts [-A] [pkgname|pat]+
+        whatreplaces [-A] [pkgname|pat]+
+
+Options:
+        -A                      Query all packages not just those installed
+        -V[<level>]             Set verbosity level to <level>.
+        --verbosity[=<level>]   Verbosity levels:
+                                        0 errors only
+                                        1 normal messages (default)
+                                        2 informative messages
+                                        3 debug
+                                        4 debug level 2
+        -f <conf_file>          Use <conf_file> as the opkg configuration file
+        --conf <conf_file>
+        --cache <directory>     Use a package cache
+        -d <dest_name>          Use <dest_name> as the the root directory for
+        --dest <dest_name>      package installation, removal, upgrading.
+                                <dest_name> should be a defined dest name from
+                                the configuration file, (but can also be a
+                                directory name in a pinch).
+        -o <dir>                Use <dir> as the root directory for
+        --offline-root <dir>    offline installation of packages.
+        --verify-program <path> Use the given program to verify usign signatures
+        --add-arch <arch>:<prio>        Register architecture with given priority
+        --add-dest <name>:<path>        Register destination with given path
+
+Force Options:
+        --force-depends         Install/remove despite failed dependencies
+        --force-maintainer      Overwrite preexisting config files
+        --force-reinstall       Reinstall package(s)
+        --force-overwrite       Overwrite files from other package(s)
+        --force-downgrade       Allow opkg to downgrade packages
+        --force-space           Disable free space checks
+        --force-postinstall     Run postinstall scripts even in offline mode
+        --force-remove  Remove package even if prerm script fails
+        --force-checksum        Don't fail on checksum mismatches
+        --no-check-certificate Don't validate SSL certificates
+        --noaction              No action -- test only
+        --download-only No action -- download only
+        --nodeps                Do not follow dependencies
+        --nocase                Perform case insensitive pattern matching
+        --size                  Print package size when listing available packages
+        --strip-abi             Print package name without appended ABI version
+        --force-removal-of-dependent-packages
+                                Remove package and all dependencies
+        --autoremove            Remove packages that were installed
+                                automatically to satisfy dependencies
+        -t                      Specify tmp-dir.
+        --tmp-dir               Specify tmp-dir.
+        -l                      Specify lists-dir.
+        --lists-dir             Specify lists-dir.
+
+ regexp could be something like 'pkgname*' '*file*' or similar
+ e.g. opkg info 'libstd*' or opkg search '*libop*' or opkg remove 'libncur*'
+root@OpenWrt:/# opkg install odhcpd --force-overwrite
+Installing odhcpd (2023-06-24-52112643-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/odhcpd_2023-06-24-52112643-1_aarch64_cortex-a53.ipk
+Installing libnl-tiny2023-07-01 (2023-07-01-d433990c-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/libnl-tiny2023-07-01_2023-07-01-d433990c-1_aarch64_cortex-a53.ipk
+Configuring libnl-tiny2023-07-01.
+Configuring odhcpd.
+root@OpenWrt:/# [  350.975035] kmodloader: loading kernel modules from /etc/modules.d/*
+[  350.987089] nvme 0000:01:00.0: assign IRQ: got 144
+[  350.992065] nvme nvme0: pci function 0000:01:00.0
+[  350.996781] nvme 0000:01:00.0: enabling device (0000 -> 0002)
+[  351.002552] nvme 0000:01:00.0: enabling bus mastering
+[  351.007664] mtk-pcie-gen3 11280000.pcie: msi#0x1 address_hi 0x0 address_lo 0x11280c00 data 1
+[  351.016120] nvme 0000:01:00.0: saving config space at offset 0x0 (reading 0x50131987)
+[  351.023933] nvme 0000:01:00.0: saving config space at offset 0x4 (reading 0x100406)
+[  351.031571] nvme 0000:01:00.0: saving config space at offset 0x8 (reading 0x1080201)
+[  351.039296] nvme 0000:01:00.0: saving config space at offset 0xc (reading 0x0)
+[  351.046498] nvme 0000:01:00.0: saving config space at offset 0x10 (reading 0x20000004)
+[  351.054395] nvme 0000:01:00.0: saving config space at offset 0x14 (reading 0x0)
+[  351.061687] nvme 0000:01:00.0: saving config space at offset 0x18 (reading 0x0)
+[  351.068979] nvme 0000:01:00.0: saving config space at offset 0x1c (reading 0x0)
+[  351.076267] nvme 0000:01:00.0: saving config space at offset 0x20 (reading 0x0)
+[  351.083559] nvme 0000:01:00.0: saving config space at offset 0x24 (reading 0x0)
+[  351.090850] nvme 0000:01:00.0: saving config space at offset 0x28 (reading 0x0)
+[  351.098141] nvme 0000:01:00.0: saving config space at offset 0x2c (reading 0x50131987)
+[  351.106035] nvme 0000:01:00.0: saving config space at offset 0x30 (reading 0x0)
+[  351.113326] nvme 0000:01:00.0: saving config space at offset 0x34 (reading 0x80)
+[  351.120704] nvme 0000:01:00.0: saving config space at offset 0x38 (reading 0x0)
+[  351.127993] nvme 0000:01:00.0: saving config space at offset 0x3c (reading 0x190)
+[  351.146294] nvme nvme0: missing or invalid SUBNQN field.
+[  351.160170] nvme nvme0: allocated 128 MiB host memory buffer.
+[  351.166477] mtk-pcie-gen3 11280000.pcie: msi#0x1 address_hi 0x0 address_lo 0x11280c00 data 1
+[  351.174907] mtk-pcie-gen3 11280000.pcie: msi#0x2 address_hi 0x0 address_lo 0x11280c00 data 2
+[  351.183332] mtk-pcie-gen3 11280000.pcie: msi#0x3 address_hi 0x0 address_lo 0x11280c00 data 3
+[  351.191753] mtk-pcie-gen3 11280000.pcie: msi#0x4 address_hi 0x0 address_lo 0x11280c00 data 4
+[  351.200174] mtk-pcie-gen3 11280000.pcie: msi#0x5 address_hi 0x0 address_lo 0x11280c00 data 5
+[  351.210112] nvme nvme0: 4/0/0 default/read/poll queues
+[  351.218607]  nvme0n1: p1
+[  351.222533] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  362.555193] kmodloader: loading kernel modules from /etc/modules.d/*
+[  362.564638] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.732438] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.757551] Key type encrypted registered
+[  371.765930] device-mapper: ioctl: 4.45.0-ioctl (2021-03-22) initialised: dm-devel@redhat.com
+[  371.778170] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.843311] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.851511] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.876891] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.885100] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.910129] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.918325] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.943406] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.951581] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  371.976696] kmodloader: loading kernel modules from /etc/modules.d/*
+[  371.984889] kmodloader: done loading kernel modules from /etc/modules.d/*
+[  409.745653] kmodloader: loading kernel modules from /etc/modules.d/*
+[  409.755777] tun: Universal TUN/TAP device driver, 1.6
+[  409.762102] kmodloader: done loading kernel modules from /etc/modules.d/*
+
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/# opkg install luci-app-openvpn
+Installing luci-app-openvpn (git-23.013.73089-25983b9) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-app-openvpn_git-23.013.73089-25983b9_all.ipk
+Installing luci-lib-nixio (git-22.222.71555-88b9088) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-lib-nixio_git-22.222.71555-88b9088_aarch64_cortex-a53.ipk
+Installing luci-lib-ip (git-20.250.76529-62505bd) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-lib-ip_git-20.250.76529-62505bd_aarch64_cortex-a53.ipk
+Installing luci-lib-jsonc (git-22.079.54693-45f411b) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-lib-jsonc_git-22.079.54693-45f411b_aarch64_cortex-a53.ipk
+Installing liblucihttp-lua (2023-03-15-9b5b683f-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/liblucihttp-lua_2023-03-15-9b5b683f-1_aarch64_cortex-a53.ipk
+Installing luci-lib-base (git-22.308.54612-9118452) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-lib-base_git-22.308.54612-9118452_all.ipk
+Installing ucode-mod-lua (1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/ucode-mod-lua_1_aarch64_cortex-a53.ipk
+Installing luci-lua-runtime (git-23.119.80867-2a9c3a3) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-lua-runtime_git-23.119.80867-2a9c3a3_aarch64_cortex-a53.ipk
+Installing luci-compat (git-22.297.83017-673f382) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/luci/luci-compat_git-22.297.83017-673f382_all.ipk
+Configuring luci-lib-nixio.
+Configuring luci-lib-ip.
+Configuring luci-lib-jsonc.
+Configuring liblucihttp-lua.
+Configuring luci-lib-base.
+Configuring ucode-mod-lua.
+Configuring luci-lua-runtime.
+Configuring luci-compat.
+Configuring luci-app-openvpn.
+root@OpenWrt:/# opkg install prometheus-node-exporter-lua-wifi
+Installing prometheus-node-exporter-lua-wifi (2022.08.08-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/packages/prometheus-node-exporter-lua-wifi_2022.08.08-1_all.ipk
+Installing libiwinfo-lua (2023-07-01-ca79f641-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/base/libiwinfo-lua_2023-07-01-ca79f641-1_aarch64_cortex-a53.ipk
+Configuring libiwinfo-lua.
+Configuring prometheus-node-exporter-lua-wifi.
+root@OpenWrt:/# opkg install prometheus-node-exporter-lua-wifi_stations
+Installing prometheus-node-exporter-lua-wifi_stations (2022.08.08-1) to root...
+Downloading https://downloads.openwrt.org/snapshots/packages/aarch64_cortex-a53/packages/prometheus-node-exporter-lua-wifi_stations_2022.08.08-1_all.ipk
+Configuring prometheus-node-exporter-lua-wifi_stations.
+root@OpenWrt:/#  cd /tmp
+ root@OpenWrt:/tmp#     wget https://downloads.openwrt.org/snapshots/targets/medi
+atek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
+  sysupgrade -v Downloading 'https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb'
+/tmp/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itbConnecting to 168.119.138.211:443
+Writing to 'openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb'
+openwrt-mediatek-fil 100% |*******************************| 10496k  0:00:00 ETA
+Download completed (10748510 bytes)
+root@OpenWrt:/tmp#     sysupgrade -v /tmp/openwrt-mediatek-filogic-bananapi_bpi-
+r3-squashfs-sysupgrade.itb
+Mon Jul  3 04:35:48 UTC 2023 upgrade: Saving config files...
+etc/collectd.conf
+etc/config/collectd
+etc/config/dhcp
+etc/config/dropbear
+etc/config/firewall
+etc/config/fstab
+etc/config/luci
+etc/config/luci-opkg
+etc/config/luci_statistics
+etc/config/network
+etc/config/nginx
+etc/config/openssl
+etc/config/openvpn
+etc/config/openvpn_recipes
+etc/config/prometheus-node-exporter-lua
+etc/config/rpcd
+etc/config/system
+etc/config/ubootenv
+etc/config/ucitrack
+etc/config/ucitrack-opkg
+etc/config/uhttpd
+etc/config/uhttpd-opkg
+etc/config/upnpd
+etc/config/wireless
+etc/crontabs/root
+etc/dropbear/authorized_keys
+etc/dropbear/dropbear_ed25519_host_key
+etc/dropbear/dropbear_rsa_host_key
+etc/fw_env.config
+etc/group
+etc/hosts
+etc/inittab
+etc/luci-uploads/.placeholder
+etc/nftables.d/10-custom-filter-chains.nft
+etc/nftables.d/README
+etc/opkg/keys/b5043e70f9a75cde
+etc/passwd
+etc/profile
+etc/profile.d/50-openvpn-easy-rsa.sh
+etc/rc.local
+etc/shadow
+etc/shells
+etc/shinit
+etc/sysctl.conf
+etc/uhttpd.crt
+etc/uhttpd.key
+etc/uhttpd.key
+etc/uhttpd.crt
+Mon Jul  3 04:35:48 UTC 2023 upgrade: Commencing upgrade. Closing all shell sessions.
+Command failed: Watchdog handover: fd=3
+- watchdog -
+Watchdog does not have CARDRESET support
+Mon Jul  3 04:35:48 UTC 2023 upgrade: Sending TERM to remaining processes ...
+Mon Jul  3 04:35:52 UTC 2023 upgrade: Sending KILL to remaining processes ...
+[ 3455.586660] stage2 (12417): drop_caches: 3
+Mon Jul  3 04:35:58 UTC 2023 upgrade: Switching to ramdisk...
+  0 logical volume(s) in volume group "owrt-volumes-6adad1799e809527" now active
+Mon Jul  3 04:35:59 UTC 2023 upgrade: Performing system upgrade...
+36+1 records in
+36+1 records out
+Mon Jul  3 04:36:00 UTC 2023 upgrade: Upgrade completed
+Mon Jul  3 04:36:01 UTC 2023 upgrade: Rebooting system...
+umount: can't unmount[ 3458.738100] mt7530-mdio mdio-bus:1f lan1: Link is Down
+ /dev: Resource busy
+umount: can't unmount /tmp[ 3458.746760] br-wan: port 2(wan) entered disabled state
+[ 3458.753119] br-lan: port 1(lan1) entered disabled state
+
+[ 3458.759721] br-lan: port 2(lan2) entered disabled state
+[ 3458.764987] br-lan: port 3(lan3) entered disabled state
+[ 3458.770241] br-lan: port 4(lan4) entered disabled state
+[ 3458.775498] br-lan: port 5(sfp2) entered disabled state
+[ 3458.782789] device wan left promiscuous mode
+[ 3458.787086] br-wan: port 2(wan) entered disabled state
+[ 3458.855058] device lan1 left promiscuous mode
+[ 3458.859401] br-lan: port 1(lan1) entered disabled state
+[ 3458.914236] device lan2 left promiscuous mode
+[ 3458.918577] br-lan: port 2(lan2) entered disabled state
+[ 3458.984162] device lan3 left promiscuous mode
+[ 3458.988503] br-lan: port 3(lan3) entered disabled state
+[ 3459.044097] device lan4 left promiscuous mode
+[ 3459.048437] br-lan: port 4(lan4) entered disabled state
+[ 3459.104043] device sfp2 left promiscuous mode
+[ 3459.108383] br-lan: port 5(sfp2) entered disabled state
+[ 3459.169704] device eth0 left promiscuous mode
+[ 3459.539780] reboot: Restarting system
+
+F0: 102B 0000
+FA: 1040 0000
+FA: 1040 0000 [0200]
+F9: 103F 0000
+F3: 1006 0033 [0200]
+F3: 4001 00E0 [0200]
+F3: 0000 0000
+V0: 0000 0000 [0001]
+00: 0000 0000
+BP: 2400 0041 [0000]
+G0: 1190 0000
+EC: 0000 0000 [2000]
+T0: 0000 021E [010F]
+Jump to BL
+
+NOTICE:  BL2: v2.7(release):OpenWrt v2022-08-31-75393484-1 (mt7986-emmc-ddr4)
+NOTICE:  BL2: Built : 20:28:45, Jun  9 2023
+NOTICE:  WDT: disabled
+NOTICE:  CPU: MT7986 (2000MHz)
+NOTICE:  EMI: Using DDR4 settings
+NOTICE:  EMI: Detected DRAM size: 2048MB
+NOTICE:  EMI: complex R/W mem test passed
+NOTICE:  BL2: Booting BL31
+NOTICE:  BL31: v2.7(release):OpenWrt v2022-08-31-75393484-1 (mt7986-emmc-ddr4)
+NOTICE:  BL31: Built : 20:28:45, Jun  9 2023
+
+
+U-Boot 2023.04-OpenWrt-r23323-6892603efa (Jun 09 2023 - 20:28:45 +0000)
+
+CPU:   MediaTek MT7986
+Model: BananaPi BPi-R3
+DRAM:  2 GiB
+Core:  53 devices, 24 uclasses, devicetree: embed
+jedec_spi_nor spi_nor@0: unrecognized JEDEC id bytes: ff, ef, aa
+MMC:   mmc@11230000: 0
+Loading Environment from MMC... OK
+In:    serial@11002000
+Out:   serial@11002000
+Err:   serial@11002000
+reset button found
+Loading Environment from MMC... OK
+Net:   eth0: ethernet@15100000
+Cannot read EFI system partition
+Cannot read EFI system partition
+Failed to persist EFI variables
+
+        ( ( ( OpenWrt ) ) )  [eMMC]       U-Boot 2023.04-OpenWrt-r23323-6892603efa (Jun 09 2023 - 20:28:45 +0000)
+
+      1. Run default boot command.
+      2. Boot system via TFTP.
+      3. Boot production system from eMMC.
+      4. Boot recovery system from eMMC.
+      5. Load production system via TFTP then write to eMMC.
+      6. Load recovery system via TFTP then write to eMMC.
+      7. Load BL31+U-Boot FIP via TFTP then write to eMMC.
+      8. Load BL2 preloader via TFTP then write to eMMC.
+      9. Reboot.
+      a. Reset all settings to factory defaults.
+      0. U-Boot console
+
+
+  Press UP/DOWN to move, ENTER to select, ESC to quit
+spi-nand: spi_nand spi_nand@1: Winbond SPI NAND was found.
+spi-nand: spi_nand spi_nand@1: 128 MiB, block size: 128 KiB, page size: 2048, OOB size: 64
+jedec_spi_nor spi_nor@0: unrecognized JEDEC id bytes: 00, ef, aa
+'spi-nand0' is now active device
+* spi-nand0
+  - device: spi_nand@1
+  - parent: spi@1100a000
+  - driver: spi_nand
+  - type: NAND flash
+  - block size:        0x20000 bytes
+  - page size:         0x800 bytes
+  - OOB size:          64 bytes
+  - OOB available:     24 bytes
+  - 0x000000000000-0x000008000000 : "spi-nand0"
+          - 0x000000000000-0x000000080000 : "bl2"
+          - 0x000000080000-0x000000380000 : "factory"
+          - 0x000000380000-0x000000580000 : "fip"
+          - 0x000000580000-0x000008000000 : "ubi"
+* spi-nand0
+  - device: spi_nand@1
+  - parent: spi@1100a000
+  - driver: spi_nand
+  - type: NAND flash
+  - block size:        0x20000 bytes
+  - page size:         0x800 bytes
+  - OOB size:          64 bytes
+  - OOB available:     24 bytes
+  - 0x000000000000-0x000008000000 : "spi-nand0"
+          - 0x000000000000-0x000000080000 : "bl2"
+          - 0x000000080000-0x000000380000 : "factory"
+          - 0x000000380000-0x000000580000 : "fip"
+          - 0x000000580000-0x000008000000 : "ubi"
+
+MMC read: dev # 0, block # 131072, count 8 ... 8 blocks read: OK
+
+MMC read: dev # 0, block # 131072, count 20792 ... 20792 blocks read: OK
+## Loading kernel from FIT Image at 46000000 ...
+   Using 'config-mt7986a-bananapi-bpi-r3' configuration
+   Trying 'kernel-1' kernel subimage
+     Description:  ARM64 OpenWrt Linux-5.15.118
+     Type:         Kernel Image
+     Compression:  gzip compressed
+     Data Start:   0x46001000
+     Data Size:    5436756 Bytes = 5.2 MiB
+     Architecture: AArch64
+     OS:           Linux
+     Load Address: 0x44000000
+     Entry Point:  0x44000000
+     Hash algo:    crc32
+     Hash value:   e03149ce
+     Hash algo:    sha1
+     Hash value:   3ecd4262b388bbf42fd0c0d4bff293026601b002
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'config-mt7986a-bananapi-bpi-r3' configuration
+   Trying 'fdt-1' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree blob
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x46531000
+     Data Size:    31229 Bytes = 30.5 KiB
+     Architecture: AArch64
+     Load Address: 0x43ff8603
+     Hash algo:    crc32
+     Hash value:   0be9bbeb
+     Hash algo:    sha1
+     Hash value:   1c1576f840f8a2ef9ff0bf624634dc4ba314a398
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Loading fdt from 0x46531000 to 0x43ff8603
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'mt7986a-bananapi-bpi-r3-emmc' configuration
+   Trying 'fdt-mt7986a-bananapi-bpi-r3-emmc' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-emmc
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x46539000
+     Data Size:    477 Bytes = 477 Bytes
+     Architecture: AArch64
+     Load Address: 0x43ff8426
+     Hash algo:    crc32
+     Hash value:   3b84c3d9
+     Hash algo:    sha1
+     Hash value:   dc5798e2c23ca8abeb537a4e64bdcae342e7b800
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+## Loading fdt from FIT Image at 46000000 ...
+   Using 'mt7986a-bananapi-bpi-r3-nand' configuration
+   Trying 'fdt-mt7986a-bananapi-bpi-r3-nand' fdt subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-nand
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x4653a000
+     Data Size:    913 Bytes = 913 Bytes
+     Architecture: AArch64
+     Load Address: 0x43ff8095
+     Hash algo:    crc32
+     Hash value:   86958f9f
+     Hash algo:    sha1
+     Hash value:   2d501f8d9a6b5c04d5929b7c0445766cae06b5c5
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Booting using the fdt blob at 0x43ff8603
+Working FDT set to 43ff8603
+## Loading loadables from FIT Image at 46000000 ...
+   Trying 'rootfs-1' loadables subimage
+     Description:  ARM64 OpenWrt bananapi_bpi-r3 rootfs
+     Type:         Filesystem Image
+     Compression:  uncompressed
+     Data Start:   0x4653d000
+     Data Size:    5152768 Bytes = 4.9 MiB
+     Hash algo:    crc32
+     Hash value:   5d7d268d
+     Hash algo:    sha1
+     Hash value:   81856ef6aebf45181a38174997e696666edbcc68
+   Verifying Hash Integrity ... crc32+ sha1+ OK
+   Uncompressing Kernel Image
+   Loading Device Tree to 00000000be7d3000, end 00000000be7dcd38 ... OK
+Working FDT set to be7d3000
+Add 'ramoops@42ff0000' node failed: FDT_ERR_EXISTS
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[    0.000000] Linux version 5.15.118 (builder@buildhost) (aarch64-openwrt-linux-musl-gcc (OpenWrt GCC 12.3.0 r23459-a0ae7a50e0) 12.3.0, GNU ld (GNU Binutils) 2.40.0) #0 SMP Fri Jun 30 17:24:52 2023
+[    0.000000] Machine model: Bananapi BPI-R3
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x0000000042ffffff]
+[    0.000000]   node   0: [mem 0x0000000043000000-0x000000004302ffff]
+[    0.000000]   node   0: [mem 0x0000000043030000-0x000000004fbfffff]
+[    0.000000]   node   0: [mem 0x000000004fc00000-0x000000004ffbffff]
+[    0.000000]   node   0: [mem 0x000000004ffc0000-0x00000000bfffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.2
+[    0.000000] percpu: Embedded 17 pages/cpu s30040 r8192 d31400 u69632
+[    0.000000] pcpu-alloc: s30040 r8192 d31400 u69632 alloc=17*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] CPU features: kernel page table isolation disabled by kernel configuration
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 516096
+[    0.000000] Kernel command line: root=/dev/mmcblk0p65
+[    0.000000] Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 2040204K/2097152K available (8384K kernel code, 912K rwdata, 2280K rodata, 448K init, 303K bss, 56948K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 640 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] GICv3: Distributor has no Range Selector support
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: 16 PPIs implemented
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x000000000c080000
+[    0.000000] arch_timer: cp15 timer(s) running at 13.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x2ff89eacb, max_idle_ns: 440795202429 ns
+[    0.000001] sched_clock: 56 bits at 13MHz, resolution 76ns, wraps every 4398046511101ns
+[    0.000126] Calibrating delay loop (skipped), value calculated using timer frequency.. 26.00 BogoMIPS (lpj=130000)
+[    0.000133] pid_max: default: 32768 minimum: 301
+[    0.000347] Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.000360] Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.001402] rcu: Hierarchical SRCU implementation.
+[    0.001691] smp: Bringing up secondary CPUs ...
+[    0.001953] Detected VIPT I-cache on CPU1
+[    0.001976] GICv3: CPU1: found redistributor 1 region 0:0x000000000c0a0000
+[    0.002002] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[    0.002272] Detected VIPT I-cache on CPU2
+[    0.002285] GICv3: CPU2: found redistributor 2 region 0:0x000000000c0c0000
+[    0.002297] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[    0.002537] Detected VIPT I-cache on CPU3
+[    0.002547] GICv3: CPU3: found redistributor 3 region 0:0x000000000c0e0000
+[    0.002556] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[    0.002581] smp: Brought up 1 node, 4 CPUs
+[    0.002595] SMP: Total of 4 processors activated.
+[    0.002598] CPU features: detected: 32-bit EL0 Support
+[    0.002601] CPU features: detected: CRC32 instructions
+[    0.002623] CPU features: emulated: Privileged Access Never (PAN) using TTBR0_EL1 switching
+[    0.002676] CPU: All CPU(s) started at EL2
+[    0.002686] alternatives: patching kernel code
+[    0.005606] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.005631] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.005777] pinctrl core: initialized pinctrl subsystem
+[    0.006401] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.006657] DMA: preallocated 256 KiB GFP_KERNEL pool for atomic allocations
+[    0.006688] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.006714] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.006972] thermal_sys: Registered thermal governor 'fair_share'
+[    0.006976] thermal_sys: Registered thermal governor 'bang_bang'
+[    0.006979] thermal_sys: Registered thermal governor 'step_wise'
+[    0.006982] thermal_sys: Registered thermal governor 'user_space'
+[    0.007162] ASID allocator initialised with 65536 entries
+[    0.007478] pstore: Registered ramoops as persistent store backend
+[    0.007482] ramoops: using 0x10000@0x42ff0000, ecc: 0
+[    0.017371] cryptd: max_cpu_qlen set to 1000
+[    0.018948] 1.8vd: supplied by 12vd
+[    0.019117] 3.3vd: supplied by 12vd
+[    0.019378] SCSI subsystem initialized
+[    0.019464] libata version 3.00 loaded.
+[    0.020358] clocksource: Switched to clocksource arch_sys_counter
+[    0.020817] NET: Registered PF_INET protocol family
+[    0.020924] IP idents hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.021589] tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 16384 bytes, linear)
+[    0.021609] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.021617] TCP established hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.021685] TCP bind hash table entries: 16384 (order: 6, 262144 bytes, linear)
+[    0.021858] TCP: Hash tables configured (established 16384 bind 16384)
+[    0.021933] UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.021960] UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.022136] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.022156] PCI: CLS 0 bytes, default 64
+[    0.024163] workingset: timestamp_bits=46 max_order=19 bucket_order=0
+[    0.026867] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.026882] jffs2: version 2.2 (NAND) (SUMMARY) (LZMA) (RTIME) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.
+[    0.048938] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 251)
+[    0.050005] pwm-mediatek 10048000.pwm: clock: top fail: -517
+[    0.050267] mtk-pcie-gen3 11280000.pcie: host bridge /soc/pcie@11280000 ranges:
+[    0.050285] mtk-pcie-gen3 11280000.pcie: Parsing ranges property...
+[    0.050295] mtk-pcie-gen3 11280000.pcie:      MEM 0x0020000000..0x002fffffff -> 0x0020000000
+[    0.050429] /soc/pcie@11280000: Failed to get clk index: 0 ret: -517
+[    0.050440] mtk-pcie-gen3 11280000.pcie: failed to get clocks
+[    0.053166] Serial: 8250/16550 driver, 16 ports, IRQ sharing enabled
+[    0.054907] printk: console [ttyS0] disabled
+[    0.075085] 11002000.serial: ttyS0 at MMIO 0x11002000 (irq = 122, base_baud = 2500000) is a ST16650V2
+[    0.762512] printk: console [ttyS0] enabled
+[    0.787271] 11003000.serial: ttyS1 at MMIO 0x11003000 (irq = 123, base_baud = 1625000) is a ST16650V2
+[    0.817001] 11004000.serial: ttyS2 at MMIO 0x11004000 (irq = 124, base_baud = 1625000) is a ST16650V2
+[    0.826841] mtk_rng 1020f000.rng: registered RNG driver
+[    0.826900] hwrng: no data available
+[    0.832336] cacheinfo: Unable to detect cache hierarchy for CPU 0
+[    0.843814] loop: module loaded
+[    0.846965] Loading iSCSI transport class v2.0-870.
+[    0.853291] spi-nand spi0.0: Winbond SPI NAND was found.
+[    0.858600] spi-nand spi0.0: 128 MiB, block size: 128 KiB, page size: 2048, OOB size: 64
+[    0.866856] 4 fixed-partitions partitions found on MTD device spi0.0
+[    0.873203] Creating 4 MTD partitions on "spi0.0":
+[    0.877976] 0x000000580000-0x000008000000 : "ubi"
+[    1.011210] 0x000000380000-0x000000580000 : "fip"
+[    1.018202] 0x000000080000-0x000000380000 : "reserved"
+[    1.026611] 0x000000000000-0x000000080000 : "bl2"
+[    1.163544] mtk_soc_eth 15100000.ethernet eth0: mediatek frame engine at 0xffffffc009880000, irq 136
+[    1.173353] mtk_soc_eth 15100000.ethernet eth1: mediatek frame engine at 0xffffffc009880000, irq 136
+[    1.182896] i2c_dev: i2c /dev entries driver
+[    1.188666] mtk-wdt 1001c000.watchdog: Watchdog enabled (timeout=31 sec, nowayout=0)
+[    1.197188] NET: Registered PF_INET6 protocol family
+[    1.202826] Segment Routing with IPv6
+[    1.206499] In-situ OAM (IOAM) with IPv6
+[    1.210471] NET: Registered PF_PACKET protocol family
+[    1.215533] bridge: filtering via arp/ip/ip6tables is no longer available by default. Update your scripts to load br_netfilter if you need this.
+[    1.228642] 8021q: 802.1Q VLAN Support v1.8
+[    1.233803] pstore: Using crash dump compression: deflate
+[    1.244997] mtk-pcie-gen3 11280000.pcie: host bridge /soc/pcie@11280000 ranges:
+[    1.252348] mtk-pcie-gen3 11280000.pcie: Parsing ranges property...
+[    1.258601] mtk-pcie-gen3 11280000.pcie:      MEM 0x0020000000..0x002fffffff -> 0x0020000000
+[    1.328072] mtk-msdc 11230000.mmc: phase: [map:ffffffff] [maxlen:32] [final:10]
+[    1.337005] mmc0: new HS400 MMC card at address 0001
+[    1.342748] mmcblk0: mmc0:0001 008GB0 7.28 GiB
+[    1.349855] FIT: Selected configuration: "config-mt7986a-bananapi-bpi-r3" (OpenWrt bananapi_bpi-r3)
+[    1.358897] FIT:           kernel sub-image 0x00001000..0x00530553 "kernel-1" (ARM64 OpenWrt Linux-5.15.118)
+[    1.368795] FIT:          flat_dt sub-image 0x00531000..0x005389fc "fdt-1" (ARM64 OpenWrt bananapi_bpi-r3 device tree blob)
+[    1.379995] FIT:          flat_dt sub-image 0x00539000..0x005391dc "fdt-mt7986a-bananapi-bpi-r3-emmc" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-emmc)
+[    1.396315] FIT:          flat_dt sub-image 0x0053a000..0x0053a390 "fdt-mt7986a-bananapi-bpi-r3-nand" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-nand)
+[    1.412630] FIT:          flat_dt sub-image 0x0053b000..0x0053b38f "fdt-mt7986a-bananapi-bpi-r3-nor" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-nor)
+[    1.426559] mtk-pcie-gen3 11280000.pcie: set MEM trans window[0]: cpu_addr = 0x20000000, pci_addr = 0x20000000, size = 0x10000000
+[    1.428769] FIT:          flat_dt sub-image 0x0053c000..0x0053c146 "fdt-mt7986a-bananapi-bpi-r3-sd" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-sd)
+[    1.440512] mtk-pcie-gen3 11280000.pcie: PCI host bridge to bus 0000:00
+[    1.456340] FIT:       filesystem sub-image 0x0053d000..0x00a26fff "rootfs-1" (ARM64 OpenWrt bananapi_bpi-r3 rootfs)
+[    1.462929] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.473508] FIT: selecting configured loadable "rootfs-1" to be root filesystem
+[    1.478967] pci_bus 0000:00: root bus resource [mem 0x20000000-0x2fffffff]
+[    1.486261]  mmcblk0: p1 p2 p3 p4 p5 p65(rootfs-1) p66(rootfs_data) p6 p128
+[    1.493105] pci_bus 0000:00: scanning bus
+[    1.501297] mmcblk0boot0: mmc0:0001 008GB0 4.00 MiB
+[    1.504072] pci 0000:00:00.0: [14c3:1f32] type 01 class 0x060400
+[    1.509821] mmcblk0boot1: mmc0:0001 008GB0 4.00 MiB
+[    1.514986] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[    1.520131] mmcblk0rpmb: mmc0:0001 008GB0 4.00 MiB, chardev (250:0)
+[    1.526768] pci 0000:00:00.0: PME# supported from D0 D3hot D3cold
+[    1.539040] pci 0000:00:00.0: PME# disabled
+[    1.544018] pci_bus 0000:00: fixups for bus
+[    1.548188] pci 0000:00:00.0: scanning [bus 00-00] behind bridge, pass 0
+[    1.554875] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[    1.562867] pci 0000:00:00.0: scanning [bus 00-00] behind bridge, pass 1
+[    1.569605] pci_bus 0000:01: scanning bus
+[    1.573635] pci 0000:01:00.0: [1987:5013] type 00 class 0x010802
+[    1.579647] pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x00003fff 64bit]
+[    1.586604] pci 0000:01:00.0: 8.000 Gb/s available PCIe bandwidth, limited by 5.0 GT/s PCIe x2 link at 0000:00:00.0 (capable of 31.504 Gb/s with 8.0 GT/s PCIe x4 link)
+[    1.630950] pci_bus 0000:01: fixups for bus
+[    1.635119] pci_bus 0000:01: bus scan returning with max=01
+[    1.640679] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+[    1.647276] pci_bus 0000:00: bus scan returning with max=01
+[    1.652848] pci 0000:00:00.0: BAR 8: assigned [mem 0x20000000-0x200fffff]
+[    1.659616] pci 0000:00:00.0: BAR 0: assigned [mem 0x20100000-0x20107fff 64bit]
+[    1.666917] pci 0000:01:00.0: BAR 0: assigned [mem 0x20000000-0x20003fff 64bit]
+[    1.674221] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    1.679170] pci 0000:00:00.0:   bridge window [mem 0x20000000-0x200fffff]
+[    1.686048] pcieport 0000:00:00.0: assign IRQ: got 144
+[    1.691180] pcieport 0000:00:00.0: enabling device (0000 -> 0002)
+[    1.697265] pcieport 0000:00:00.0: enabling bus mastering
+[    1.703058] mtk-pcie-gen3 11280000.pcie: msi#0x0 address_hi 0x0 address_lo 0x11280c00 data 0
+[    1.711485] mtk-pcie-gen3 11280000.pcie: msi#0x1 address_hi 0x0 address_lo 0x11280c00 data 1
+[    1.719899] mtk-pcie-gen3 11280000.pcie: msi#0x2 address_hi 0x0 address_lo 0x11280c00 data 2
+[    1.728316] mtk-pcie-gen3 11280000.pcie: msi#0x3 address_hi 0x0 address_lo 0x11280c00 data 3
+[    1.736733] mtk-pcie-gen3 11280000.pcie: msi#0x4 address_hi 0x0 address_lo 0x11280c00 data 4
+[    1.745150] mtk-pcie-gen3 11280000.pcie: msi#0x5 address_hi 0x0 address_lo 0x11280c00 data 5
+[    1.753570] mtk-pcie-gen3 11280000.pcie: msi#0x6 address_hi 0x0 address_lo 0x11280c00 data 6
+[    1.761987] mtk-pcie-gen3 11280000.pcie: msi#0x7 address_hi 0x0 address_lo 0x11280c00 data 7
+[    1.770404] mtk-pcie-gen3 11280000.pcie: msi#0x8 address_hi 0x0 address_lo 0x11280c00 data 8
+[    1.778818] mtk-pcie-gen3 11280000.pcie: msi#0x9 address_hi 0x0 address_lo 0x11280c00 data 9
+[    1.787234] mtk-pcie-gen3 11280000.pcie: msi#0xa address_hi 0x0 address_lo 0x11280c00 data 10
+[    1.795738] mtk-pcie-gen3 11280000.pcie: msi#0xb address_hi 0x0 address_lo 0x11280c00 data 11
+[    1.804241] mtk-pcie-gen3 11280000.pcie: msi#0xc address_hi 0x0 address_lo 0x11280c00 data 12
+[    1.812744] mtk-pcie-gen3 11280000.pcie: msi#0xd address_hi 0x0 address_lo 0x11280c00 data 13
+[    1.821247] mtk-pcie-gen3 11280000.pcie: msi#0xe address_hi 0x0 address_lo 0x11280c00 data 14
+[    1.829747] mtk-pcie-gen3 11280000.pcie: msi#0xf address_hi 0x0 address_lo 0x11280c00 data 15
+[    1.838252] mtk-pcie-gen3 11280000.pcie: msi#0x10 address_hi 0x0 address_lo 0x11280c00 data 16
+[    1.846842] mtk-pcie-gen3 11280000.pcie: msi#0x11 address_hi 0x0 address_lo 0x11280c00 data 17
+[    1.855432] mtk-pcie-gen3 11280000.pcie: msi#0x12 address_hi 0x0 address_lo 0x11280c00 data 18
+[    1.864022] mtk-pcie-gen3 11280000.pcie: msi#0x13 address_hi 0x0 address_lo 0x11280c00 data 19
+[    1.872614] mtk-pcie-gen3 11280000.pcie: msi#0x14 address_hi 0x0 address_lo 0x11280c00 data 20
+[    1.881205] mtk-pcie-gen3 11280000.pcie: msi#0x15 address_hi 0x0 address_lo 0x11280c00 data 21
+[    1.889792] mtk-pcie-gen3 11280000.pcie: msi#0x16 address_hi 0x0 address_lo 0x11280c00 data 22
+[    1.898381] mtk-pcie-gen3 11280000.pcie: msi#0x17 address_hi 0x0 address_lo 0x11280c00 data 23
+[    1.906971] mtk-pcie-gen3 11280000.pcie: msi#0x18 address_hi 0x0 address_lo 0x11280c00 data 24
+[    1.915562] mtk-pcie-gen3 11280000.pcie: msi#0x19 address_hi 0x0 address_lo 0x11280c00 data 25
+[    1.924151] mtk-pcie-gen3 11280000.pcie: msi#0x1a address_hi 0x0 address_lo 0x11280c00 data 26
+[    1.932741] mtk-pcie-gen3 11280000.pcie: msi#0x1b address_hi 0x0 address_lo 0x11280c00 data 27
+[    1.941332] mtk-pcie-gen3 11280000.pcie: msi#0x1c address_hi 0x0 address_lo 0x11280c00 data 28
+[    1.949919] mtk-pcie-gen3 11280000.pcie: msi#0x1d address_hi 0x0 address_lo 0x11280c00 data 29
+[    1.958509] mtk-pcie-gen3 11280000.pcie: msi#0x1e address_hi 0x0 address_lo 0x11280c00 data 30
+[    1.967099] mtk-pcie-gen3 11280000.pcie: msi#0x1f address_hi 0x0 address_lo 0x11280c00 data 31
+[    1.976048] mtk-pcie-gen3 11280000.pcie: msi#0x0 address_hi 0x0 address_lo 0x11280c00 data 0
+[    1.984565] pcieport 0000:00:00.0: PME: Signaling with IRQ 145
+[    1.990574] pcieport 0000:00:00.0: AER: enabled with IRQ 145
+[    1.996283] pcieport 0000:00:00.0: saving config space at offset 0x0 (reading 0x1f3214c3)
+[    2.004456] pcieport 0000:00:00.0: saving config space at offset 0x4 (reading 0x100406)
+[    2.012440] pcieport 0000:00:00.0: saving config space at offset 0x8 (reading 0x6040001)
+[    2.020510] pcieport 0000:00:00.0: saving config space at offset 0xc (reading 0x10000)
+[    2.028403] pcieport 0000:00:00.0: saving config space at offset 0x10 (reading 0x20100004)
+[    2.036646] pcieport 0000:00:00.0: saving config space at offset 0x14 (reading 0x0)
+[    2.044285] pcieport 0000:00:00.0: saving config space at offset 0x18 (reading 0x10100)
+[    2.052269] pcieport 0000:00:00.0: saving config space at offset 0x1c (reading 0x1f1)
+[    2.060075] pcieport 0000:00:00.0: saving config space at offset 0x20 (reading 0x20002000)
+[    2.068318] pcieport 0000:00:00.0: saving config space at offset 0x24 (reading 0x1fff1)
+[    2.076301] pcieport 0000:00:00.0: saving config space at offset 0x28 (reading 0x0)
+[    2.083937] pcieport 0000:00:00.0: saving config space at offset 0x2c (reading 0x0)
+[    2.091573] pcieport 0000:00:00.0: saving config space at offset 0x30 (reading 0x0)
+[    2.099207] pcieport 0000:00:00.0: saving config space at offset 0x34 (reading 0x80)
+[    2.106930] pcieport 0000:00:00.0: saving config space at offset 0x38 (reading 0x0)
+[    2.114566] pcieport 0000:00:00.0: saving config space at offset 0x3c (reading 0x20190)
+[    2.144683] mt7530-mdio mdio-bus:1f: configuring for fixed/2500base-x link mode
+[    2.153739] mt7530-mdio mdio-bus:1f: Link is Up - 2.5Gbps/Full - flow control rx/tx
+[    2.162426] mt7530-mdio mdio-bus:1f wan (uninitialized): PHY [mt7530-0:00] driver [MediaTek MT7531 PHY] (irq=146)
+[    2.182640] mt7530-mdio mdio-bus:1f lan1 (uninitialized): PHY [mt7530-0:01] driver [MediaTek MT7531 PHY] (irq=147)
+[    2.202675] mt7530-mdio mdio-bus:1f lan2 (uninitialized): PHY [mt7530-0:02] driver [MediaTek MT7531 PHY] (irq=148)
+[    2.222720] mt7530-mdio mdio-bus:1f lan3 (uninitialized): PHY [mt7530-0:03] driver [MediaTek MT7531 PHY] (irq=149)
+[    2.242811] mt7530-mdio mdio-bus:1f lan4 (uninitialized): PHY [mt7530-0:04] driver [MediaTek MT7531 PHY] (irq=150)
+[    2.253945] DSA: tree 0 setup
+[    2.259085] UBI: auto-attach mtd0
+[    2.262417] ubi0: default fastmap pool size: 45
+[    2.266930] ubi0: default fastmap WL pool size: 22
+[    2.271707] ubi0: attaching mtd0
+[    5.885104] ubi0: scanning is finished
+[    5.930269] ubi0: attached mtd0 (name "ubi", size 122 MiB)
+[    5.935760] ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    5.942618] ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+[    5.949385] ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+[    5.956327] ubi0: good PEBs: 980, bad PEBs: 0, corrupted PEBs: 0
+[    5.962315] ubi0: user volume: 6, internal volumes: 1, max. volumes count: 128
+[    5.969514] ubi0: max/mean erase counter: 2/1, WL threshold: 4096, image sequence number: 0
+[    5.977841] ubi0: available PEBs: 0, total reserved PEBs: 980, PEBs reserved for bad PEB handling: 20
+[    5.987042] ubi0: background thread "ubi_bgt0d" started, PID 576
+[    5.999083] FIT: Selected configuration: "config-mt7986a-bananapi-bpi-r3" (OpenWrt bananapi_bpi-r3)
+[    6.008128] FIT:           kernel sub-image 0x00001000..0x00531013 "kernel-1" (ARM64 OpenWrt Linux-5.15.114)
+[    6.018027] FIT:          flat_dt sub-image 0x00532000..0x005399fc "fdt-1" (ARM64 OpenWrt bananapi_bpi-r3 device tree blob)
+[    6.029228] FIT:          flat_dt sub-image 0x0053a000..0x0053a1dc "fdt-mt7986a-bananapi-bpi-r3-emmc" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-emmc)
+[    6.045545] FIT:          flat_dt sub-image 0x0053b000..0x0053b390 "fdt-mt7986a-bananapi-bpi-r3-nand" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-nand)
+[    6.061858] FIT:          flat_dt sub-image 0x0053c000..0x0053c38f "fdt-mt7986a-bananapi-bpi-r3-nor" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-nor)
+[    6.077998] FIT:          flat_dt sub-image 0x0053d000..0x0053d146 "fdt-mt7986a-bananapi-bpi-r3-sd" (ARM64 OpenWrt bananapi_bpi-r3 device tree overlay mt7986a-bananapi-bpi-r3-sd)
+[    6.093962] FIT:       filesystem sub-image 0x0053e000..0x00a26fff "rootfs-1" (ARM64 OpenWrt bananapi_bpi-r3 rootfs)
+[    6.104548] FIT: selecting configured loadable "rootfs-1" to be root filesystem
+[    6.111836]  ubiblock0_2: p1(rootfs-1)
+[    6.111954] block ubiblock0_2: created from ubi0:2(fit)
+[    6.124126] VFS: Mounted root (squashfs filesystem) readonly on device 259:0.
+[    6.131418] Freeing unused kernel memory: 448K
+[    6.200370] Run /sbin/init as init process
+[    6.204451]   with arguments:
+[    6.207401]     /sbin/init
+[    6.210093]   with environment:
+[    6.213223]     HOME=/
+[    6.215568]     TERM=linux
+[    6.304263] init: Console is alive
+[    6.307761] init: - watchdog -
+[    6.523735] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[    6.542033] usbcore: registered new interface driver usbfs
+[    6.547539] usbcore: registered new interface driver hub
+[    6.552884] usbcore: registered new device driver usb
+[    6.558715] mt7986a-pinctrl 1001f000.pinctrl: pin GPIO_4 already requested by 11280000.pcie; cannot claim for pinctrl_moore:420
+[    6.570193] mt7986a-pinctrl 1001f000.pinctrl: pin-9 (pinctrl_moore:420) status -22
+[    6.577759] gpio-keys: probe of gpio-keys failed with error -22
+[    6.586020] xhci-mtk 11200000.usb: supply vbus not found, using dummy regulator
+[    6.593434] xhci-mtk 11200000.usb: supply vusb33 not found, using dummy regulator
+[    6.601554] xhci-mtk 11200000.usb: xHCI Host Controller
+[    6.606775] xhci-mtk 11200000.usb: new USB bus registered, assigned bus number 1
+[    6.617230] xhci-mtk 11200000.usb: hcc params 0x01403f99 hci version 0x110 quirks 0x0000000000210010
+[    6.626390] xhci-mtk 11200000.usb: irq 128, io mem 0x11200000
+[    6.632216] xhci-mtk 11200000.usb: xHCI Host Controller
+[    6.637425] xhci-mtk 11200000.usb: new USB bus registered, assigned bus number 2
+[    6.644807] xhci-mtk 11200000.usb: Host supports USB 3.2 Enhanced SuperSpeed
+[    6.652214] hub 1-0:1.0: USB hub found
+[    6.655971] hub 1-0:1.0: 2 ports detected
+[    6.660216] usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
+[    6.668540] hub 2-0:1.0: USB hub found
+[    6.672311] hub 2-0:1.0: 1 port detected
+[    6.678719] kmodloader: done loading kernel modules from /etc/modules-boot.d/*
+[    6.693676] init: - preinit -
+[    6.853646] mtk_soc_eth 15100000.ethernet eth0: configuring for fixed/2500base-x link mode
+[    6.862109] mtk_soc_eth 15100000.ethernet eth0: Link is Up - 2.5Gbps/Full - flow control rx/tx
+[    6.870488] mt7530-mdio mdio-bus:1f lan1: configuring for phy/gmii link mode
+[    6.882491] mt7530-mdio mdio-bus:1f lan1: Link is Up - 1Gbps/Full - flow control off
+[    6.890264] IPv6: ADDRCONF(NETDEV_CHANGE): lan1: link becomes ready
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+[    7.130334] usb 1-1: new high-speed USB device number 2 using xhci-mtk
+[    7.311013] hub 1-1:1.0: USB hub found
+[    7.311975] random: procd: uninitialized urandom read (4 bytes read)
+[    7.314835] hub 1-1:1.0: 4 ports detected
+[    8.920926] mount_root: overlay filesystem in /dev/mmcblk0p66 has not been formatted yet
+[   11.350571] random: crng init done
+[   11.784492] F2FS-fs (mmcblk0p66): Found nat_bits in checkpoint
+[   11.796855] F2FS-fs (mmcblk0p66): Mounted with checkpoint version = 3999c4e3
+[   11.804796] mount_root: overlay filesystem has not been fully initialized yet
+[   11.812149] mount_root: switching to f2fs overlay
+[   11.818890] overlayfs: null uuid detected in lower fs '/', falling back to xino=off,index=off,nfs_export=off.
+- config restore -
+[   11.905136] urandom-seed: Seed file not found (/etc/urandom.seed)
+[   11.931428] mt7530-mdio mdio-bus:1f lan1: Link is Down
+[   11.939433] procd: - early -
+[   11.942389] procd: - watchdog -
+[   12.461556] procd: - watchdog -
+[   12.464850] procd: - ubus -
+[   12.518179] procd: - init -
+Please press Enter to activate this console.
+[   12.629995] urngd: v1.0.2 started.
+[   12.652816] kmodloader: loading kernel modules from /etc/modules.d/*
+[   12.664040] i2c-gpio i2c-gpio-0: using lines 427 (SDA) and 428 (SCL)
+[   12.670706] i2c-gpio i2c-gpio-1: using lines 429 (SDA) and 430 (SCL)
+[   12.679671] crypto-safexcel 10320000.crypto: EIP97:230(0,1,4,4)-HIA:270(0,5,5),PE:150/433(alg:7fcdfc00)/0/0/0
+[   12.693735] Loading modules backported from Linux version v6.1.24-0-g0102425ac76b
+[   12.701251] Backport generated by backports.git v5.15.92-1-44-gd6ea70fafd36
+[   12.712061] sfp sfp-1: Host maximum power 1.0W
+[   12.717277] sfp sfp-2: Host maximum power 1.0W
+[   13.049972] sfp sfp-1: module                                   rev 1.0  sn 2303280034       dc 230406
+[   13.099156] hwmon hwmon2: temp1_input not attached to any thermal zone
+[   13.196968] mt798x-wmac 18000000.wifi: HW/SW Version: 0x8a108a10, Build Time: 20221012174743a
+[   13.196968]
+[   13.304187] mt798x-wmac 18000000.wifi: WM Firmware Version: ____000000, Build Time: 20221012174805
+[   13.373256] mt798x-wmac 18000000.wifi: WA Firmware Version: DEV_000000, Build Time: 20221012174937
+[   16.134462] PPP generic driver version 2.4.2
+[   16.139395] NET: Registered PF_PPPOX protocol family
+[   16.146890] kmodloader: done loading kernel modules from /etc/modules.d/*
+[   17.625286] mtk_soc_eth 15100000.ethernet eth0: Link is Down
+[   17.636747] mtk_soc_eth 15100000.ethernet eth0: configuring for fixed/2500base-x link mode
+[   17.645178] mtk_soc_eth 15100000.ethernet eth0: Link is Up - 2.5Gbps/Full - flow control rx/tx
+[   17.646204] mt7530-mdio mdio-bus:1f lan1: configuring for phy/gmii link mode
+[   17.664073] br-lan: port 1(lan1) entered blocking state
+[   17.669287] br-lan: port 1(lan1) entered disabled state
+[   17.675907] device lan1 entered promiscuous mode
+[   17.680517] device eth0 entered promiscuous mode
+[   17.687062] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+[   17.698872] mt7530-mdio mdio-bus:1f lan2: configuring for phy/gmii link mode
+[   17.708751] br-lan: port 2(lan2) entered blocking state
+[   17.714027] br-lan: port 2(lan2) entered disabled state
+[   17.721014] device lan2 entered promiscuous mode
+[   17.729634] mt7530-mdio mdio-bus:1f lan3: configuring for phy/gmii link mode
+[   17.739512] br-lan: port 3(lan3) entered blocking state
+[   17.744747] br-lan: port 3(lan3) entered disabled state
+[   17.751795] device lan3 entered promiscuous mode
+[   17.760318] mt7530-mdio mdio-bus:1f lan4: configuring for phy/gmii link mode
+[   17.770248] br-lan: port 4(lan4) entered blocking state
+[   17.775528] br-lan: port 4(lan4) entered disabled state
+[   17.782778] device lan4 entered promiscuous mode
+[   17.791333] mt7530-mdio mdio-bus:1f sfp2: configuring for inband/2500base-x link mode
+[   17.800936] br-lan: port 5(sfp2) entered blocking state
+[   17.806152] br-lan: port 5(sfp2) entered disabled state
+[   17.813539] device sfp2 entered promiscuous mode
+[   17.822012] mtk_soc_eth 15100000.ethernet eth1: configuring for inband/2500base-x link mode
+[   17.832131] br-wan: port 1(eth1) entered blocking state
+[   17.837362] br-wan: port 1(eth1) entered disabled state
+[   17.842779] device eth1 entered promiscuous mode
+[   17.848896] br-wan: port 1(eth1) entered blocking state
+[   17.854168] br-wan: port 1(eth1) entered forwarding state
+[   17.861225] mt7530-mdio mdio-bus:1f wan: configuring for phy/gmii link mode
+[   17.870956] br-wan: port 2(wan) entered blocking state
+[   17.876093] br-wan: port 2(wan) entered disabled state
+[   17.882681] device wan entered promiscuous mode
+[   18.631183] br-wan: port 1(eth1) entered disabled state
+[   20.200484] mt7530-mdio mdio-bus:1f lan1: Link is Up - 1Gbps/Full - flow control off
+[   20.208248] br-lan: port 1(lan1) entered blocking state
+[   20.213471] br-lan: port 1(lan1) entered forwarding state
+[   20.219319] IPv6: ADDRCONF(NETDEV_CHANGE): br-lan: link becomes ready
+[   24.070354] mtk_soc_eth 15100000.ethernet eth1: Link is Up - 2.5Gbps/Full - flow control off
+[   24.078816] br-wan: port 1(eth1) entered blocking state
+[   24.084038] br-wan: port 1(eth1) entered forwarding state
+
+
+
+BusyBox v1.36.1 (2023-06-30 17:24:52 UTC) built-in shell (ash)
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ OpenWrt SNAPSHOT, r23459-a0ae7a50e0
+ -----------------------------------------------------
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1504 qdisc mq state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::9401:dfff:fee5:3374/64 scope link
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master br-wan state UP qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+4: wan@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-wan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+5: lan1@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-lan state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+6: lan2@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+7: lan3@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+8: lan4@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+9: sfp2@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+10: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000
+    link/ether 00:0c:43:26:60:00 brd ff:ff:ff:ff:ff:ff
+11: wlan1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000
+    link/ether 82:0c:43:26:60:00 brd ff:ff:ff:ff:ff:ff
+12: br-lan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan
+       valid_lft forever preferred_lft forever
+    inet6 fda2:420b:7087::1/60 scope global noprefixroute
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9401:dfff:fee5:3374/64 scope link
+       valid_lft forever preferred_lft forever
+13: br-wan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.72.13/24 brd 192.168.72.255 scope global br-wan
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9401:dfff:fee5:3375/64 scope link
+       valid_lft forever preferred_lft forever
+root@OpenWrt:/# [  209.811752] br-lan: port 1(lan1) entered disabled state
+[  209.817248] mt7530-mdio mdio-bus:1f lan1: Link is Down
+[  217.426298] mt7530-mdio mdio-bus:1f lan1: Link is Up - 1Gbps/Full - flow control off
+[  217.434080] br-lan: port 1(lan1) entered blocking state
+[  217.439289] br-lan: port 1(lan1) entered forwarding state
+
+root@OpenWrt:/#
+root@OpenWrt:/#
+root@OpenWrt:/# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1504 qdisc mq state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::9401:dfff:fee5:3374/64 scope link
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master br-wan state UP qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+4: wan@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-wan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+5: lan1@eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-lan state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+6: lan2@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+7: lan3@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+8: lan4@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+9: sfp2@eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue master br-lan state LOWERLAYERDOWN qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+10: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000
+    link/ether 00:0c:43:26:60:00 brd ff:ff:ff:ff:ff:ff
+11: wlan1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000
+    link/ether 82:0c:43:26:60:00 brd ff:ff:ff:ff:ff:ff
+12: br-lan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP qlen 1000
+    link/ether 96:01:df:e5:33:74 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan
+       valid_lft forever preferred_lft forever
+    inet6 fda2:420b:7087::1/60 scope global noprefixroute
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9401:dfff:fee5:3374/64 scope link
+       valid_lft forever preferred_lft forever
+13: br-wan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP qlen 1000
+    link/ether 96:01:df:e5:33:75 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.72.13/24 brd 192.168.72.255 scope global br-wan
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9401:dfff:fee5:3375/64 scope link
+       valid_lft forever preferred_lft forever
+root@OpenWrt:/#
