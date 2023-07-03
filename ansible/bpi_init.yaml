@@ -77,6 +77,8 @@
           - pdns-tools
           - pdns-recursor
           - pdns-backend-sqlite3
+          - libedit
+          - sqlite3-cli
         state: present
 
     - name: Install Prometheus exporter
@@ -91,5 +93,44 @@
           - prometheus-node-exporter-lua-wifi_stations
         state: present
 
+    - name: Checking if the PowerDNS database location already exists
+      ansible.builtin.stat:
+        path: /var/lib/powerdns
+      register: powerdns_dir
 
+    - name: Creating path for PowerDNS SQLite database and schema
+      ansible.builtin.command: mkdir -p /var/lib/powerdns
+      when: powerdns_dir.stat.exists is false
 
+    - name: Checking if the PowerDNS schema already exists
+      ansible.builtin.stat:
+        path: /var/lib/powerdns/schema.sqlite3.sql
+      register: powerdns_schema
+
+    - name: Downloading schema for the PowerDNS SQLite database from GitHub
+      ansible.builtin.command: wget -P /var/lib/powerdns https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+      when: powerdns_schema.stat.exists is false
+
+    - name: Checking if the PowerDNS schema already exists
+      ansible.builtin.stat:
+        path: /var/lib/powerdns/pdns.sqlite3
+      register: powerdns_db
+
+    - name: Creating default PowerDNS database from schema
+      ansible.builtin.shell: "sqlite3 /var/lib/powerdns/pdns.sqlite3 < /var/lib/powerdns/schema.sqlite3.sql"
+      when: powerdns_db.stat.exists is false
+
+    - name: Changing owner of the PowerDNS database to pdns
+      ansible.builtin.command: chown -R pdns:pdns /var/lib/powerdns
+
+    - name: Adding SQLite as backend in PowerDNS conf file
+      ansible.builtin.shell: sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
+
+    - name: Adding path to the PowerDNS database
+      ansible.builtin.command: sed -i '/launch=gsqlite3/a gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' /etc/powerdns/pdns.conf
+
+    - name: Enabling API for PowerDNS
+      ansible.builtin.command: sed -i 's/api=no/api=yes/' /etc/powerdns/pdns.conf
+
+    - name: Generating and inserting API key for PowerDNS
+      ansible.builtin.shell: API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""` ; sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf

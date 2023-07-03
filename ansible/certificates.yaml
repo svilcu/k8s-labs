@@ -7,22 +7,22 @@
   tasks:
     - name: Check if key exists.
       ansible.builtin.stat:
-        path: ../certs/CA.key
+        path: ../files/cert/CA.key
       register: ca_key
 
     - name: Generate CA key.
       community.crypto.openssl_privatekey:
-        path: ../certs/CA.key
+        path: ../files/certs/CA.key
       when: ca_key.stat.exists is false
 
     - name: Check if the self-signed certificate exists
       ansible.builtin.stat:
-        path: ../certs/CA.pem
+        path: ../files/certs/CA.pem
       register: ca_pem
 
     - name: Create certificate signing request (CSR) for self-signed certificate
       community.crypto.openssl_csr_pipe:
-        privatekey_path: ../certs/CA.key
+        privatekey_path: ../files/certs/CA.key
         common_name: lan
         organization_name: Home of the S.
       register: csr
@@ -30,8 +30,8 @@
 
     - name: Create self-signed certificate from CSR
       community.crypto.x509_certificate:
-        path: ../certs/CA.pem
+        path: ../files/certs/CA.pem
         csr_content: "{{ csr.csr }}"
-        privatekey_path: ../certs/CA.key
+        privatekey_path: ../files/certs/CA.key
         provider: selfsigned
       when: ca_pem.stat.exists is false
