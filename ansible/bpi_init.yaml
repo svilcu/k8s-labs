@@ -28,7 +28,8 @@
         state: absent
 
     - name: Remove settings related to dnsmasq
-      ansible.builtin.command: uci -q delete dhcp.@dnsmasq[0]
+      ansible.builtin.command: 'uci -q delete dhcp.@dnsmasq[0]'
+      ignore_errors: true
     
     - name:  Use odhcpd for both DHCP and DHCPv6
       ansible.builtin.command: opkg install odhcpd --force-overwrite
