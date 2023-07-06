@@ -1,0 +1,35 @@
+---
+- name: Installing certificates on OpenWRT
+  hosts: bpi_default
+  gather_facts: true
+  become: false
+  vars:
+    ansible_user: root
+
+  tasks:
+    - name: Creating directory for the CA
+      ansible.builtin.command: mkdir -p /usr/local/share/ca-certificates
+
+    # if the certificates are not created we will let this fail until we create the roles and dependencies
+    - name: Copying own root CA to OpenWRT
+      ansible.builtin.copy:
+        src: ../files/certs/CA.pem
+        dest: /usr/local/share/ca-certificates/home.tld.cert
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
+    - name: Linking cert to the default location
+      ansible.builtin.file:
+        src: /usr/local/share/ca-certificates/home.tld.cert 
+        dest: /etc/ssl/certs/home.tld.cert
+        owner: root
+        group: root
+        state: link
+
+    - name: Adding own root CA to the system's trust store
+      ansible.builtin.shell: |
+        HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/home.tld.cert).0"
+        ln -s "/etc/ssl/certs/home.tld.cert" "/etc/ssl/certs/$HASH"
+        exit 0
