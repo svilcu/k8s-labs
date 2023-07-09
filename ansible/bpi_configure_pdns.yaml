@@ -22,7 +22,10 @@
       register: powerdns_schema
 
     - name: Downloading schema for the PowerDNS SQLite database from GitHub
-      ansible.builtin.command: wget -P /var/lib/powerdns https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+      ansible.builtin.shell: |
+        wget -P /var/lib/powerdns \
+        https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+        exit 0
       when: powerdns_schema.stat.exists is false
 
     - name: Checking if the PowerDNS schema already exists
@@ -41,7 +44,11 @@
       ansible.builtin.shell: |
         sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
         sed -i '/launch=gsqlite3/a gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' /etc/powerdns/pdns.conf
-        sed -i 's/api=no/api=yes/' /etc/powerdns/pdns.conf
+        sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
         API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
         sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
+        sed -i "s/# webserver=+/webserver=yes/" /etc/powerdns/pdns.conf
+        sed -i 's/# webserver-address=+/webserver-address=127.0.0.1/' /etc/powerdns/pdns.conf
+        sed -i 's/# webserver-allow-from=+/webserver-allow-from=127.0.0.1/' /etc/powerdns/pdns.conf
+        /etc/init.d/pdns restart
         exit 0

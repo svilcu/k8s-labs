@@ -1,0 +1,7 @@
+---
+- bpi_password: "MaybeUw1llChangeThis!"
+
+# set this to false if you do not want the NVMe formated everytime.
+- bpi_always_format_nvme: "true"
+
+- bpi_nvme_mount_dir: "/srv"

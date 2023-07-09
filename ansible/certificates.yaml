@@ -67,4 +67,3 @@
         ownca_path: ../files/certs/CA.pem
         ownca_privatekey_path: ../files/certs/CA.key
       when: bpi_home_pem.stat.exists is false
-

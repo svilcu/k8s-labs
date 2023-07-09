@@ -20,15 +20,7 @@
           - openssh-sftp-server
         state: present
 
-    - name: Configure automount for NVMe disk
-      ansible.builtin.shell: |
-        block detect | uci import fstab
-        uci set fstab.@mount[-1].enabled='1'
-        uci set fstab.@global[0].check_fs='1'
-        uci commit fstab
-        service fstab boot
-        exit 0
-
+   
     
     - name: Remove dnsmasq
       community.general.opkg:
