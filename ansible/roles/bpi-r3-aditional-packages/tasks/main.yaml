@@ -1,0 +1,82 @@
+
+    - name: Remove dnsmasq
+      community.general.opkg:
+        name:
+          - dnsmasq
+          - odhcpd-ipv6only
+        state: absent
+
+    - name: Remove settings related to dnsmasq
+      ansible.builtin.command: 'uci -q delete dhcp.@dnsmasq[0]'
+      ignore_errors: true
+
+    - name: Use odhcpd for both DHCP and DHCPv6
+      ansible.builtin.command: opkg install odhcpd --force-overwrite
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci set dhcp.lan.dhcpv4="server"
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci set dhcp.odhcpd.maindhcp="1"
+
+    - name: Configure DHCPDv4
+      ansible.builtin.command: uci commit dhcp
+
+    - name: Restarting odhcpd
+      ansible.builtin.command: /etc/init.d/odhcpd restart
+
+    - name: Install Prometheus exporter
+      community.general.opkg:
+        name:
+          - prometheus-node-exporter-lua
+          - prometheus-node-exporter-lua-nat_traffic
+          - prometheus-node-exporter-lua-netstat
+          - prometheus-node-exporter-lua-openwrt
+          - libiwinfo-lua
+          - prometheus-node-exporter-lua-wifi
+          - prometheus-node-exporter-lua-wifi_stations
+        state: present
+
+    - name: Removing luci and dependencies
+      community.general.opkg:
+        name:
+          - luci
+          - luci-ssl
+          - luci-light
+        state: absent
+
+    - name: Installing NGinx with Luci
+      community.general.opkg:
+        name:
+          - nginx-ssl
+          - luci-ssl-nginx
+          - luci-app-statistics
+          - luci-app-upnp
+          - luci-lib-nixio
+          - luci-lib-ip
+          - luci-lib-jsonc
+          - liblucihttp-lua
+          - luci-lib-base
+          - ucode-mod-lua
+          - luci-lua-runtime
+          - luci-compat
+          - luci-app-openvpn
+        state: present
+
+    - name: Install OpenVPN
+      community.general.opkg:
+        name:
+          - openvpn-openssl
+          - openvpn-easy-rsa
+        state: present
+
+    - name: Install PowerDNS
+      community.general.opkg:
+        name:
+          - pdns
+          - pdns-tools
+          - pdns-recursor
+          - pdns-backend-sqlite3
+          - libedit
+          - sqlite3-cli
+        state: present

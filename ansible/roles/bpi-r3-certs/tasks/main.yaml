@@ -33,5 +33,3 @@
         HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/home.tld.cert).0"
         ln -s "/etc/ssl/certs/home.tld.cert" "/etc/ssl/certs/$HASH"
         exit 0
-
-    - name:

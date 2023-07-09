@@ -10,7 +10,7 @@
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
-- name: Installing OS requirements
+- name: Installing packages and configuring PowerDNS
   hosts: bpi_default
   gather_facts: true
   become: false
@@ -18,5 +18,11 @@
     - host_vars/external_vars.yml
   roles:
     - roles:
+      - bpi-r3-basic-packages
+      - bpi-r3-nvme
+      - bpi-r3-aditional-packages
+      - bpi-r3-certs
+      - bpi-r3-pdns
+
       
     
