@@ -1,8 +1,11 @@
 # Configuration of the Banana PI BPI-R3 router
 
-## Downloading and burning the image on the SD card
+## Install OpenWRT on Banana PI R3 router.
 
-[SD card image download link](https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r3-sdcard.img.gz)
+Use this [Forum Link]() for:
+
+
+[SD card image download link](https://downloads.openwrt.org/releases/23.05.0-rc2/targets/mediatek/filogic/openwrt-23.05.0-rc2-mediatek-filogic-bananapi_bpi-r3-sdcard.img.gz)
 
 ```
 # unzip the image
@@ -14,7 +17,7 @@ dd if=openwrt-mediatek-filogic-bananapi_bpi-r3-sdcard.img of=/dev/sdd bs=1M
 
 ## Install the image on the internal memory devices
 
-In order to complete this process you need the serial console from the BPI-R3 connected to the computer via the serial-to-USB adapter ordered with the box or with one like [this](https://www.amazon.de/gp/product/B01N9RZK6I/ref=ppx_yo_dt_b_asin_title_o06_s00?ie=UTF8&th=1).
+In order to complete this process you need the serial console from the BPI-R3 connected to the computer via the serial-to-USB adapter, I am using [this](https://www.amazon.de/gp/product/B01N9RZK6I/ref=ppx_yo_dt_b_asin_title_o06_s00?ie=UTF8&th=1).
 Connect the terminal emulator (Minicom or Putty) to the COM port 115200 8N1 no flow control.
 
 |Jumper Setting| A | B | C | D |
@@ -36,9 +39,8 @@ Reboot
 
 ## Install and configure software
 
-- bootstrap python in order to use Ansible
+- bootstrap python on OpenWRT, required by our Ansible roles.
 - install luci with the default uhttpd server
-- install sftp-server
 - install and configure powerDNS as a replacer for 
 
 opkg update
@@ -61,7 +63,7 @@ https://openwrt.org/docs/guide-user/base-system/dhcp_configuration
 ## Upgrade to the latest snapshot
 ```bash
     cd /tmp
-    wget https://downloads.openwrt.org/snapshots/targets/mediatek/filogic/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
+    wget https://downloads.openwrt.org/releases/23.05.0-rc2/targets/mediatek/filogic/openwrt-23.05.0-rc2-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
     sysupgrade -v /tmp/openwrt-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb
 ```
 ...

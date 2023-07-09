@@ -3,8 +3,20 @@
   hosts: bpi_default
   gather_facts: false
   become: false
+  vars_files:
+    - host_vars/external_vars.yml
   vars:
-    ansible_user: root
     save_space_with_python3_light: false
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
+
+- name: Installing OS requirements
+  hosts: bpi_default
+  gather_facts: true
+  become: false
+  vars_files:
+    - host_vars/external_vars.yml
+  roles:
+    - roles:
+      
+    

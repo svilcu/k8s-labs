@@ -1,4 +1,6 @@
 ---
+- ansible_user: root
+
 - bpi_password: "MaybeUw1llChangeThis!"
 
 # set this to false if you do not want the NVMe formated everytime.
