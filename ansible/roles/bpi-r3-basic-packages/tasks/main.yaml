@@ -1,21 +1,12 @@
 ---
-- name: Install required packages on newly installed/updated OpenWRT
-  hosts: bpi_default
-  gather_facts: true
-  become: false
-  vars:
-    ansible_user: root
-
-  tasks:
-    - name: Install kmod-nvme mmc-utils kmod-mtd-rw lsblk parted uvol autopart kmod-fs-ext4 e2fsprogs
-      community.general.opkg:
-        name:
-          - kmod-nvme
-          - mmc-utils
-          - kmod-mtd-rw
-          - lsblk
-          - parted
-          - uvol
-          - autopart
-          - openssh-sftp-server
-        state: present
+- name: Install filesystem manipulation packages
+  community.general.opkg:
+    name:
+      - kmod-nvme
+      - mmc-utils
+      - kmod-mtd-rw
+      - lsblk
+      - parted
+      - uvol
+      - autopart
+    state: present

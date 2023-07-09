@@ -1,54 +1,46 @@
 ---
+- name: Checking if the PowerDNS database location already exists
+  ansible.builtin.stat:
+    path: /var/lib/powerdns
+  register: powerdns_dir
+
+- name: Creating path for PowerDNS SQLite database and schema
+  ansible.builtin.command: mkdir -p /var/lib/powerdns
+  when: powerdns_dir.stat.exists is false
+
+- name: Checking if the PowerDNS schema already exists
+  ansible.builtin.stat:
+    path: /var/lib/powerdns/schema.sqlite3.sql
+  register: powerdns_schema
+
+- name: Downloading schema for the PowerDNS SQLite database from GitHub
+  ansible.builtin.shell: |
+    wget -P /var/lib/powerdns \
+    https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+    exit 0
+  when: powerdns_schema.stat.exists is false
+
+- name: Checking if the PowerDNS schema already exists
+  ansible.builtin.stat:
+    path: /var/lib/powerdns/pdns.sqlite3
+  register: powerdns_db
+
+- name: Creating default PowerDNS database from schema
+  ansible.builtin.shell: |
+    sqlite3 /var/lib/powerdns/pdns.sqlite3 < /var/lib/powerdns/schema.sqlite3.sql
+    chown -R pdns:pdns /var/lib/powerdns
+    exit 0
+  when: powerdns_db.stat.exists is false
+
 - name: Configuring PowerDNS
-  hosts: bpi_default
-  gather_facts: true
-  become: false
-  vars:
-    ansible_user: root
-
-  tasks:
-    - name: Checking if the PowerDNS database location already exists
-      ansible.builtin.stat:
-        path: /var/lib/powerdns
-      register: powerdns_dir
-
-    - name: Creating path for PowerDNS SQLite database and schema
-      ansible.builtin.command: mkdir -p /var/lib/powerdns
-      when: powerdns_dir.stat.exists is false
-
-    - name: Checking if the PowerDNS schema already exists
-      ansible.builtin.stat:
-        path: /var/lib/powerdns/schema.sqlite3.sql
-      register: powerdns_schema
-
-    - name: Downloading schema for the PowerDNS SQLite database from GitHub
-      ansible.builtin.shell: |
-        wget -P /var/lib/powerdns \
-        https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
-        exit 0
-      when: powerdns_schema.stat.exists is false
-
-    - name: Checking if the PowerDNS schema already exists
-      ansible.builtin.stat:
-        path: /var/lib/powerdns/pdns.sqlite3
-      register: powerdns_db
-
-    - name: Creating default PowerDNS database from schema
-      ansible.builtin.shell: |
-        sqlite3 /var/lib/powerdns/pdns.sqlite3 < /var/lib/powerdns/schema.sqlite3.sql
-        chown -R pdns:pdns /var/lib/powerdns
-        exit 0
-      when: powerdns_db.stat.exists is false
-
-    - name: Configuring PowerDNS
-      ansible.builtin.shell: |
-        sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
-        sed -i '/launch=gsqlite3/a gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' /etc/powerdns/pdns.conf
-        sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
-        API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
-        sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
-        sed -i "s/# webserver=+/webserver=yes/" /etc/powerdns/pdns.conf
-        sed -i 's/# webserver-address=+/webserver-address=127.0.0.1/' /etc/powerdns/pdns.conf
-        sed -i 's/# webserver-allow-from=+/webserver-allow-from=127.0.0.1/' /etc/powerdns/pdns.conf
-        /etc/init.d/pdns restart
-        exit 0
+  ansible.builtin.shell: |
+    sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
+    sed -i '/launch=gsqlite3/a gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' /etc/powerdns/pdns.conf
+    sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
+    API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
+    sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
+    sed -i "s/# webserver=+/webserver=yes/" /etc/powerdns/pdns.conf
+    sed -i 's/# webserver-address=+/webserver-address=127.0.0.1/' /etc/powerdns/pdns.conf
+    sed -i 's/# webserver-allow-from=+/webserver-allow-from=127.0.0.1/' /etc/powerdns/pdns.conf
+    /etc/init.d/pdns restart
+    exit 0

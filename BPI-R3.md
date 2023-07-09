@@ -75,3 +75,31 @@ base-files busybox ca-bundle dnsmasq dropbear e2fsprogs f2fsck firewall4 fstools
 * [How to burn image](https://wiki.banana-pi.org/Getting_Started_with_BPI-R3#How_to_burn_image_to_onboard_eMMC)
 * [Bootstrap Python on OpenWRT](https://github.com/johanneskastl/ansible-role-bootstrap_python_on_OpenWRT.git)
 https://github.com/imp1sh/ansible_openwrt
+server {
+
+    listen 443 ssl; #ipv4
+    listen [::]:443 ssl; #ipv6
+
+    server_name ns01.dnssec-script.com;
+
+    ssl_certificate           /etc/nginx/cert.crt;
+    ssl_certificate_key       /etc/nginx/cert.key;
+
+    access_log            /var/log/nginx/powerdns.access.log;
+
+    location / {
+
+      proxy_set_header        Host $host;
+      proxy_set_header        X-Real-IP $remote_addr;
+      proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header        X-Forwarded-Proto $scheme;
+      proxy_pass          http://127.0.0.1:8081;
+      proxy_read_timeout  90;
+      proxy_buffering off;
+    }
+  }
+
+
+  # yamllint disable rule:line-length
+
+  If there are not exactly 1 partitions on the NVMe it will be partitioned to a single partition.

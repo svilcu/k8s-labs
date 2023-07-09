@@ -17,12 +17,9 @@
   vars_files:
     - host_vars/external_vars.yml
   roles:
-    - roles:
-      - bpi-r3-basic-packages
-      - bpi-r3-nvme
-      - bpi-r3-aditional-packages
-      - bpi-r3-certs
-      - bpi-r3-pdns
-
-      
-    
+    - bpi-r3-update-os
+    - bpi-r3-basic-packages
+    - bpi-r3-nvme
+    - bpi-r3-aditional-packages
+    - bpi-r3-certs
+    - bpi-r3-pdns

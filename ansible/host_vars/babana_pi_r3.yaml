@@ -7,3 +7,7 @@
 - bpi_always_format_nvme: "true"
 
 - bpi_nvme_mount_dir: "/srv"
+
+- bpi_os_upgrade: "true"
+- bpi_os_version: "23.05.0-rc2"
+- bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"

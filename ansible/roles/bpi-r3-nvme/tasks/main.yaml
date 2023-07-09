@@ -1,28 +1,12 @@
- ---
- - name: Configure automount for NVMe disk
-      ansible.builtin.shell: |
-        uci add fstab mount
-        uci set fstab.@mount[-1].device=/dev/nvme0n1p1
-        uci set fstab.@mount[-1].target={{bpi_nvme_mount_dir}}
-        uci set fstab.@mount[-1].fstype=ext4
-        uci set fstab.@mount[-1].options=rw,sync,noatime,nodiratime
-        uci set fstab.@mount[-1].enabled=1
-        uci set fstab.@mount[-1].enabled_fsck=1
-        uci commit fstab
-        service fstab boot
-        exit 0
+---
+- name: Checking if you have NVMe
+  ansible.builtin.command: lsblk -Nnr | wc -l
+  register: bpi_nvme_count
 
-/sbin/parted /dev/nvme0n1 mklabel gpt --script
-/sbin/parted /dev/nvme0n1 mkpart primary 0% 100% --script
-mkfs.ext4 -L data /dev/nvme0n1p1
+- name: NVMe absent
+  ansible.builtin.debug:
+    msg: You have no NVMe disks installed
+  when: bpi_nvme_count == 0
 
-mkdir /data
-
-  11 lsblk -Nnr | cut -f1 -d' '
-  12 lsblk -o NAME,SIZE,MOUNTPOINT /dev/nvme0n1
-  13 lsblk -o NAME /dev/nvme0n1
-  14 lsblk -rno NAME /dev/nvme0n1
-  15 lsblk -fno NAME /dev/nvme0n1
-  16 lsblk -fno /dev/nvme0n1
-  17 lsblk -fn /dev/nvme0n1
-  18 lsblk -frn /dev/nvme0n1
+- include_tasks: additional_tasks.yml
+  when: bpi_nvme_count == 1
