@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#   
+#
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 yellow=$(tput setaf 3)
@@ -43,7 +43,7 @@ pip3 install jira RPi
 echo "${magenta} Installing zookeeper for Kafka${reset}"
 apt install -y zookeeper zookeeperd default-jdk
 systemctl enable zookeeper
-systemctl start zookeeper 
+systemctl start zookeeper
 
 echo "${magenta} Installing Kafka${reset}"
 wget https://mirror.efect.ro/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz -O /tmp/kafka_2.13-2.8.0.tgz
@@ -54,7 +54,7 @@ rm -f /tmp/kafka_2.13-2.8.0.tgz
 cd -
 cp templates/kafka.service /etc/systemd/system/
 
-# by default Kafka comes with 1G of shared memory, 
+# by default Kafka comes with 1G of shared memory,
 # we will use 256M since our traffic is small
 sed -i 's|Xmx1G -Xms1G|Xmx256m -Xms256m|' /usr/local/kafka/bin/kafka-server-start.sh
 
@@ -86,8 +86,8 @@ cat /tmp/zabbix-5.0.8/database/postgresql/data.sql | sudo -u zabbix psql zabbix
 rm -rf /tmp/zabbix*
 rm -f /usr/share/zabbix/conf/zabbix.conf.php
 cp /root/ava/templates/zabbix.conf.php /usr/share/zabbix/conf
-sed -i 's|# DBPassword=|DBPassword=zabbix|g' /etc/zabbix/zabbix_server.conf 
-systemctl restart zabbix-server zabbix-agent 
+sed -i 's|# DBPassword=|DBPassword=zabbix|g' /etc/zabbix/zabbix_server.conf
+systemctl restart zabbix-server zabbix-agent
 systemctl enable zabbix-server zabbix-agent
 
 echo "${magenta}Compiling libzbxpgsql, the Postgresql monitoring library for Zabbix${reset}"

@@ -11,7 +11,7 @@
         uci commit fstab
         service fstab boot
         exit 0
-    
+
 /sbin/parted /dev/nvme0n1 mklabel gpt --script
 /sbin/parted /dev/nvme0n1 mkpart primary 0% 100% --script
 mkfs.ext4 -L data /dev/nvme0n1p1

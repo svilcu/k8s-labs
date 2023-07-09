@@ -18,11 +18,11 @@
         owner: root
         group: root
         mode: '0644'
-        backup: yes
+        backup: true
 
     - name: Linking cert to the default location
       ansible.builtin.file:
-        src: /usr/local/share/ca-certificates/home.tld.cert 
+        src: /usr/local/share/ca-certificates/home.tld.cert
         dest: /etc/ssl/certs/home.tld.cert
         owner: root
         group: root
@@ -34,4 +34,4 @@
         ln -s "/etc/ssl/certs/home.tld.cert" "/etc/ssl/certs/$HASH"
         exit 0
 
-    - name: 
+    - name:

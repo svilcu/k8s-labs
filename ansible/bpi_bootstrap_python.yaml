@@ -6,6 +6,5 @@
   vars:
     ansible_user: root
     save_space_with_python3_light: false
-  roles: 
+  roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
-    

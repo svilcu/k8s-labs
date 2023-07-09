@@ -1,4 +1,5 @@
+---
 - hosts: openwrt
-    roles:
-          - openwrt
-                - ansible-example
+  roles:
+      - openwrt
+      - ansible-example

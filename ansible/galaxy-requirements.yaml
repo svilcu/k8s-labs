@@ -7,4 +7,3 @@ collections:
 roles:
   - name: johanneskastl.bootstrap_python_on_OpenWRT
     src: git+https://github.com/johanneskastl/ansible-role-bootstrap_python_on_OpenWRT.git
-

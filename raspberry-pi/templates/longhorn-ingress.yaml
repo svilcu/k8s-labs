@@ -15,12 +15,12 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
 spec:
   rules:
-  - http:
+    - http:
       paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: longhorn-frontend
-            port:
-              number: 80
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: longhorn-frontend
+              port:
+                number: 80

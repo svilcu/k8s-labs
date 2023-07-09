@@ -20,20 +20,18 @@
           - openssh-sftp-server
         state: present
 
-   
-    
     - name: Remove dnsmasq
       community.general.opkg:
-        name: 
-          - dnsmasq 
+        name:
+          - dnsmasq
           - odhcpd-ipv6only
         state: absent
 
     - name: Remove settings related to dnsmasq
       ansible.builtin.command: 'uci -q delete dhcp.@dnsmasq[0]'
       ignore_errors: true
-    
-    - name:  Use odhcpd for both DHCP and DHCPv6
+
+    - name: Use odhcpd for both DHCP and DHCPv6
       ansible.builtin.command: opkg install odhcpd --force-overwrite
 
     - name: Configure DHCPDv4
@@ -47,7 +45,7 @@
 
     - name: Restarting odhcpd
       ansible.builtin.command: /etc/init.d/odhcpd restart
-     
+
     - name: Install Prometheus exporter
       community.general.opkg:
         name:
@@ -55,14 +53,14 @@
           - prometheus-node-exporter-lua-nat_traffic
           - prometheus-node-exporter-lua-netstat
           - prometheus-node-exporter-lua-openwrt
-          - libiwinfo-lua 
+          - libiwinfo-lua
           - prometheus-node-exporter-lua-wifi
           - prometheus-node-exporter-lua-wifi_stations
         state: present
 
     - name: Removing luci and dependencies
       community.general.opkg:
-        name: 
+        name:
           - luci
           - luci-ssl
           - luci-light
@@ -73,17 +71,17 @@
         name:
           - nginx-ssl
           - luci-ssl-nginx
-          - luci-app-statistics 
+          - luci-app-statistics
           - luci-app-upnp
-          - luci-lib-nixio 
-          - luci-lib-ip 
-          - luci-lib-jsonc 
-          - liblucihttp-lua 
-          - luci-lib-base 
-          - ucode-mod-lua 
-          - luci-lua-runtime 
-          - luci-compat 
-          - luci-app-openvpn 
+          - luci-lib-nixio
+          - luci-lib-ip
+          - luci-lib-jsonc
+          - liblucihttp-lua
+          - luci-lib-base
+          - ucode-mod-lua
+          - luci-lua-runtime
+          - luci-compat
+          - luci-app-openvpn
         state: present
 
     - name: Install OpenVPN
@@ -103,5 +101,3 @@
           - libedit
           - sqlite3-cli
         state: present
-
-

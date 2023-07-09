@@ -4,7 +4,7 @@
 #description     :This script will make a header for a bash script.
 #author		 :bgw
 #date            :20111101
-#version         :0.4    
+#version         :0.4
 #usage		 :bash mkscript.sh
 #notes           :Install Vim and Emacs to use this script.
 #bash_version    :4.1.5(1)-release
@@ -35,21 +35,21 @@ host_ips['pi2']='192.168.72.192'
 host_ips['pi3']='192.168.72.193'
 host_ips['pi4']='192.168.72.194'
 
-apt remove -y nano 
+apt remove -y nano
 
 # Update os
 apt update
 apt dist-upgrade -y
 apt upgrade -y
 apt-get autoremove -y
-# some distros do not have lsb-release, wget, curl, git installed by default 
+# some distros do not have lsb-release, wget, curl, git installed by default
 apt install -y lsb-release wget curl git software-properties-common apt-transport-https zabbix-agent scdaemon
 
 hostnamectl set-hostname ${HOSTNAME}.home
 
 # Debian 10 (buster) has config files in /boot
 # Ubuntu and Debian 11 has config files in /boot/firmware
-if [ "`lsb_release -cs`" == "buster" ]; then 
+if [ "`lsb_release -cs`" == "buster" ]; then
     BOOT_PREFIX="/boot"
 else
     BOOT_PREFIX="/boot/firmware"
@@ -59,7 +59,7 @@ echo "${magenta}Customizing ${BOOT_PREFIX}/cmdline.txt${reset}"
 sed -i 's|console=serial0,115200 console=tty1||' ${BOOT_PREFIX}/cmdline.txt
 
 echo "${magenta}Setting up parameters in ${BOOT_PREFIX}/config.txt${reset}"
-sed -i 's|dtparam=audio=on|dtparam=audio=off|' ${BOOT_PREFIX}/config.txt  
+sed -i 's|dtparam=audio=on|dtparam=audio=off|' ${BOOT_PREFIX}/config.txt
 cat >> ${BOOT_PREFIX}/config.txt <<EOF
 dtoverlay=disable-bt
 dtoverlay=miniuart-bt
@@ -99,7 +99,7 @@ EOF
 
 echo "${magenta}Enabling ssh Daemon and root login via ssh key${reset}"
 echo "PermitRootLogin yes" >>/etc/ssh/sshd_config
-if [ `lsb_release -cs` == "buster" ]; then 
+if [ `lsb_release -cs` == "buster" ]; then
     mkdir -p /root/.ssh
     chmod 700 /root/.ssh
     touch /root/.ssh/authorized_keys
@@ -129,7 +129,7 @@ if [ "`lsb_release -is`" = "Ubuntu" ]; then
     sed -i 's|192.168.72.190|${host_ips[${HOSTNAME}]}|g' /etc/netplan/01-netplan.yaml
     netplan generate
     netplan apply
-elif [ "`lsb_release -cs`" = "bullseye" ]; then 
+elif [ "`lsb_release -cs`" = "bullseye" ]; then
     echo "auto eth0" > /etc/network/interfaces.d/eth0
     echo "iface eth0 inet static" >> /etc/network/interfaces.d/eth0
     echo "    address ${host_ips[${HOSTNAME}]}/24" >> /etc/network/interfaces.d/eth0
@@ -138,7 +138,7 @@ elif [ "`lsb_release -cs`" = "bullseye" ]; then
     echo "search home" >> /etc/resolv.conf
     echo "nameserver 192.168.72.1" >> /etc/resolv.conf
 elif [ "`lsb_release -cs`" = "buster" ]; then
-    cat >> /etc/dhcpcd.conf <<EOF 
+    cat >> /etc/dhcpcd.conf <<EOF
 interface eth0
 static ip_address=${host_ips[${HOSTNAME}]}/24
 static routers=192.168.72.1
