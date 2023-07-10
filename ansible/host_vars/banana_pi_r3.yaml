@@ -1,0 +1,15 @@
+---
+ansible_user: root
+bpi_password: "MaybeUw1llChangeThis!"
+
+# set this to false if you do not want the NVMe formated everytime.
+bpi_always_format_nvme: "true"
+
+bpi_nvme_mount_dir: "/srv"
+
+bpi_os_upgrade: "false"
+bpi_os_version: "23.05.0-rc2"
+bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
+
+CA_path: ../files/certs/
+pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql

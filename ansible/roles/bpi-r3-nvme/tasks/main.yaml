@@ -1,12 +1,15 @@
 ---
 - name: Checking if you have NVMe
-  ansible.builtin.command: lsblk -Nnr | wc -l
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsblk -Nnr | wc -l
   register: bpi_nvme_count
 
 - name: NVMe absent
   ansible.builtin.debug:
     msg: You have no NVMe disks installed
-  when: bpi_nvme_count == 0
+  when: bpi_nvme_count.stdout | int == 0
 
-- include_tasks: additional_tasks.yml
-  when: bpi_nvme_count == 1
+- name: Partitioning, formating and mounting NVMe
+  ansible.builtin.include_tasks: additional_tasks.yml
+  when: bpi_nvme_count.stdout | int == 1

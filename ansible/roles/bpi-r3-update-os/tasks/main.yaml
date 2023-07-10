@@ -1,9 +1,14 @@
 ---
+- name: Download sysupgrade image
+  ansible.builtin.get_url:
+    url: "{{ bpi_image_url }}"
+    dest: /tmp/sysupgrade.itb
+    mode: 600
+
 - name: Updating OS on the Banana Pi R3
-  ansible.builtin.shell: |
-    wget {{ bpi_image_url }} -O /tmp/sysupgrade.itb
-    sysupgrade -v /tmp/sysupgrade.itb
+  ansible.builtin.command: sysupgrade -v /tmp/sysupgrade.itb
   when: bpi_os_upgrade == "true"
+  ignore_unreachable: true
   register: my_output
   changed_when: my_output.rc != 0
 

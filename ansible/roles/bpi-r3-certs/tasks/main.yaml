@@ -7,7 +7,7 @@
 # if the certificates are not created we will let this fail until we create the roles and dependencies
 - name: Copying own root CA to OpenWRT
   ansible.builtin.copy:
-    src: ../files/certs/CA.pem
+    src: "{{ CA_path }}/CA.pem"
     dest: /usr/local/share/ca-certificates/home.tld.cert
     owner: root
     group: root

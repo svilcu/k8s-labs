@@ -1,5 +1,25 @@
 ---
-- hosts: openwrt
+- name: Bootstrap python on Banana PI/OpenWRT
+  hosts: bpi_default
+  gather_facts: false
+  become: false
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  vars:
+    save_space_with_python3_light: false
   roles:
-      - openwrt
-      - ansible-example
+    - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
+
+- name: Installing packages and configuring PowerDNS
+  hosts: bpi_default
+  gather_facts: true
+  become: false
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  roles:
+    - bpi-r3-update-os
+    - bpi-r3-basic-packages
+    - bpi-r3-nvme
+    - bpi-r3-aditional-packages
+    - bpi-r3-certs
+    - bpi-r3-pdns

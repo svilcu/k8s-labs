@@ -1,38 +1,51 @@
 ---
 - name: Checking if the device needs patitioning
-  ansible.builtin.shell: lsblk -frn /dev/nvme0n1 | grep -wv nvme0n1 | wc -l
-  record: bpi_nvme_part_count
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsblk -frn /dev/nvme0n1 | grep -wv nvme0n1 | wc -l
+  register: bpi_nvme_part_count
 
 - name: Partitioning NVMe if necessary
   ansible.builtin.shell: |
     parted /dev/nvme0n1 mklabel gpt --script
     parted /dev/nvme0n1 mkpart primary 0% 100% --script
-  when: bpi_nvme_part_count == 0
+  when: bpi_nvme_part_count.stdout | int == 0
+  register: my_output
+  changed_when: my_output.rc != 0
 
 - name: Formating the NVMe partition to ext4fs
   ansible.builtin.command: mkfs.ext4 /dev/nvme0n1p1
-  when: (bpi_nvme_part_count == 0) or ({{ bpi_always_format_nvme }} is true)
+  when: bpi_nvme_part_count.stdout | int == 0 or bpi_always_format_nvme == "true"
+  register: my_output
+  changed_when: my_output.rc != 0
 
 - name: Checking if mountpoint exists
   ansible.builtin.stat:
     path: "{{ bpi_nvme_mount_dir }}"
   register: bpi_nvme_dir_exists
+  changed_when: bpi_nvme_dir_exists.stat.exists != true
 
 - name: Creating NVMe mount point
-  ansible.builtin.command: mkdir -p {{ bpi_nvme_mount_dir }}
+  ansible.builtin.command: mkdir -p "{{ bpi_nvme_mount_dir }}"
   when: bpi_nvme_dir_exists.stat.exists is false
+  register: my_output
+  changed_when: my_output.rc != 0
 
 - name: Configure automount for NVMe disk
   ansible.builtin.shell: |
     uci add fstab mount
     uci set fstab.@mount[-1].device=/dev/nvme0n1p1
-    uci set fstab.@mount[-1].target={{ bpi_nvme_mount_dir }}
+    uci set fstab.@mount[-1].target="{{ bpi_nvme_mount_dir }}"
     uci set fstab.@mount[-1].fstype=ext4
     uci set fstab.@mount[-1].options=rw,sync,noatime,nodiratime
     uci set fstab.@mount[-1].enabled=1
     uci set fstab.@mount[-1].enabled_fsck=1
     uci commit fstab
-    exit 0
+  register: my_output
+  changed_when: my_output.rc != 0
 
 - name: Restarting fstab service
-  ansible.builtin.command:  service fstab boot
+  ansible.builtin.shell: |
+    service fstab boot
+  register: my_output
+  changed_when: my_output.rc != 0
