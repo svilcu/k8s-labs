@@ -17,8 +17,6 @@ Details of all the hardware used in the project
 | rock5b-1 | Radxa | Rock 5 Model B | rk3588 | 4 x 2.0GHz Cortex-A55 | 8GB LPDDR4-1560 |
 | rock3a-1 | Radxa | Rock 3 Model A | rk3568 | 4 x 2.0GHz Cortex-A55 | 8GB LPDDR4-1560 |
 
-
-
 ## Remove the pi initial Wizard
 
 ```bash
