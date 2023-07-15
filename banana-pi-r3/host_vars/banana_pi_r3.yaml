@@ -3,8 +3,7 @@ ansible_user: root
 bpi_password: "MaybeUw1llChangeThis!"
 bpi_disable_ipv6: "true"
 
-# set to true if you want your router to be reset to factory defaults
-bpi_remove_config: "true"
+
 
 # set this to false if you do not want the NVMe formated everytime.
 bpi_always_format_nvme: "true"
@@ -12,8 +11,7 @@ bpi_always_format_nvme: "true"
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
 
-# Image location
-bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
+
 
 # Self signed Certificate Authority and key path
 CA_path: ../files/certs/
