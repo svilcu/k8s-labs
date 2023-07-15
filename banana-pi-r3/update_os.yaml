@@ -1,0 +1,59 @@
+---
+- name: Installing new OS image and reset to factory defaults
+  hosts: bpi_default
+  gather_facts: false
+  become: false
+  serial: 1
+  ignore_unreachable: true
+  vars:
+    ansible_user: root
+    bpi_os_version: "23.05.0-rc2"
+    bpi_image_name: "openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
+    bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/{{ bpi_image_name }}"
+    bpi_image_path: "../files/images"
+    # set to true if you want your router to be reset to factory defaults
+    bpi_remove_config: "true"
+
+
+  roles:
+    - gekmihesg.openwrt
+  tasks:
+    - name: Checking if the upgrade image is available on local machine
+      ansible.builtin.stat:
+        path: "{{ bpi_image_path }}/sysupgrade.itb"
+      register: sysupgrade
+      delegate_to: localhost
+
+    - name: Downloading sysupgrade locally
+      ansible.builtin.get_url:
+        url: "{{ bpi_image_url }}"
+        dest: "{{ bpi_image_path }}/sysupgrade.itb"
+        mode: 600
+      delegate_to: localhost
+      when: sysupgrade.stat.exists == "false"
+
+    - name: Copy openwrt image
+      ansible.builtin.command: "{{ openwrt_scp }} -o StrictHostKeyChecking=no {{ bpi_image_path }}/sysupgrade.itb {{ openwrt_user_host | quote }}:/tmp/sysupgrade.itb"
+      delegate_to: localhost
+      register: copy_image
+      changed_when: copy_image.rc != 0
+
+    - name: Start sysupgrade
+      nohup:
+        command: sysupgrade -q /tmp/sysupgrade.itb
+
+    - name: Wait for reboot after sysupgrade
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+        delay: 60
+
+    - name: Reset equipment to factory defaults
+      nohup:
+        command: firstboot -y && reboot
+      when: bpi_remove_config == "true"
+
+    - name: Wait for reboot after reset to factory defaults
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+        delay: 60
+      when: bpi_remove_config == "true"

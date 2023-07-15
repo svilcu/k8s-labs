@@ -4,6 +4,7 @@
     set -o pipefail
     lsblk -Nnr | wc -l
   register: bpi_nvme_count
+  changed_when: bpi_nvme_count.rc != 0
 
 - name: NVMe absent
   ansible.builtin.debug:

@@ -48,6 +48,7 @@
       - prometheus-node-exporter-lua-wifi
       - prometheus-node-exporter-lua-wifi_stations
     state: present
+  when: bpi_aditional_packages.prometheus_exporter == "true"
 
 - name: Removing luci and dependencies
   community.general.opkg:
@@ -72,7 +73,6 @@
       - ucode-mod-lua
       - luci-lua-runtime
       - luci-compat
-      - luci-app-openvpn
     state: present
 
 - name: Install OpenVPN
@@ -80,7 +80,9 @@
     name:
       - openvpn-openssl
       - openvpn-easy-rsa
+      - luci-app-openvpn
     state: present
+  when: bpi_aditional_packages.openvpn == "true"
 
 - name: Install PowerDNS
   community.general.opkg:

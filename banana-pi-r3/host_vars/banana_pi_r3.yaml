@@ -1,15 +1,40 @@
 ---
 ansible_user: root
 bpi_password: "MaybeUw1llChangeThis!"
+bpi_disable_ipv6: "true"
+
+# set to true if you want your router to be reset to factory defaults
+bpi_remove_config: "true"
 
 # set this to false if you do not want the NVMe formated everytime.
 bpi_always_format_nvme: "true"
 
+# where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
 
-bpi_os_upgrade: "false"
-bpi_os_version: "23.05.0-rc2"
+# Image location
 bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
 
+# Self signed Certificate Authority and key path
 CA_path: ../files/certs/
+
+# PowerDNS schema location for SQLite
 pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+
+# PowerDNS api ports
+pdns_api_port: 8080
+pdns_api_ssl_port: 8443
+
+# Aditional packages
+bpi_aditional_packages:
+  # if we do not install sftp, ansible will generate warnings
+  # probably it is possible to fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
+  openssh_sftp: "true"
+  openvpn: "false"
+  vuftpd: "false"
+  gitolite: :"false"
+  prometheus_exporter: "false"
+
+# Radio
+bpi_radio_ssid: "bpi_test"
+bpi_radio_password: "1willModify!tS00n"

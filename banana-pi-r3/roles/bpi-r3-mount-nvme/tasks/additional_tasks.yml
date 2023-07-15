@@ -4,6 +4,7 @@
     set -o pipefail
     lsblk -frn /dev/nvme0n1 | grep -wv nvme0n1 | wc -l
   register: bpi_nvme_part_count
+  changed_when: bpi_nvme_part_count.rc != 0
 
 - name: Partitioning NVMe if necessary
   ansible.builtin.shell: |
@@ -29,7 +30,7 @@
   ansible.builtin.command: mkdir -p "{{ bpi_nvme_mount_dir }}"
   when: bpi_nvme_dir_exists.stat.exists is false
   register: my_output
-  changed_when: my_output.rc != 0
+  changed_when: my_output.rc == 0
 
 - name: Configure automount for NVMe disk
   ansible.builtin.shell: |
@@ -42,10 +43,17 @@
     uci set fstab.@mount[-1].enabled_fsck=1
     uci commit fstab
   register: my_output
-  changed_when: my_output.rc != 0
+  changed_when: my_output.rc == 0
 
-- name: Restarting fstab service
-  ansible.builtin.shell: |
-    service fstab boot
-  register: my_output
-  changed_when: my_output.rc != 0
+# - name: Restarting fstab service
+#   ansible.builtin.shell: |
+#     service fstab boot
+#   register: my_output
+#   changed_when: my_output.rc != 0
+
+# - name: Reload service fstab
+#   community.general.openwrt_init:
+#     name: fstab
+#     state: reloaded
+#   register: my_output
+#   changed_when: my_output.rc != 0
