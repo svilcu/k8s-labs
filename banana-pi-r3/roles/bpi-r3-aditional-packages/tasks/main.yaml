@@ -12,6 +12,12 @@
   register: ignore_errors_register
   changed_when: ignore_errors_register != 0
 
+- name: Running opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: ignore_errors_register
+  changed_when: ignore_errors_register != 0
+
 - name: Use odhcpd for both DHCP and DHCPv6
   ansible.builtin.command: opkg install odhcpd --force-overwrite
   register: my_output

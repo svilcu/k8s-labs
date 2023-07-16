@@ -27,6 +27,7 @@
     - host_vars/banana_pi_r3.yaml
   roles:
     - bpi-r3-mount-nvme
-    - bpi-r3-certs
+    - bpi-r3-disable-ipv6
     - bpi-r3-aditional-packages
-    - bpi-r3-pdns
+    - bpi-r3-certs
+    - bpi-r3-pdns-config

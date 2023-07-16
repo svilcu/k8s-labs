@@ -1,17 +1,38 @@
 ---
-- name: Disabling IPv6 on router
+- name: Removing wan6 interface and ip6assign
+  ansible.builtin.shell: |
+    uci -q set network.loopback.ipv6='0'
+    uci -q delete network.wan6
+    uci -q delete network.lan.ip6assign
+    uci -q delete network.globals.ula_prefix
+    uci commit network
+  register: bpi_commit_network
+  changed_when: bpi_commit_network.rc == 0
 
-uci set 'network.lan.ipv6=0'
-uci set 'network.wan.ipv6=0'
-uci set 'dhcp.lan.dhcpv6=disabled'
-uci commit
-uci -q delete dhcp.lan.dhcpv6
-uci -q delete dhcp.lan.ra
-uci commit dhcp
-/etc/init.d/odhcpd restart
-uci set network.lan.delegate="0"
-uci commit network
-/etc/init.d/network restart
-uci -q delete network.globals.ula_prefix
-uci commit network
-/etc/init.d/network restart
+- name: Retrieving the number of interfaces
+  ansible.builtin.shell: |
+    set -o pipefail
+    uci show network | grep '@device' | cut -f1 -d']' | cut -f2 -d'[' | sort -ru | head -1
+  register: bpi_if_count
+  changed_when: bpi_if_count.rc != 0
+
+- name: Setting ipv6=0 for all interfaces
+  ansible.builtin.command: "uci set network.@device[{{ item }}].ipv6='0'"
+  with_sequence: start=0 end={{ bpi_if_count.stdout | int }} stride=1
+
+- name: Commiting changes to uci and restarting network
+  ansible.builtin.shell: |
+    uci commit network
+    /etc/init.d/network restart
+  register: bpi_net_restart
+  changed_when: bpi_net_restart.rc != 0
+
+- name: Removing DHCPv6 related settings and restarting odhcpd
+  ansible.builtin.shell: |
+    uci set 'dhcp.lan.dhcpv6=disabled'
+    uci -q delete dhcp.lan.dhcpv6
+    uci -q delete dhcp.lan.ra
+    uci commit dhcp
+    /etc/init.d/odhcpd restart
+  register: bpi_odhcpd_restart
+  changed_when: bpi_odhcpd_restart.rc != 0

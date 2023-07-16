@@ -15,7 +15,16 @@
       - parted
       - uvol
       - autopart
+      - openssl-util
     state: present
+
+- name: Checking if modprobe detected the NVMe
+  ignore_errors: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsblk | grep disk | grep -c nvme0n1
+  register: bpi_nvme_detected
+  changed_when: bpi_nvme_detected.rc != 0
 
 # sometimes OpenWRT may fail to report the presence of the NVMe after modprobe, so we reboot.
 - name: Rebooting in order to detect all the devices
@@ -23,8 +32,10 @@
   ansible.builtin.command: "/sbin/reboot"
   async: 1
   poll: 0
+  when: bpi_nvme_detected.stdout | int == 0
  
 - name: Wait for reboot
   ansible.builtin.wait_for_connection:
     timeout: 300
     delay: 60
+  when: bpi_nvme_detected.stdout | int == 0

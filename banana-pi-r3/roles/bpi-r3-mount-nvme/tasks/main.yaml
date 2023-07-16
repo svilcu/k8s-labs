@@ -11,6 +11,19 @@
     msg: You have no NVMe disks installed
   when: bpi_nvme_count.stdout | int == 0
 
+- name: Checking if the NVMe is already mounted
+  ignore_errors: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    mount | grep -c nvme0n1
+  register: bpi_nvme_mounted
+  changed_when: bpi_nvme_mounted.rc != 0
+
+- name: NVMe already mounted
+  ansible.builtin.debug:
+    msg: Your NVMe is already mounted, skipping format and mount
+  when: bpi_nvme_mounted.stdout | int == 1
+
 - name: Partitioning, formating and mounting NVMe
   ansible.builtin.include_tasks: additional_tasks.yml
-  when: bpi_nvme_count.stdout | int == 1
+  when: (bpi_nvme_count.stdout | int == 1) and (bpi_nvme_mounted.stdout | int == 0)
