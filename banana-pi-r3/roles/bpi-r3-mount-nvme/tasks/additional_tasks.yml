@@ -1,4 +1,16 @@
 ---
+- name: Checking if mountpoint exists
+  ansible.builtin.stat:
+    path: "{{ bpi_nvme_mount_dir }}"
+  register: bpi_nvme_dir_exists
+  changed_when: bpi_nvme_dir_exists.stat.exists != true
+
+- name: Creating NVMe mount point
+  ansible.builtin.command: mkdir -p "{{ bpi_nvme_mount_dir }}"
+  when: bpi_nvme_dir_exists.stat.exists is false
+  register: my_output
+  changed_when: my_output.rc == 0
+
 - name: Checking if the device needs patitioning
   ansible.builtin.shell: |
     set -o pipefail
@@ -20,40 +32,42 @@
   register: my_output
   changed_when: my_output.rc != 0
 
-- name: Checking if mountpoint exists
-  ansible.builtin.stat:
-    path: "{{ bpi_nvme_mount_dir }}"
-  register: bpi_nvme_dir_exists
-  changed_when: bpi_nvme_dir_exists.stat.exists != true
+- name: Extracting the UUID of the new partition
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsblk -f /dev/nvme0n1p1 | grep ext4 |awk '{print $3}'
+  register: nvme_uuid
+  changed_when: nvme_uuid.rc != 0
 
-- name: Creating NVMe mount point
-  ansible.builtin.command: mkdir -p "{{ bpi_nvme_mount_dir }}"
-  when: bpi_nvme_dir_exists.stat.exists is false
-  register: my_output
-  changed_when: my_output.rc == 0
+- name: Extracting the id of the /mnt/nvme0n1p1 if it was created
+  ignore_errors: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    uci show fstab | grep "/mnt/nvme0n1p1" | cut -f2 -d '[' | cut -f1 -d ']'
+  register: mnt_nvme_uci_id
+  changed_when: mnt_nvme_uci_id.rc != 0
+
+- name: Removing entry from "uci fstab" for "/mnt/nvme0n1p1"
+  ansible.builtin.command: "uci delete fstab.@mount[{{ mnt_nvme_uci_id.stdout }}]"
+  when: mnt_nvme_uci_id.rc == 0
+  register: remove_mnt_nvme
+  changed_when: remove_mnt_nvme.rc == 0
 
 - name: Configure automount for NVMe disk
   ansible.builtin.shell: |
     uci add fstab mount
-    uci set fstab.@mount[-1].device=/dev/nvme0n1p1
+    uci set fstab.@mount[-1].uuid="{{ nvme_uuid.stdout }}"
     uci set fstab.@mount[-1].target="{{ bpi_nvme_mount_dir }}"
     uci set fstab.@mount[-1].fstype=ext4
     uci set fstab.@mount[-1].options=rw,sync,noatime,nodiratime
     uci set fstab.@mount[-1].enabled=1
     uci set fstab.@mount[-1].enabled_fsck=1
     uci commit fstab
-  register: my_output
-  changed_when: my_output.rc == 0
+  register: uci_commit_fstab
+  changed_when: uci_commit_fstab == 0
 
-# - name: Restarting fstab service
-#   ansible.builtin.shell: |
-#     service fstab boot
-#   register: my_output
-#   changed_when: my_output.rc != 0
-
-# - name: Reload service fstab
-#   community.general.openwrt_init:
-#     name: fstab
-#     state: reloaded
-#   register: my_output
-#   changed_when: my_output.rc != 0
+- name: Running "block mount" to mount the NVMe
+  ansible.builtin.shell: |
+    block mount
+  register: block_mount
+  changed_when: block_mount != 0

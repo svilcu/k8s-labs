@@ -10,15 +10,23 @@
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
-- name: Installing packages and configuring PowerDNS
+- name: Installing packages required for block devices and filesystem manipulation
   hosts: bpi_default
   gather_facts: true
   become: false
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-basic-packages
+    - bpi-r3-filesystem-packages
+
+- name: Mounting NVMe, installing aditional packages, certificates etc.
+  hosts: bpi_default
+  gather_facts: true
+  become: false
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  roles:
     - bpi-r3-mount-nvme
-    - bpi-r3-aditional-packages
     - bpi-r3-certs
+    - bpi-r3-aditional-packages
     - bpi-r3-pdns

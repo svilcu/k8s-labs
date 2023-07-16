@@ -3,15 +3,11 @@ ansible_user: root
 bpi_password: "MaybeUw1llChangeThis!"
 bpi_disable_ipv6: "true"
 
-
-
 # set this to false if you do not want the NVMe formated everytime.
 bpi_always_format_nvme: "true"
 
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
-
-
 
 # Self signed Certificate Authority and key path
 CA_path: ../files/certs/
@@ -27,7 +23,7 @@ pdns_api_ssl_port: 8443
 bpi_aditional_packages:
   # if we do not install sftp, ansible will generate warnings
   # probably it is possible to fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
-  openssh_sftp: "true"
+  openssh_sftp: "false"
   openvpn: "false"
   vuftpd: "false"
   gitolite: :"false"

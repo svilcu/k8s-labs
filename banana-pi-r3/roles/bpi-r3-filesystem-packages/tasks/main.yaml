@@ -1,0 +1,30 @@
+---
+- name: Installing openssh-sftp-server
+  community.general.opkg:
+    name: openssh-sftp-server
+    state: present
+  when: bpi_aditional_packages.openssh_sftp == "true"
+
+- name: Install filesystem manipulation packages
+  community.general.opkg:
+    name:
+      - kmod-nvme
+      - mmc-utils
+      - kmod-mtd-rw
+      - lsblk
+      - parted
+      - uvol
+      - autopart
+    state: present
+
+# sometimes OpenWRT may fail to report the presence of the NVMe after modprobe, so we reboot.
+- name: Rebooting in order to detect all the devices
+  # since ansible.builtin.reboot does not notice when the system comes back and reports timeout
+  ansible.builtin.command: "/sbin/reboot"
+  async: 1
+  poll: 0
+ 
+- name: Wait for reboot
+  ansible.builtin.wait_for_connection:
+    timeout: 300
+    delay: 60
