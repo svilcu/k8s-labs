@@ -28,3 +28,35 @@
     ln -s "/etc/ssl/certs/home.tld.cert" "/etc/ssl/certs/$HASH"
   register: my_output
   changed_when: my_output.rc != 0
+
+- name: Check if private key for bpi.home exists.
+  ansible.builtin.stat:
+    path: ../files/cert/bpi_home.key
+  register: bpi_home_key
+
+- name: Generate bpi.home key.
+  community.crypto.openssl_privatekey:
+    path: ../files/certs/bpi_home.key
+  when: bpi_home_key.stat.exists is false
+
+- name: Check if the self-signed certificate  for bpi.home exists
+  ansible.builtin.stat:
+    path: ../files/certs/bpi_home.pem
+  register: bpi_home_pem
+
+- name: Create certificate signing request (CSR) for bpi.home certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: ../files/certs/bpi_home.key
+    common_name: bpi.home
+  register: csr_bpi_home
+  when: bpi_home_pem.stat.exists is false
+
+- name: Create self-signed certificate from CSR
+  community.crypto.x509_certificate:
+    path: ../files/certs/bpi_home.pem
+    csr_content: "{{ csr_bpi_home.csr }}"
+    privatekey_path: ../files/certs/bpi_home.key
+    provider: ownca
+    ownca_path: ../files/certs/CA.pem
+    ownca_privatekey_path: ../files/certs/CA.key
+  when: bpi_home_pem.stat.exists is false

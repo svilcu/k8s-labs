@@ -1,49 +1,63 @@
 # Hardware used in the project
 
-Details of all the hardware used in the project
+Some hardware was sourced from a local Romanian store [eMAG](https://www.emag.ro), I will provide links to Amazon.de instead since some of the hardware was aquired from there.
+Some hardware was aquired from Aliexpress.
+Since the hardware was aquired in the last years, I am using various types of NVMe/SSD, I will provide only one type of each, you may use something different.
 
 ## Banana Pi R3 router
 
+- [Banana PI R3](https://www.amazon.de/gp/product/B0BLVF9697)
+- [UART-USB adapter](https://www.amazon.de/gp/product/B0753H4SQS)
+- [2.5GB SFP module](https://www.aliexpress.com/item/1005004178522532.html)
+- [NVMe SSD M2 2280 disk](https://www.amazon.de/-/en/Kingston-NVMe-PCIe-1000G-SNV2S/dp/B0BBWH7DBT)
+
 ## Raspberry PI cluster
 
-|Node name | Manufacturer | Model | Processor | Cores | Memory |
-|----|----|----|----|----|----|
-|rpi4b-[1 - 5] | Raspberry Pi| 4 Model B Rev 1.4| Broadcom BCM2711 | 4 x 1.8GHz Cortex-A72| 8GB LPDDR4-3200 |
+5 x RPI 4b 8GB + RockPi 3A 8GB
+
+### Raspberry PI
+
+- [Raspberry Pi 4B](https://www.amazon.de/-/en/RPI4-MODBP-8GB-Raspberry-Pi-Model-8GB/dp/B09TTKT94J)
+- [RPI Expansion Plate - 1 Port for SSD M2](https://www.amazon.de/gp/product/B072MK1HC7)
+- [MicroUSB to USB cables](https://www.amazon.de/gp/product/B077LXVWCW)
+- [PoE HAT](https://www.amazon.de/gp/product/B0928ZD7QQ)
+- [SATA SSD M2 2280 disk](https://www.amazon.de/-/en/Kingston-A400-SSD-SA400M8-120G/dp/B07P22T3VD)
+
+### Radxa Rock Pi 3A
+
+- [Rock Pi 3A 8GB SBC](https://www.amazon.de/gp/product/B09MVK26QP)
+- [PoE HAT](https://www.amazon.de/gp/product/B0928ZD7QQ)
+- [Expansion Board V1.6 version M.2](https://www.aliexpress.com/item/1005003768920371.html)
+- [NVMe SSD M2 2280 disk](https://www.amazon.de/-/en/Kingston-NVMe-PCIe-1000G-SNV2S/dp/B0BBWH7DBT)
+
+### Accessories for the Raspberry PI cluster
+
+- [Raspberry PI cluster case](https://www.aliexpress.com/item/1005003662487596.html)
+- [8 Port Gigabit POE Switch](https://www.aliexpress.com/item/1005005046530637.html)
 
 ## Alternatives cluster
 
-|Node name | Manufacturer | Model | Processor | Cores | Memory |
-|----|----|----|----|----|----|
-| vim4-1 | Khadas | VIM4 | Amlogic A311D2 | 4 x 2.2GHz Cortex-A73 and 4x 2.0GHz Cortex-A53 | 8GB LPDDR4X-2016 |
-| rock3a-1 | Radxa | Rock 3 Model A | rk3568 | 4 x 2.0GHz Cortex-A55 | 8GB LPDDR4-1560 |
-| rock5b-1 | Radxa | Rock 5 Model B | rk3588 | 4 x 2.0GHz Cortex-A55 | 8GB LPDDR4-1560 |
-| rock3a-1 | Radxa | Rock 3 Model A | rk3568 | 4 x 2.0GHz Cortex-A55 | 8GB LPDDR4-1560 |
+Khadas VIM4 8GB + Orange PI 5 16GB + Radxa Rock Pi 5B 16GB
 
-## Remove the pi initial Wizard
+### Khadas Vim4
 
-```bash
-apt install cloud-guest-utils
-```
+- [khadas Vim4 SBC with Active Cooling](https://www.amazon.de/gp/product/B09ZQ96MKL)
+- [khadas Quectel EM06 4G LTE Module](https://www.amazon.de/gp/product/B089F1PW1Z)
+- [khadas M.2 Slot (M-Key) for 2280 NVMe SSDs](https://www.amazon.de/gp/product/B089DZ4M52)
+- [NVMe SSD M2 2280 disk](https://www.amazon.de/-/en/Kingston-NVMe-PCIe-1000G-SNV2S/dp/B0BBWH7DBT)
 
-## Resize the partition
+### Orange PI 5
 
-```bash
-dd if=2023-02-21-raspios-bullseye-arm64-lite.img of=/dev/sda bs=1M
-echo ", +" | sfdisk -N 2 /dev/sda || growpart /dev/sda 2 || parted /dev/sda resizepart 2 100%
-partprobe /dev/sda
-resize2fs /dev/sda2
-e2fsck -fy /dev/sda2
-```
+- [Orange Pi 5 16GB SBC](https://www.aliexpress.com/item/1005004958743448.html)
+- [NVMe SSD M2 2230 disk](https://www.amazon.de/-/en/Toshiba-KBG40ZNS256G-PCIe-NVMe-2230/dp/B09HY56CS4)
 
-In my script that makes customised images for me I delete /etc/systemd/system/multi-user.target.wants/userconfig.service to prevent that script running.
+### Radxa ROCK Pi 5B
 
-```bash
-root@rpi-installer:~# cat /sys/class/net/eth0/address
-```
+- [ROCK Pi 5B 16GB SBC](https://www.aliexpress.com/item/1005004742083429.html)
+- [PoE HAT](https://www.amazon.de/gp/product/B0928ZD7QQ)
+- [NVMe SSD M2 2280 disk](https://www.amazon.de/-/en/Kingston-NVMe-PCIe-1000G-SNV2S/dp/B0BBWH7DBT)
 
-dc:a6:32:f0:9b:ad
+### Accessories for the Alternatives cluster
 
-```bash
-mount /dev/sda1 /mnt/sda1
-touch /mnt/sda1/ssh
-```
+- [Cluster case](https://www.amazon.de/gp/product/B083FP9JRY) - holes to accomodate the boards done manually
+- [Switch](https://www.amazon.de/-/en/TL-SG1008P-TP-Link-Gigabit-PoE-Switch/dp/B00BP0SSAS)
