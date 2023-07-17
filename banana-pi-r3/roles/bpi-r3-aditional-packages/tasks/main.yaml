@@ -90,6 +90,15 @@
     state: present
   when: bpi_aditional_packages.openvpn == "true"
 
+- name: Installing vsftpd
+  community.general.opkg:
+    name:
+      - vsftpd
+    state: present
+  when: bpi_aditional_packages.vsftpd == "true"
+
+  # set local root for the server  “local_root=/mnt/usb1”
+
 - name: Install PowerDNS
   community.general.opkg:
     name:

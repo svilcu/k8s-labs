@@ -11,12 +11,20 @@
       - kmod-nvme
       - mmc-utils
       - kmod-mtd-rw
+      - kmod-fs-ext4
       - lsblk
       - parted
       - uvol
       - autopart
       - openssl-util
     state: present
+
+- name: Installing rsyslog
+  community.general.opkg:
+    name:
+      - rsyslog
+    state: present
+  when: bpi_aditional_packages.rsyslog == "true"
 
 - name: Checking if modprobe detected the NVMe
   ignore_errors: true

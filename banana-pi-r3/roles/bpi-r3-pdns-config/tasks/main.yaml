@@ -1,36 +1,36 @@
 ---
 - name: Checking if the PowerDNS database location already exists
   ansible.builtin.stat:
-    path: /var/lib/powerdns
+    path: "{{ pdns_db_path }}"
   register: powerdns_dir
 
 - name: Creating path for PowerDNS SQLite database and schema
-  ansible.builtin.command: mkdir -p /var/lib/powerdns
+  ansible.builtin.command: mkdir -p "{{ pdns_db_path }}"
   when: powerdns_dir.stat.exists is false
   register: my_output
   changed_when: my_output.rc != 0
 
 - name: Checking if the PowerDNS schema already exists
   ansible.builtin.stat:
-    path: /var/lib/powerdns/schema.sqlite3.sql
+    path: "{{ pdns_db_path }}/schema.sqlite3.sql"
   register: powerdns_schema
 
 - name: Downloading schema for the PowerDNS SQLite database from GitHub
   ansible.builtin.get_url:
     url: "{{ pdns_schema_url }}"
-    dest: /var/lib/powerdns/schema.sqlite3.sql
+    dest: "{{ pdns_db_path }}/schema.sqlite3.sql"
     mode: 600
   when: powerdns_schema.stat.exists is false
 
 - name: Checking if the PowerDNS schema already exists
   ansible.builtin.stat:
-    path: /var/lib/powerdns/pdns.sqlite3
+    path: "{{ pdns_db_path }}/pdns.sqlite3"
   register: powerdns_db
 
 - name: Creating default PowerDNS database from schema
   ansible.builtin.shell: |
-    sqlite3 /var/lib/powerdns/pdns.sqlite3 < /var/lib/powerdns/schema.sqlite3.sql
-    chown -R pdns:pdns /var/lib/powerdns
+    sqlite3 "{{ pdns_db_path }}/pdns.sqlite3" < "{{ pdns_db_path }}/schema.sqlite3.sql"
+    chown -R pdns:pdns "{{ pdns_db_path }}"
     exit 0
   when: powerdns_db.stat.exists is false
   register: my_output
@@ -40,13 +40,18 @@
   ansible.builtin.shell: |
     set -o pipefail
     sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
-    sed -i '/launch=gsqlite3/a gsqlite3-database=/var/lib/powerdns/pdns.sqlite3' /etc/powerdns/pdns.conf
+    sed -i '/launch=gsqlite3/a gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3' /etc/powerdns/pdns.conf
     sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
     API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
     sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
-    sed -i "s/# webserver=+/webserver=yes/" /etc/powerdns/pdns.conf
-    sed -i 's/# webserver-address=+/webserver-address=127.0.0.1/' /etc/powerdns/pdns.conf
-    sed -i 's/# webserver-allow-from=+/webserver-allow-from=127.0.0.1/' /etc/powerdns/pdns.conf
+    sed -i "s/# webserver=.*/webserver=yes/" /etc/powerdns/pdns.conf
+    sed -i "s/# webserver-address=.*/webserver-address={{ pdns_webserver_address }}/" /etc/powerdns/pdns.conf
+    sed -i "s/# webserver-allow-from=.*/webserver-allow-from={{ pdns_allow_from }}/" /etc/powerdns/pdns.conf
+    sed -i 's/^.* loglevel=.*/loglevel=8/' /etc/powerdns/pdns.conf
+    sed -i 's/# logging-facility=.*/logging-facility=4/' /etc/powerdns/pdns.conf
+    sed -i 's/^.* webserver-loglevel=.*/webserver-loglevel=detailed/' /etc/powerdns/pdns.conf
+    # WEBSERVER_PASSWORD=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -16 | tr -d '\n' ; echo ""`
+    # sed -i "s/^.* webserver-password=.*/webserver-password=$WEBSERVER_PASSWORD/" /etc/powerdns/pdns.conf    
     /etc/init.d/pdns restart
     exit 0
   register: my_output

@@ -1,0 +1,25 @@
+# according to RFC 8375 it is safe to use home.arpa
+default_domain: "home.arpa" 
+default_CIDR: "192.168.1.0/24"
+disable_ipv6: "true"
+# Self signed Certificate Authority and key path
+CA_path: files/certs/
+
+# IP addresses for the static hosts in our home network.
+# these will be used to generate the .in-addr.arpa and ns records.
+# {{ default_CIDR }} + static_hosts.id 
+static_hosts:
+  bpi-r3: 1
+  rpi-switch: 2
+  ws-switch: 3
+  rpi4b-1: 129
+  rpi4b-2: 130 
+  rpi4b-3: 131
+  rpi4b-4: 132
+  rpi4b-5: 133
+  rock3a-1: 145
+  rock5b-1: 146
+  vim4-1: 147
+  opi5-1: 148
+  nas: 197
+  gitlab: 196

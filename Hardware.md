@@ -1,6 +1,8 @@
-# Hardware Specifications
+# Hardware used in the project
 
 Details of all the hardware used in the project
+
+## Banana Pi R3 router
 
 ## Raspberry PI cluster
 
