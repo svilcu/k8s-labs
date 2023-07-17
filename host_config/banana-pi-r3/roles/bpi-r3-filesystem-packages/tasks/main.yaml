@@ -41,7 +41,9 @@
   async: 1
   poll: 0
   when: bpi_nvme_detected.stdout | int == 0
- 
+  register: bpi_reboot
+  changed_when: bpi_reboot.rc == 0
+
 - name: Wait for reboot
   ansible.builtin.wait_for_connection:
     timeout: 300

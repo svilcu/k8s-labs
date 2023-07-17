@@ -23,8 +23,8 @@ opkg install prometheus-node-exporter-lua prometheus-node-exporter-lua-nat_traff
 
 opkg install collectd-mod-ethstat collectd-mod-ipstatistics collectd-mod-irq collectd-mod-load collectd-mod-ping collectd-mod-powerdns collectd-mod-sqm collectd-mod-thermal collectd-mod-wireless
 /etc/init.d/collectd enable
-https://openwrt.org/docs/guide-user/luci/luci_app_statistics?s[]=powerdns
-https://openwrt.org/docs/guide-user/base-system/dhcp_configuration
+[Statistics for PowerDNS](https://openwrt.org/docs/guide-user/luci/luci_app_statistics?s[]=powerdns)
+[DHCP configuration](https://openwrt.org/docs/guide-user/base-system/dhcp_configuration)
 
 ## Upgrade to the latest snapshot
 

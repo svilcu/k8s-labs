@@ -10,7 +10,7 @@
     bpi_os_version: "23.05.0-rc2"
     bpi_image_name: "openwrt-{{ bpi_os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
     bpi_image_url: "https://downloads.openwrt.org/releases/{{ bpi_os_version }}/targets/mediatek/filogic/{{ bpi_image_name }}"
-    bpi_image_path: "../files/images"
+    bpi_image_path: "../../files/images"
     # set to true if you want your router to be reset to factory defaults
     bpi_remove_config: "true"
 

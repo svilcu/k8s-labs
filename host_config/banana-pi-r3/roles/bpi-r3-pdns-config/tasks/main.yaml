@@ -37,22 +37,7 @@
   changed_when: my_output.rc != 0
 
 - name: Configuring PowerDNS
-  ansible.builtin.shell: |
-    set -o pipefail
-    sed 's/# launch=/launch=gsqlite3/' /etc/powerdns/pdns.conf-dist > /etc/powerdns/pdns.conf
-    sed -i '/launch=gsqlite3/a gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3' /etc/powerdns/pdns.conf
-    sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
-    API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
-    sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
-    sed -i "s/# webserver=.*/webserver=yes/" /etc/powerdns/pdns.conf
-    sed -i "s/# webserver-address=.*/webserver-address={{ pdns_webserver_address }}/" /etc/powerdns/pdns.conf
-    sed -i "s/# webserver-allow-from=.*/webserver-allow-from={{ pdns_allow_from }}/" /etc/powerdns/pdns.conf
-    sed -i 's/^.* loglevel=.*/loglevel=8/' /etc/powerdns/pdns.conf
-    sed -i 's/# logging-facility=.*/logging-facility=4/' /etc/powerdns/pdns.conf
-    sed -i 's/^.* webserver-loglevel=.*/webserver-loglevel=detailed/' /etc/powerdns/pdns.conf
-    # WEBSERVER_PASSWORD=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -16 | tr -d '\n' ; echo ""`
-    # sed -i "s/^.* webserver-password=.*/webserver-password=$WEBSERVER_PASSWORD/" /etc/powerdns/pdns.conf    
-    /etc/init.d/pdns restart
-    exit 0
-  register: my_output
-  changed_when: my_output.rc != 0
+  ansible.builtin.include_tasks: config_pdns.yaml
+
+- name: Creating PowerDNS records
+  ansible.builtin.include_tasks: setup_records.yaml

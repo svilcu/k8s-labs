@@ -1,6 +1,9 @@
-[openwrt]
+[bpi_default]
 192.168.1.1
 
 [bpi]
 192.168.72.1
+
+[openwrt:children]
+bpi_default
 

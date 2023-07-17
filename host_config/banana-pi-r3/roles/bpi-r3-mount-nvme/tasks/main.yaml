@@ -25,5 +25,5 @@
   when: bpi_nvme_mounted.stdout | int == 1
 
 - name: Partitioning, formating and mounting NVMe
-  ansible.builtin.include_tasks: additional_tasks.yml
+  ansible.builtin.include_tasks: additional_tasks.yaml
   when: (bpi_nvme_count.stdout | int == 1) and (bpi_nvme_mounted.stdout | int == 0)

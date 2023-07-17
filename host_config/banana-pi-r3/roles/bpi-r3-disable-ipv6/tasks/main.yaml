@@ -19,6 +19,8 @@
 - name: Setting ipv6=0 for all interfaces
   ansible.builtin.command: "uci set network.@device[{{ item }}].ipv6='0'"
   with_sequence: start=0 end={{ bpi_if_count.stdout | int }} stride=1
+  register: set_ipv6
+  changed_when: set_ipv6.rc == 0
 
 - name: Commiting changes to uci and restarting network
   ansible.builtin.shell: |

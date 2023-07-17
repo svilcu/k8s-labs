@@ -7,8 +7,8 @@
 # if the certificates are not created we will let this fail until we create the roles and dependencies
 - name: Copying own root CA to OpenWRT
   ansible.builtin.copy:
-    src: "{{ CA_path }}/CA.pem"
-    dest: /usr/local/share/ca-certificates/home.tld.cert
+    src: "{{ certificate_path }}/CA.pem"
+    dest: /usr/local/share/ca-certificates/ownCA.cert
     owner: root
     group: root
     mode: '0644'
@@ -16,47 +16,47 @@
 
 - name: Linking cert to the default location
   ansible.builtin.file:
-    src: /usr/local/share/ca-certificates/home.tld.cert
-    dest: /etc/ssl/certs/home.tld.cert
+    src: /usr/local/share/ca-certificates/ownCA.cert
+    dest: /etc/ssl/certs/ownCA.cert
     owner: root
     group: root
     state: link
 
 - name: Adding own root CA to the system's trust store
   ansible.builtin.shell: |
-    HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/home.tld.cert).0"
-    ln -s "/etc/ssl/certs/home.tld.cert" "/etc/ssl/certs/$HASH"
+    HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/ownCA.cert).0"
+    ln -s "/etc/ssl/certs/ownCA.cert" "/etc/ssl/certs/$HASH"
   register: my_output
   changed_when: my_output.rc != 0
 
-- name: Check if private key for bpi.home exists.
-  ansible.builtin.stat:
-    path: ../files/cert/bpi_home.key
-  register: bpi_home_key
+# - name: Check if private key for bpi.home exists.
+#   ansible.builtin.stat:
+#     path: ../files/cert/bpi_home.key
+#   register: bpi_home_key
 
-- name: Generate bpi.home key.
-  community.crypto.openssl_privatekey:
-    path: ../files/certs/bpi_home.key
-  when: bpi_home_key.stat.exists is false
+# - name: Generate bpi.home key.
+#   community.crypto.openssl_privatekey:
+#     path: ../files/certs/bpi_home.key
+#   when: bpi_home_key.stat.exists is false
 
-- name: Check if the self-signed certificate  for bpi.home exists
-  ansible.builtin.stat:
-    path: ../files/certs/bpi_home.pem
-  register: bpi_home_pem
+# - name: Check if the self-signed certificate  for bpi.home exists
+#   ansible.builtin.stat:
+#     path: ../files/certs/bpi_home.pem
+#   register: bpi_home_pem
 
-- name: Create certificate signing request (CSR) for bpi.home certificate
-  community.crypto.openssl_csr_pipe:
-    privatekey_path: ../files/certs/bpi_home.key
-    common_name: bpi.home
-  register: csr_bpi_home
-  when: bpi_home_pem.stat.exists is false
+# - name: Create certificate signing request (CSR) for bpi.home certificate
+#   community.crypto.openssl_csr_pipe:
+#     privatekey_path: ../files/certs/bpi_home.key
+#     common_name: bpi.home
+#   register: csr_bpi_home
+#   when: bpi_home_pem.stat.exists is false
 
-- name: Create self-signed certificate from CSR
-  community.crypto.x509_certificate:
-    path: ../files/certs/bpi_home.pem
-    csr_content: "{{ csr_bpi_home.csr }}"
-    privatekey_path: ../files/certs/bpi_home.key
-    provider: ownca
-    ownca_path: ../files/certs/CA.pem
-    ownca_privatekey_path: ../files/certs/CA.key
-  when: bpi_home_pem.stat.exists is false
+# - name: Create self-signed certificate from CSR
+#   community.crypto.x509_certificate:
+#     path: ../files/certs/bpi_home.pem
+#     csr_content: "{{ csr_bpi_home.csr }}"
+#     privatekey_path: ../files/certs/bpi_home.key
+#     provider: ownca
+#     ownca_path: "{{ certificate_path }}/CA.pem"
+#     ownca_privatekey_path: "{{ certificate_path }}/CA.key"
+#   when: bpi_home_pem.stat.exists is false

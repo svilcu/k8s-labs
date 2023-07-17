@@ -1,12 +1,13 @@
 ---
-ansible_user: root
+# ansible_user: root
 
 bpi_password: "MaybeUw1llChangeThis!"
 bpi_hostname: "bpi-r3"
 # Radio
 bpi_radio_ssid: "bpi_test"
 bpi_radio_password: "1willModify!tS00n"
-
+# the bpi will get this address from the CIDR, as the final config
+bpi_ip: "1"
 # set this to false if you do not want the NVMe formated everytime.
 bpi_always_format_nvme: "false"
 # where to mount the NVMe
@@ -15,10 +16,9 @@ bpi_nvme_mount_dir: "/srv"
 # Aditional packages
 bpi_aditional_packages:
   # if we do not install sftp, ansible will generate warnings
-  # fix this in ansible.cfg by seting transfer to "scp" instead of "sftp" or install openssh_sftp
+  # fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
+  # or install openssh_sftp
   openssh_sftp: "false"
-  rsyslog: "false"
-  logrotate: "false"
   openvpn: "false"
   vsftpd: "false"
   gitolite: :"false"
@@ -33,9 +33,7 @@ pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/
 # so we will place the database on the NVMe
 pdns_db_path: "{{ bpi_nvme_mount_dir }}/lib/powerdns"
 pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
-pdns_allow_from: {{ default_CIDR }}
-# the address of the server will be {{ default_CIDR }} + pdns_webserver_address
-pdns_webserver_address: 1
+pdns_allow_from: "{{ default_CIDR }}"
 # PowerDNS api ports
 pdns_api_port: 8080
 pdns_api_ssl_port: 8443
