@@ -3,7 +3,7 @@ default_domain: "home.arpa"
 default_CIDR: "192.168.1.0/24"
 disable_ipv6: "true"
 # Self signed Certificate Authority and key path
-CA_path: files/certs/
+certificate_path: "files/certs/"
 
 # IP addresses for the static hosts in our home network.
 # these will be used to generate the .in-addr.arpa and ns records.

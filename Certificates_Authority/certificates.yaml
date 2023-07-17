@@ -1,0 +1,39 @@
+---
+- name: Create key, Certificate Authority, certificates and keys
+  hosts: all
+  connection: local
+  gather_facts: true
+  vars_files:
+    - ../global_vars.yaml
+
+  tasks:
+    - name: Check if private key for CA exists.
+      ansible.builtin.stat:
+        path: "../{{ certificate_path }}/CA.key"
+      register: ca_key
+
+    - name: Generate CA key.
+      community.crypto.openssl_privatekey:
+        path: "../{{ certificate_path }}/CA.key"
+      when: ca_key.stat.exists is false
+
+    - name: Check if the self-signed certificate exists
+      ansible.builtin.stat:
+        path: "../{{ certificate_path }}/CA.pem"
+      register: ca_pem
+
+    - name: Create certificate signing request (CSR) for self-signed certificate
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "../{{ certificate_path }}/CA.key"
+        common_name: "{{ default_domain }}"
+        organization_name: Home Network
+      register: csr
+      when: ca_pem.stat.exists is false
+
+    - name: Create self-signed certificate from CSR
+      community.crypto.x509_certificate:
+        path: "../{{ certificate_path }}/CA.pem"
+        csr_content: "{{ csr.csr }}"
+        privatekey_path: "../{{ certificate_path }}/CA.key"
+        provider: selfsigned
+      when: ca_pem.stat.exists is false

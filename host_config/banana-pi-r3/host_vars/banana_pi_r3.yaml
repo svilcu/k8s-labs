@@ -1,5 +1,8 @@
 ---
+ansible_user: root
+
 bpi_password: "MaybeUw1llChangeThis!"
+bpi_hostname: "bpi-r3"
 # Radio
 bpi_radio_ssid: "bpi_test"
 bpi_radio_password: "1willModify!tS00n"
@@ -21,10 +24,7 @@ bpi_aditional_packages:
   gitolite: :"false"
   prometheus_exporter: "false"
 
-ansible_user: root
-# Self signed Certificate Authority and key path
-CA_path: ../files/certs/
-
+### PowerDNS configuration
 # PowerDNS schema location for SQLite
 pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
 
