@@ -13,6 +13,9 @@ bpi_always_format_nvme: "false"
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
 
+# if you need full python installed, change this to "false"
+save_space_with_python3_light: "true"
+
 # Aditional packages
 bpi_aditional_packages:
   # if we do not install sftp, ansible will generate warnings
@@ -33,7 +36,3 @@ pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/
 # so we will place the database on the NVMe
 pdns_db_path: "{{ bpi_nvme_mount_dir }}/lib/powerdns"
 pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
-pdns_allow_from: "{{ default_CIDR }}"
-# PowerDNS api ports
-pdns_api_port: 8080
-pdns_api_ssl_port: 8443

@@ -7,7 +7,7 @@
 # if the certificates are not created we will let this fail until we create the roles and dependencies
 - name: Copying own root CA to OpenWRT
   ansible.builtin.copy:
-    src: "{{ certificate_path }}/CA.pem"
+    src: "../../{{ certificate_path }}/CA.pem"
     dest: /usr/local/share/ca-certificates/ownCA.cert
     owner: root
     group: root
@@ -25,7 +25,9 @@
 - name: Adding own root CA to the system's trust store
   ansible.builtin.shell: |
     HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/ownCA.cert).0"
-    ln -s "/etc/ssl/certs/ownCA.cert" "/etc/ssl/certs/$HASH"
+    if [ ! -f /etc/ssl/certs/$HASH ] ; then
+      ln -s "/etc/ssl/certs/ownCA.cert" "/etc/ssl/certs/$HASH"
+    fi
   register: my_output
   changed_when: my_output.rc != 0
 

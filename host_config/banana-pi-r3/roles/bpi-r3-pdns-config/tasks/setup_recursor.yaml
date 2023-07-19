@@ -1,0 +1,37 @@
+---
+- name: Removing old /etc/powerdns/recursor.conf file
+  ansible.builtin.file:
+    path: /etc/powerdns/recursor.conf
+    state: absent
+
+- name: Copying pdns.conf from template /etc/powerdns/recursor.conf-dist
+  ansible.builtin.copy:
+    src: /etc/powerdns/recursor.conf-dist
+    dest: /etc/powerdns/recursor.conf
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: true
+
+- name: Configuring allow-from localhost and default_CIDR
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# allow-from=.*'
+    replace: "allow-from=127.0.0.0/8, {{ default_CIDR }}"
+
+- name: Setting config-dir
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# config-dir=.*'
+    replace: 'config-dir=/etc/powerdns/'
+
+- name: Setting dont-query for localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# dont-query=.*'
+    replace: 'dont-query=127.0.0.0/8'
+
+- name: Reload PowerDNS recursor service
+  community.general.openwrt_init:
+    name: pdns-recursor
+    state: reloaded

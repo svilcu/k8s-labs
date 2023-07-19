@@ -1,8 +1,14 @@
 ---
+- name: Checking if the PowerDNS database already exists
+  ansible.builtin.stat:
+    path: "{{ pdns_db_path }}/pdns.sqlite3"
+  register: powerdns_db
+
 - name: Checking if the PowerDNS database location already exists
   ansible.builtin.stat:
     path: "{{ pdns_db_path }}"
   register: powerdns_dir
+  when: powerdns_db.stat.exists is false
 
 - name: Creating path for PowerDNS SQLite database and schema
   ansible.builtin.command: mkdir -p "{{ pdns_db_path }}"
@@ -14,6 +20,7 @@
   ansible.builtin.stat:
     path: "{{ pdns_db_path }}/schema.sqlite3.sql"
   register: powerdns_schema
+  when: powerdns_db.stat.exists is false
 
 - name: Downloading schema for the PowerDNS SQLite database from GitHub
   ansible.builtin.get_url:
@@ -21,11 +28,6 @@
     dest: "{{ pdns_db_path }}/schema.sqlite3.sql"
     mode: 600
   when: powerdns_schema.stat.exists is false
-
-- name: Checking if the PowerDNS schema already exists
-  ansible.builtin.stat:
-    path: "{{ pdns_db_path }}/pdns.sqlite3"
-  register: powerdns_db
 
 - name: Creating default PowerDNS database from schema
   ansible.builtin.shell: |
@@ -36,8 +38,16 @@
   register: my_output
   changed_when: my_output.rc != 0
 
+- name: Removing the PowerDNS schema
+  ansible.builtin.file:
+    path: "{{ pdns_db_path }}/schema.sqlite3.sql"
+    state: absent
+
 - name: Configuring PowerDNS
-  ansible.builtin.include_tasks: config_pdns.yaml
+  ansible.builtin.include_tasks: setup_pdns.yaml
 
 - name: Creating PowerDNS records
-  ansible.builtin.include_tasks: setup_records.yaml
+  ansible.builtin.include_tasks: setup_pdns_records.yaml
+
+- name: Configuring PowerDNS recursor
+  ansible.builtin.include_tasks: setup_recursor.yaml

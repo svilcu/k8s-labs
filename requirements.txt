@@ -1,5 +1,7 @@
 ansible
-molecule[docker,lint]
-docker
 yamllint
 ansible-lint
+pyyaml
+# molecule[docker,lint]
+# docker
+

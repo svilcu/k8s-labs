@@ -1,0 +1,77 @@
+- name: Removing old /etc/powerdns/pdns.conf file
+  ansible.builtin.file:
+    path: /etc/powerdns/pdns.conf
+    state: absent
+
+- name: Copying pdns.conf from template /etc/powerdns/pdns.conf-dist
+  ansible.builtin.copy:
+    src: /etc/powerdns/pdns.conf-dist
+    dest: /etc/powerdns/pdns.conf
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: true
+
+- name: Configuring SQLite as backend
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# launch=.*'
+    replace: 'launch=gsqlite3'
+
+- name: Setting the location of the SQLite database
+  ansible.builtin.lineinfile:
+    path: /etc/powerdns/pdns.conf
+    search_string: ''
+    insertafter: 'launch=gsqlite3'
+    line: 'gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3'
+
+- name: Enabling API
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# api=no.*'
+    replace: 'api=yes'
+
+- name: Generating API key
+  ansible.builtin.set_fact:
+    pdns_api_key: "{{ lookup('community.general.random_string', min_lower=1, min_upper=1, min_numeric=1, lenght=32) }}"
+
+- name: Saving API_KEY locally for the External_DNS configuration
+  delegate_to: localhost
+  ansible.builtin.copy:
+    content: "{{ pdns_api_key }}"
+    dest: "../../files/external_dns/api.key"
+    mode: "0600"
+
+- name: Setting API_KEY in configuration file
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# api-key=.*'
+    replace: "api-key= {{ pdns_api_key }}"
+
+- name: Setting default SOA content
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# default-soa-content=.*'
+    replace: "# default-soa-content={{ pdns_SOA }}"
+
+# - name: Configuring PowerDNS
+#   ansible.builtin.shell: |
+#     set -o pipefail
+#     # sed -i '/launch=gsqlite3/a gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3' /etc/powerdns/pdns.conf
+#     # sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
+#     # API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
+#     # sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
+#     # sed -i "s/# webserver=.*/webserver=yes/" /etc/powerdns/pdns.conf
+#     # sed -i "s/# webserver-address=.*/webserver-address={{ pdns_webserver_address }}/" /etc/powerdns/pdns.conf
+#     # sed -i "s/# webserver-allow-from=.*/webserver-allow-from={{ pdns_allow_from }}/" /etc/powerdns/pdns.conf
+#     # sed -i 's/^.* loglevel=.*/loglevel=8/' /etc/powerdns/pdns.conf
+#     # sed -i 's/# logging-facility=.*/logging-facility=4/' /etc/powerdns/pdns.conf
+#     # sed -i 's/^.* webserver-loglevel=.*/webserver-loglevel=detailed/' /etc/powerdns/pdns.conf
+#     exit 0
+#   register: my_output
+#   changed_when: my_output.rc != 0
+
+- name: Reload PowerDNS service
+  community.general.openwrt_init:
+    name: pdns
+    state: reloaded

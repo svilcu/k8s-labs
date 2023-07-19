@@ -62,3 +62,5 @@ server {
 ### yamllint disable rule:line-length
 
   If there are not exactly 1 partitions on the NVMe it will be partitioned to a single partition.
+
+pdns_server --daemon=no --guardian=no --loglevel=9

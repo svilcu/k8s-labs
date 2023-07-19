@@ -1,8 +1,7 @@
 ---
 - name: Installing new OS image and reset to factory defaults
-  hosts: bpi_default
+  hosts: openwrt
   gather_facts: false
-  become: false
   serial: 1
   ignore_unreachable: true
   vars:
@@ -13,7 +12,6 @@
     bpi_image_path: "../../files/images"
     # set to true if you want your router to be reset to factory defaults
     bpi_remove_config: "true"
-
 
   roles:
     - gekmihesg.openwrt
@@ -33,6 +31,7 @@
       when: sysupgrade.stat.exists == "false"
 
     - name: Copy openwrt image
+    # yamllint disable-line rule:line-length
       ansible.builtin.command: "{{ openwrt_scp }} -o StrictHostKeyChecking=no {{ bpi_image_path }}/sysupgrade.itb {{ openwrt_user_host | quote }}:/tmp/sysupgrade.itb"
       delegate_to: localhost
       register: copy_image

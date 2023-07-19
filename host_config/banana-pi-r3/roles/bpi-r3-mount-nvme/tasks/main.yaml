@@ -1,4 +1,44 @@
 ---
+- name: Checking if the nvme kernel module is installed
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsmod | grep -c nvme
+  register: nvme_present
+  changed_when: nvme_present.rc != 0
+
+- name: Loading the kernel nvme module
+  community.general.modprobe:
+    name: nvme
+    state: present
+  register: modprobe_nvme
+  changed_when: modprobe_nvme == 0
+  when: nvme_present.stdout | int == 0
+
+- name: Checking if modprobe detected the NVMe
+  ignore_errors: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsblk | grep disk | grep -c nvme0n1
+  register: bpi_nvme_detected
+  changed_when: bpi_nvme_detected.rc != 0
+
+# if the os fails to report the presence of the NVMe after modprobe, we reboot.
+# yamllint disable rule:no-changed-when
+- name: Rebooting in order to detect all the devices
+  # since ansible.builtin.reboot does not notice when the system comes back and reports timeout
+  ansible.builtin.command: "/sbin/reboot"
+  async: 1
+  poll: 0
+  when: bpi_nvme_detected.stdout | int == 0
+# yamllint enable rule:no-changed-when
+
+- name: Wait for reboot
+  ansible.builtin.wait_for_connection:
+    timeout: 300
+    delay: 60
+  when: bpi_nvme_detected.stdout | int == 0
+
+# if the NVMe is not detected after reboot, you do not have NVMe
 - name: Checking if you have NVMe
   ansible.builtin.shell: |
     set -o pipefail

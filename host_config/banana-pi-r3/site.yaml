@@ -1,34 +1,71 @@
 ---
 - name: Bootstrap python on Banana PI/OpenWRT
-  hosts: bpi_default
+  hosts: openwrt
   gather_facts: false
   become: false
   vars_files:
     - host_vars/banana_pi_r3.yaml
-    - ../../global_vars.yaml
-  vars:
-    save_space_with_python3_light: false
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
-- name: Installing packages required for block devices and filesystem manipulation
-  hosts: bpi_default
-  gather_facts: true
-  become: false
+- name: Installing mandatory packages, block devices and filesystem manipulation
+  hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
     - bpi-r3-filesystem-packages
 
-- name: Mounting NVMe, installing aditional packages, certificates etc.
-  hosts: bpi_default
-  gather_facts: true
-  become: false
+- name: Checking for NVMe and mounting it
+  hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
     - bpi-r3-mount-nvme
-    - bpi-r3-disable-ipv6
+
+- name: Disabling IPv6
+  hosts: openwrt
+  vars_files:
+    - group_vars/global_banana_pi_r3.yaml
+  roles:
+    - role: bpi-r3-disable-ipv6
+      when: disable_ipv6 == "true"
+
+- name: Installing NGinx with SSL, Luci with NGinx, PowerDNS and other packages
+  hosts: openwrt
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  roles:
     - bpi-r3-aditional-packages
+
+- name: Copying and registering our own Certificate Authority
+  hosts: openwrt
+  vars_files:
+    - group_vars/global_banana_pi_r3.yaml
+  roles:
     - bpi-r3-certs
+
+- name: Generating LAN IP from default_CIDR and bpi_ip
+  hosts: openwrt
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+    - group_vars/global_banana_pi_r3.yaml
+  tasks:
+    - name: Extracting network component from default_CIDR
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $1"."$2"."$3}'
+      register: network_component
+      changed_when: network_component.rc != 0
+    - name: Registering LAN ip address as bpi_lan_ip fact
+      ansible.builtin.set_fact:
+        bpi_lan_ip: "{{ network_component.stdout }}.{{ bpi_ip }}"
+        cacheable: true
+
+- name: Configuring PowerDNS and its recursor
+  hosts: openwrt
+  gather_facts: true
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+    - group_vars/global_banana_pi_r3.yaml
+  roles:
     - bpi-r3-pdns-config
