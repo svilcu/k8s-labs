@@ -33,7 +33,7 @@
 
 - name: Generating API key
   ansible.builtin.set_fact:
-    pdns_api_key: "{{ lookup('community.general.random_string', min_lower=1, min_upper=1, min_numeric=1, lenght=32) }}"
+    pdns_api_key: "{{ lookup('community.general.random_string', min_lower=1, min_upper=1, min_numeric=1, special=false, length=32) }}"
 
 - name: Saving API_KEY locally for the External_DNS configuration
   delegate_to: localhost
