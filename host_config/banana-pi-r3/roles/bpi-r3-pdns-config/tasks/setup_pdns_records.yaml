@@ -1,1 +1,54 @@
 ---
+- name: Creating zone {{ default_domain }}
+  ignore_errors: true
+  ansible.builtin.command: " pdnsutil create-zone {{ default_domain }}"
+  register: pdnsutil_create_zone
+  changed_when: pdnsutil_create_zone.rc != 0
+
+- name: Creating in-addr.arpa zone name
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $3"."$2"."$1".in-addr.arpa"}'
+  register: in_addr
+  changed_when: in_addr.rc != 0
+
+- name: Registering in-addr.arpa as fact
+  ansible.builtin.set_fact:
+    in_addr_arpa: "{{ in_addr.stdout }}"
+    cacheable: true
+
+- name: Creating zone {{ in_addr_arpa }}
+  # ignore_errors: true
+  ansible.builtin.command: " pdnsutil create-zone {{ in_addr_arpa }}"
+  register: pdnsutil_create_zone
+  changed_when: pdnsutil_create_zone.rc == 0
+
+- name: Creating NS entry for {{ default_domain }}
+  ansible.builtin.command: "pdnsutil add-record {{ default_domain }} @ NS ns1.{{ default_domain }}"
+
+- name: Creating entry for ns1.{{ default_domain }}
+  ansible.builtin.command: "pdnsutil add-record {{ default_domain}} ns1 A {{ ansible_facts['bpi_network'] }}.{{ ns1 }}"
+
+- name: Creating NS entry for {{ in_addr_arpa }}
+  ansible.builtin.command: "pdnsutil add-record {{ in_addr_arpa }} @ NS ns1.{{ default_domain }}"
+
+- name: Creating A records in {{ default_domain }}
+  # ignore_errors: true
+  ansible.builtin.command: "pdnsutil add-record {{ default_domain }} {{ item.key }} A {{ ansible_facts['bpi_network'] }}.{{ item.value }}"
+  loop: "{{ static_hosts | dict2items }}"
+
+- name: Creating CNAME records in {{ default_domain }}
+  # ignore_errors: true
+  ansible.builtin.command: "pdnsutil add-record {{ default_domain }} {{ item.key }} CNAME {{ item.value }}.{{ default_domain }}"
+  loop: "{{ cnames | dict2items }}"
+
+- name: Creating PTR records in {{ in_addr_arpa }}
+  # ignore_errors: true
+  ansible.builtin.command: "pdnsutil add-record {{ item.value }}.{{ ansible_facts['in_addr_arpa'] }} PTR {{ item.key }}.{{ default_domain }}"
+  loop: "{{ static_hosts | dict2items }}"
+
+- name: Increasing serial on {{ default_domain }}
+  ansible.builtin.command: "pdnsutil increase-serial {{ default_domain }}"
+
+- name: Increasing serial on {{ in_addr_arpa }}
+  ansible.builtin.command: "pdnsutil increase-serial {{ in_addr_arpa }}"

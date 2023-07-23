@@ -21,7 +21,7 @@
 - name: Setting the location of the SQLite database
   ansible.builtin.lineinfile:
     path: /etc/powerdns/pdns.conf
-    search_string: ''
+    search_string: '^$'
     insertafter: 'launch=gsqlite3'
     line: 'gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3'
 
@@ -46,13 +46,13 @@
   ansible.builtin.replace:
     path: /etc/powerdns/pdns.conf
     regexp: '^# api-key=.*'
-    replace: "api-key= {{ pdns_api_key }}"
+    replace: "api-key={{ pdns_api_key }}"
 
 - name: Setting default SOA content
   ansible.builtin.replace:
     path: /etc/powerdns/pdns.conf
     regexp: '^# default-soa-content=.*'
-    replace: "# default-soa-content={{ pdns_SOA }}"
+    replace: "default-soa-content={{ pdns_SOA }}"
 
 # - name: Configuring PowerDNS
 #   ansible.builtin.shell: |

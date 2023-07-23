@@ -28,5 +28,8 @@ static_hosts:
   gitlab: 196
 
 cnames:
-  ns1: "bpi-r3"
   pdns: "bpi-r3"
+  ftp: "bpi-r3"
+  git: "bpi-r3"
+
+ns1: 1

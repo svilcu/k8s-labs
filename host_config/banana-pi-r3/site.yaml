@@ -59,6 +59,7 @@
     - name: Registering LAN ip address as bpi_lan_ip fact
       ansible.builtin.set_fact:
         bpi_lan_ip: "{{ network_component.stdout }}.{{ bpi_ip }}"
+        bpi_network: "{{ network_component.stdout }}"
         cacheable: true
 
 - name: Configuring PowerDNS and its recursor
@@ -69,3 +70,5 @@
     - group_vars/global_banana_pi_r3.yaml
   roles:
     - bpi-r3-pdns-config
+  tags:
+    - pdns

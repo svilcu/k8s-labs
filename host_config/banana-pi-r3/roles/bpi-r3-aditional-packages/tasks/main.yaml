@@ -43,7 +43,7 @@
   register: my_output
   changed_when: my_output.rc != 0
 
-- name: Install Prometheus exporter
+- name: Installing Prometheus exporter
   community.general.opkg:
     name:
       - prometheus-node-exporter-lua
@@ -64,7 +64,7 @@
       - luci-light
     state: absent
 
-- name: Installing NGinx with Luci
+- name: Installing NGinx with SSL and luci-ssl-nginx
   community.general.opkg:
     name:
       - nginx-ssl
@@ -81,7 +81,7 @@
       - luci-compat
     state: present
 
-- name: Install OpenVPN
+- name: Installing OpenVPN packages
   community.general.opkg:
     name:
       - openvpn-openssl
@@ -90,20 +90,19 @@
     state: present
   when: bpi_aditional_packages.openvpn == "true"
 
-- name: Installing vsftpd
+- name: Installing vsftpd package
   community.general.opkg:
     name:
       - vsftpd
     state: present
   when: bpi_aditional_packages.vsftpd == "true"
 
-  # set local root for the server  “local_root=/mnt/usb1”
+  # create and set local root for the server  “local_root=/srv/ftp”
 
-- name: Install PowerDNS
+- name: Installing PowerDNS packages
   community.general.opkg:
     name:
       - pdns
-      - pdns-tools
       - pdns-recursor
       - pdns-backend-sqlite3
       - libedit

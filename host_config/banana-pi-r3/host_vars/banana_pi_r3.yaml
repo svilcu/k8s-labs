@@ -9,12 +9,15 @@ bpi_radio_password: "1willModify!tS00n"
 # the bpi will get this address from the CIDR, as the final config
 bpi_ip: "1"
 # set this to false if you do not want the NVMe formated everytime.
-bpi_always_format_nvme: "false"
+bpi_always_format_nvme: "true"
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
 
-# if you need full python installed, change this to "false"
-save_space_with_python3_light: "true"
+# if you don't need full python installed, change this to "true"
+# if you set it to "true", add validate_certs=false to ansible.cfg
+save_space_with_python3_light: "false"
+
+replace_dnsmasq_with_odhcpd: "false"
 
 # Aditional packages
 bpi_aditional_packages:
