@@ -14,6 +14,7 @@
       - kmod-fs-ext4
       - lsblk
       - parted
+      - blkid
       - uvol
       - autopart
       - openssl-util

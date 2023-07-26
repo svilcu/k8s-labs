@@ -1,18 +1,11 @@
 ---
-- name: Checking if the nvme kernel module is installed
-  ansible.builtin.shell: |
-    set -o pipefail
-    lsmod | grep -c nvme
-  register: nvme_present
-  changed_when: nvme_present.rc != 0
-
 - name: Loading the kernel nvme module
   community.general.modprobe:
     name: nvme
     state: present
   register: modprobe_nvme
   changed_when: modprobe_nvme == 0
-  when: nvme_present.stdout | int == 0
+ # when: nvme_present.stdout | int == 0
 
 - name: Checking if modprobe detected the NVMe
   ignore_errors: true

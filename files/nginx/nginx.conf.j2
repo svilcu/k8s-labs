@@ -1,9 +1,8 @@
 server {
 
     listen 443 ssl; #ipv4
-    listen [::]:443 ssl; #ipv6
 
-    server_name ns01.dnssec-script.com;
+    server_name pdns.{{ default_domain }};
 
     ssl_certificate           /etc/nginx/cert.crt;
     ssl_certificate_key       /etc/nginx/cert.key;

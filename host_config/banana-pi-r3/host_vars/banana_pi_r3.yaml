@@ -10,8 +10,13 @@ bpi_radio_password: "1willModify!tS00n"
 bpi_ip: "1"
 # set this to false if you do not want the NVMe formated everytime.
 bpi_always_format_nvme: "true"
+
+# Remove PowerDNS database
+pdns_remove_db: "true"
+
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
+
 
 # if you don't need full python installed, change this to "true"
 # if you set it to "true", add validate_certs=false to ansible.cfg
