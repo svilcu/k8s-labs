@@ -54,24 +54,50 @@
     regexp: '^# default-soa-content=.*'
     replace: "default-soa-content={{ pdns_SOA }}"
 
-# - name: Configuring PowerDNS
-#   ansible.builtin.shell: |
-#     set -o pipefail
-#     # sed -i '/launch=gsqlite3/a gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3' /etc/powerdns/pdns.conf
-#     # sed -i 's/# api=no/api=yes/' /etc/powerdns/pdns.conf
-#     # API_KEY=`grep -ao '[A-Za-z0-9]' < /dev/urandom | head -64 | tr -d '\n' ; echo ""`
-#     # sed -i "s/# api-key=/api-key=$API_KEY/" /etc/powerdns/pdns.conf
-#     # sed -i "s/# webserver=.*/webserver=yes/" /etc/powerdns/pdns.conf
-#     # sed -i "s/# webserver-address=.*/webserver-address={{ pdns_webserver_address }}/" /etc/powerdns/pdns.conf
-#     # sed -i "s/# webserver-allow-from=.*/webserver-allow-from={{ pdns_allow_from }}/" /etc/powerdns/pdns.conf
-#     # sed -i 's/^.* loglevel=.*/loglevel=8/' /etc/powerdns/pdns.conf
-#     # sed -i 's/# logging-facility=.*/logging-facility=4/' /etc/powerdns/pdns.conf
-#     # sed -i 's/^.* webserver-loglevel=.*/webserver-loglevel=detailed/' /etc/powerdns/pdns.conf
-#     exit 0
-#   register: my_output
-#   changed_when: my_output.rc != 0
+- name: Listerning only to localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# local-address=.*'
+    replace: "local-address=127.0.0.1"
+
+- name: Port to listen on
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# local-port=.*'
+    replace: "local-port=5300"
+
+- name: Acting as primary - master
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# master=no'
+    replace: "master=yes"
+
+
+- name: Acting as primary - primary
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# primary=no'
+    replace: "primary=yes"
+
+- name: Webserver listens only on localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-address=127.0.0.1'
+    replace: "webserver-address=127.0.0.1"
+
+- name: Webserver allows only from localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-allow-from=.*'
+    replace: "webserver-allow-from=127.0.0.1"
+
+- name: Webserver allows only from localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-port=.*'
+    replace: "webserver-port=8081"
 
 - name: Reload PowerDNS service
   community.general.openwrt_init:
     name: pdns
-    state: reloaded
+    state: restarted

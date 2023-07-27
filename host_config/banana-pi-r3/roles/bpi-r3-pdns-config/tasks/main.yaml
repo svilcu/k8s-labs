@@ -1,4 +1,11 @@
 ---
+
+- name: Removing --guardian=no from /etc/init.d/pdns
+  ansible.builtin.replace:
+    path: /etc/init.d/pdns
+    regexp: '--guardian=no'
+    replace: ''
+
 - name: Removing DB file
   ansible.builtin.file:
     path: "{{ pdns_db_path }}/pdns.sqlite3"

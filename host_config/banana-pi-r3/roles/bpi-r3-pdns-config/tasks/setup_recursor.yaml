@@ -19,6 +19,12 @@
     regexp: '^# allow-from=.*'
     replace: "allow-from=127.0.0.0/8, {{ default_CIDR }}"
 
+- name: Configuring socket-dir to /var/run/pdns
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# socket-dir=.*'
+    replace: "socket-dir=/var/run/pdns"
+
 - name: Setting config-dir
   ansible.builtin.replace:
     path: /etc/powerdns/recursor.conf
@@ -31,7 +37,37 @@
     regexp: '^# dont-query=.*'
     replace: 'dont-query=127.0.0.0/8'
 
+- name: Setting forward zones for {{ default_domain }}
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# forward-zones=.*'
+    replace: "forward-zones={{ default_domain }}=127.0.0.1:5300"
+
+- name: Setting forward zones for {{ default_domain }}
+  ansible.builtin.lineinfile:
+    path: /etc/powerdns/recursor.conf
+    search_string: '^$'
+    insertafter: "forward-zones={{ default_domain }}=127.0.0.1:5300"
+    line: "forward-zones+={{ in_addr_arpa }}=127.0.0.1:5300"
+
+- name: Listerning only to local IP
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# local-address=.*'
+    replace: "local-address=127.0.0.1,{{ ansible_facts['bpi_network'] }}.{{ ns1 }}"
+
+- name: Port to listen on
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# local-port=.*'
+    replace: "local-port=53"
+
+- name: Enabling PowerDNS recursor service
+  community.general.openwrt_init:
+    name: pdns-recursor
+    enabled: true
+
 - name: Reload PowerDNS recursor service
   community.general.openwrt_init:
     name: pdns-recursor
-    state: reloaded
+    state: restarted

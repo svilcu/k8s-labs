@@ -16,14 +16,13 @@
   changed_when: bpi_nvme_detected.rc != 0
 
 # if the os fails to report the presence of the NVMe after modprobe, we reboot.
-# yamllint disable rule:no-changed-when
 - name: Rebooting in order to detect all the devices
   # since ansible.builtin.reboot does not notice when the system comes back and reports timeout
   ansible.builtin.command: "/sbin/reboot"
   async: 1
   poll: 0
   when: bpi_nvme_detected.stdout | int == 0
-# yamllint enable rule:no-changed-when
+  changed_when: true
 
 - name: Wait for reboot
   ansible.builtin.wait_for_connection:
