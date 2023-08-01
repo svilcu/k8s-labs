@@ -1,13 +1,14 @@
 ---
 - name: Creating directory for the CA
-  ansible.builtin.command: mkdir -p /usr/local/share/ca-certificates
-  register: my_output
-  changed_when: my_output.rc != 0
+  ansible.builtin.file:
+    path: /usr/local/share/ca-certificates
+    state: directory
+    mode: '0755'
 
 # if the certificates are not created we will let this fail until we create the roles and dependencies
 - name: Copying own root CA to OpenWRT
   ansible.builtin.copy:
-    src: "../../{{ certificate_path }}/CA.pem"
+    src: "{{ certificate_path }}/CA.pem"
     dest: /usr/local/share/ca-certificates/ownCA.cert
     owner: root
     group: root
@@ -22,43 +23,56 @@
     group: root
     state: link
 
+- name: Creating hash for ownCA
+  ansible.builtin.command: "openssl x509 -hash -noout -in /etc/ssl/certs/ownCA.cert"
+  register: ownca_hash
+  changed_when: ownca_hash.rc != 0
+
 - name: Adding own root CA to the system's trust store
-  ansible.builtin.shell: |
-    HASH="$(openssl x509 -hash -noout -in /etc/ssl/certs/ownCA.cert).0"
-    if [ ! -f /etc/ssl/certs/$HASH ] ; then
-      ln -s "/etc/ssl/certs/ownCA.cert" "/etc/ssl/certs/$HASH"
-    fi
-  register: my_output
-  changed_when: my_output.rc != 0
+  ansible.builtin.file:
+    src: /etc/ssl/certs/ownCA.cert
+    dest: "/etc/ssl/certs/{{ ownca_hash.stdout }}"
+    owner: root
+    group: root
+    state: link
 
-# - name: Check if private key for bpi.home exists.
-#   ansible.builtin.stat:
-#     path: ../files/cert/bpi_home.key
-#   register: bpi_home_key
+- name: Check if exists private key for our host
+  ansible.builtin.stat:
+    path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
+  register: bpi_home_key
+  delegate_to: localhost
 
-# - name: Generate bpi.home key.
-#   community.crypto.openssl_privatekey:
-#     path: ../files/certs/bpi_home.key
-#   when: bpi_home_key.stat.exists is false
+- name: Generate key for {{ bpi_hostname }}
+  community.crypto.openssl_privatekey:
+    path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
+  delegate_to: localhost
+  when: bpi_home_key.stat.exists is false
 
-# - name: Check if the self-signed certificate  for bpi.home exists
-#   ansible.builtin.stat:
-#     path: ../files/certs/bpi_home.pem
-#   register: bpi_home_pem
+- name: Check if a self-signed certificate exists for {{ bpi_hostname }}
+  ansible.builtin.stat:
+    path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.pem"
+  delegate_to: localhost
+  register: bpi_home_pem
 
-# - name: Create certificate signing request (CSR) for bpi.home certificate
-#   community.crypto.openssl_csr_pipe:
-#     privatekey_path: ../files/certs/bpi_home.key
-#     common_name: bpi.home
-#   register: csr_bpi_home
-#   when: bpi_home_pem.stat.exists is false
+- name: Create certificate signing request (CSR) for {{ bpi_hostname }}
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
+    country_name: "{{ ownCA_country_name }}"
+    organization_name: "{{ ownCA_organization_name }}"
+    email_address: "{{ ownCA_email_address }}"
+    common_name: "{{ bpi_hostname }}.{{ default_domain }}"
+    subject_alt_name: "DNS:{{ pdns_virtualhost }}.{{ default_domain }}"
+  register: csr
+  delegate_to: localhost
+  when: bpi_home_pem.stat.exists is false
 
-# - name: Create self-signed certificate from CSR
-#   community.crypto.x509_certificate:
-#     path: ../files/certs/bpi_home.pem
-#     csr_content: "{{ csr_bpi_home.csr }}"
-#     privatekey_path: ../files/certs/bpi_home.key
-#     provider: ownca
-#     ownca_path: "{{ certificate_path }}/CA.pem"
-#     ownca_privatekey_path: "{{ certificate_path }}/CA.key"
-#   when: bpi_home_pem.stat.exists is false
+- name: Create certificate from CSR signed by ownCA
+  community.crypto.x509_certificate:
+    path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.pem"
+    csr_content: "{{ csr.csr }}"
+    privatekey_path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
+    provider: ownca
+    ownca_path: "{{ certificate_path }}/CA.pem"
+    ownca_privatekey_path: "{{ certificate_path }}/CA.key"
+  delegate_to: localhost
+  when: bpi_home_pem.stat.exists is false

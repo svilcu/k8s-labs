@@ -8,6 +8,13 @@
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
+- name: Setup the host
+  hosts: openwrt
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  roles:
+    - bpi-r3-host-setup
+
 - name: Installing mandatory packages, block devices and filesystem manipulation
   hosts: openwrt
   vars_files:
@@ -25,7 +32,7 @@
 - name: Disabling IPv6
   hosts: openwrt
   vars_files:
-    - group_vars/global_banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
   roles:
     - role: bpi-r3-disable-ipv6
       when: disable_ipv6 == "true"
@@ -40,7 +47,8 @@
 - name: Copying and registering our own Certificate Authority
   hosts: openwrt
   vars_files:
-    - group_vars/global_banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
+    - host_vars/banana_pi_r3.yaml
   roles:
     - bpi-r3-certs
 
@@ -48,7 +56,7 @@
   hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
-    - group_vars/global_banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
   tasks:
     - name: Extracting network component from default_CIDR
       ansible.builtin.shell: |
@@ -67,7 +75,7 @@
   gather_facts: true
   vars_files:
     - host_vars/banana_pi_r3.yaml
-    - group_vars/global_banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
   roles:
     - bpi-r3-pdns-config
   tags:

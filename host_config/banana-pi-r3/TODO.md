@@ -9,9 +9,9 @@
 - [x] Save API_KEY
 - [ ] Make it idempotent
 - [ ] Single command per task
-- [ ] restart all services via ansible
+- [x] restart all services via ansible
 - [ ] Try to convert update_os.yaml to python based
 - [x] Replace sed commands with Ansible ones
 - [ ] Update Readme
-- [ ] Set  system namd, NTP, TZ etc
+- [ ] Set system name, NTP, TZ etc
 - [ ] Add "EDITOR=vi" to /etc/profile

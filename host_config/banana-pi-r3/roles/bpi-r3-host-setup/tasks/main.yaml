@@ -1,0 +1,22 @@
+---
+- name: Adding EDITOR=vi in /etc/profile
+  ansible.builtin.blockinfile:
+    path: /etc/profile
+    insertafter: "EOF"
+    block: |
+      EDITOR=vi
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+
+- name: Copying authorized_keys to /etc/dropbear
+  ansible.builtin.copy:
+    src: ../../files/keys/authorized_keys
+    dest: /etc/dropbear
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Changing root password
+  ansible.builtin.user:
+    name: root
+    update_password: always
+    password: "{{ bpi_password|password_hash('sha512') }}"

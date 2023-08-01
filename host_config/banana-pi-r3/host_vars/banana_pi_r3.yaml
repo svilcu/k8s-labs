@@ -1,6 +1,5 @@
 ---
-# ansible_user: root
-
+certificate_path: "../../{{ cert_path }}"
 bpi_password: "MaybeUw1llChangeThis!"
 bpi_hostname: "bpi-r3"
 # Radio
@@ -16,7 +15,6 @@ pdns_remove_db: "true"
 
 # where to mount the NVMe
 bpi_nvme_mount_dir: "/srv"
-
 
 # if you don't need full python installed, change this to "true"
 # if you set it to "true", add validate_certs=false to ansible.cfg
