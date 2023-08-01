@@ -40,5 +40,5 @@ pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/
 # PowerDNS recommends installing its database in /var/lib/powerdns
 # for an unknown reason to me, after reboot, the directory /var/lib/powerdns is absent
 # so we will place the database on the NVMe
-pdns_db_path: "{{ bpi_nvme_mount_dir }}/lib/powerdns"
+pdns_db_path: "/usr/lib/powerdns"
 pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"

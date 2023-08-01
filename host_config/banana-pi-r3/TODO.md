@@ -8,10 +8,10 @@
 - [ ] Configure dnsmasq instead of odhcpd
 - [x] Save API_KEY
 - [ ] Make it idempotent
-- [ ] Single command per task
+- [x] Single command per task
 - [x] restart all services via ansible
 - [ ] Try to convert update_os.yaml to python based
 - [x] Replace sed commands with Ansible ones
 - [ ] Update Readme
 - [ ] Set system name, NTP, TZ etc
-- [ ] Add "EDITOR=vi" to /etc/profile
+- [x] Add "EDITOR=vi" to /etc/profile
