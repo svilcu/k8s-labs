@@ -6,19 +6,19 @@
     uci -q delete network.lan.ip6assign
     uci -q delete network.globals.ula_prefix
     uci commit network
-  register: bpi_commit_network
-  changed_when: bpi_commit_network.rc == 0
+  register: commit_network
+  changed_when: commit_network.rc == 0
 
 - name: Retrieving the number of interfaces
   ansible.builtin.shell: |
     set -o pipefail
     uci show network | grep '@device' | cut -f1 -d']' | cut -f2 -d'[' | sort -ru | head -1
-  register: bpi_if_count
-  changed_when: bpi_if_count.rc != 0
+  register: if_count
+  changed_when: if_count.rc != 0
 
 - name: Setting ipv6=0 for all interfaces
   ansible.builtin.command: "uci set network.@device[{{ item }}].ipv6='0'"
-  with_sequence: start=0 end={{ bpi_if_count.stdout | int }} stride=1
+  with_sequence: start=0 end={{ if_count.stdout | int }} stride=1
   register: set_ipv6
   changed_when: set_ipv6.rc == 0
 
@@ -26,8 +26,8 @@
   ansible.builtin.shell: |
     uci commit network
     /etc/init.d/network restart
-  register: bpi_net_restart
-  changed_when: bpi_net_restart.rc != 0
+  register: net_restart
+  changed_when: net_restart.rc != 0
 
 - name: Removing DHCPv6 related settings and restarting odhcpd
   ansible.builtin.shell: |
@@ -36,5 +36,5 @@
     uci -q delete dhcp.lan.ra
     uci commit dhcp
     /etc/init.d/odhcpd restart
-  register: bpi_odhcpd_restart
-  changed_when: bpi_odhcpd_restart.rc != 0
+  register: odhcpd_restart
+  changed_when: odhcpd_restart.rc != 0

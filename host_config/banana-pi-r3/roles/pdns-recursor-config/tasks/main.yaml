@@ -1,10 +1,22 @@
 ---
-- name: Removing old /etc/powerdns/recursor.conf file
+- name: Creating in-addr.arpa zone name
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $3"."$2"."$1".in-addr.arpa"}'
+  register: in_addr
+  changed_when: in_addr.rc == 0
+
+- name: Registering in-addr.arpa as fact
+  ansible.builtin.set_fact:
+    in_addr_arpa: "{{ in_addr.stdout }}"
+    cacheable: true
+
+- name: Removing old /etc/powerdns/recursor.conf file if it exists
   ansible.builtin.file:
     path: /etc/powerdns/recursor.conf
     state: absent
 
-- name: Copying pdns.conf from template /etc/powerdns/recursor.conf-dist
+- name: Copying /etc/powerdns/recursor.conf from template /etc/powerdns/recursor.conf-dist
   ansible.builtin.copy:
     src: /etc/powerdns/recursor.conf-dist
     dest: /etc/powerdns/recursor.conf
@@ -31,24 +43,11 @@
     regexp: '^# config-dir=.*'
     replace: 'config-dir=/etc/powerdns/'
 
-- name: Setting dont-query for localhost
-  ansible.builtin.replace:
-    path: /etc/powerdns/recursor.conf
-    regexp: '^# dont-query=.*'
-    replace: 'dont-query=127.0.0.0/8'
-
-- name: Setting forward zones for {{ default_domain }}
+- name: Setting forward zones
   ansible.builtin.replace:
     path: /etc/powerdns/recursor.conf
     regexp: '^# forward-zones=.*'
-    replace: "forward-zones={{ default_domain }}=127.0.0.1:5300"
-
-- name: Setting forward zones for {{ default_domain }}
-  ansible.builtin.lineinfile:
-    path: /etc/powerdns/recursor.conf
-    search_string: '^$'
-    insertafter: "forward-zones={{ default_domain }}=127.0.0.1:5300"
-    line: "forward-zones+={{ in_addr_arpa }}=127.0.0.1:5300"
+    replace: "forward-zones={{ default_domain }}=127.0.0.1:5300, {{ in_addr_arpa }}=127.0.0.1:5300"
 
 - name: Listerning only to local IP
   ansible.builtin.replace:
@@ -62,12 +61,24 @@
     regexp: '^# local-port=.*'
     replace: "local-port=53"
 
+- name: Enabling serve-rfc1918
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# serve-rfc1918=.*'
+    replace: "serve-rfc1918=yes"
+
+- name: Setting search suffix to {{ default_domain }}
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# export-etc-hosts-search-suffix=.*'
+    replace: "export-etc-hosts-search-suffix={{ default_domain }}"
+
 - name: Enabling PowerDNS recursor service
   community.general.openwrt_init:
     name: pdns-recursor
     enabled: true
 
-- name: Reload PowerDNS recursor service
+- name: Restarting PowerDNS recursor service
   community.general.openwrt_init:
     name: pdns-recursor
     state: restarted

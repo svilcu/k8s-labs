@@ -39,20 +39,20 @@
 - name: Check if exists private key for our host
   ansible.builtin.stat:
     path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
-  register: bpi_home_key
+  register: home_key
   delegate_to: localhost
 
 - name: Generate key for {{ bpi_hostname }}
   community.crypto.openssl_privatekey:
     path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.key"
   delegate_to: localhost
-  when: bpi_home_key.stat.exists is false
+  when: home_key.stat.exists is false
 
 - name: Check if a self-signed certificate exists for {{ bpi_hostname }}
   ansible.builtin.stat:
     path: "{{ certificate_path }}/{{ bpi_hostname }}_{{ default_domain }}.pem"
   delegate_to: localhost
-  register: bpi_home_pem
+  register: home_pem
 
 - name: Create certificate signing request (CSR) for {{ bpi_hostname }}
   community.crypto.openssl_csr_pipe:
@@ -64,7 +64,7 @@
     subject_alt_name: "DNS:{{ pdns_virtualhost }}.{{ default_domain }}"
   register: csr
   delegate_to: localhost
-  when: bpi_home_pem.stat.exists is false
+  when: home_pem.stat.exists is false
 
 - name: Create certificate from CSR signed by ownCA
   community.crypto.x509_certificate:
@@ -75,4 +75,4 @@
     ownca_path: "{{ certificate_path }}/CA.pem"
     ownca_privatekey_path: "{{ certificate_path }}/CA.key"
   delegate_to: localhost
-  when: bpi_home_pem.stat.exists is false
+  when: home_pem.stat.exists is false

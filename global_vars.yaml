@@ -4,6 +4,7 @@ default_CIDR: "192.168.1.0/24"
 disable_ipv6: "true"
 # Self signed Certificate Authority and key path
 cert_path: "files/certs/"
+key_path: "files/keys/authorized_keys"
 
 # we will access the PowerDNS api via https://pdns_virtualhost.default_domain/api
 pdns_virtualhost: pdns

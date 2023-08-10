@@ -11,6 +11,7 @@
 - name: Setup the host
   hosts: openwrt
   vars_files:
+    - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
     - bpi-r3-host-setup
@@ -42,7 +43,7 @@
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-aditional-packages
+    - bpi-r3-additional-packages
 
 - name: Copying and registering our own Certificate Authority
   hosts: openwrt
@@ -77,6 +78,18 @@
     - host_vars/banana_pi_r3.yaml
     - group_vars/global_vars.yaml
   roles:
-    - bpi-r3-pdns-config
+    - pdns-config
+    - pdns-recursor-config
+    - pdns-zones-add-records
   tags:
     - pdns
+
+- name: Configuring vsftpd
+  hosts: openwrt
+  gather_facts: true
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
+  roles:
+    - role: vsftpd-config
+      when: vsftpd_install == "true"

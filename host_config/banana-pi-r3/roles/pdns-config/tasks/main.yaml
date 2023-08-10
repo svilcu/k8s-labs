@@ -50,11 +50,5 @@
     path: "{{ pdns_db_path }}/schema.sqlite3.sql"
     state: absent
 
-- name: Configuring PowerDNS
+- name: Configuring PowerDNS in /etc/powerdns/pdns.conf
   ansible.builtin.include_tasks: setup_pdns.yaml
-
-- name: Creating PowerDNS records
-  ansible.builtin.include_tasks: setup_pdns_records.yaml
-
-- name: Configuring PowerDNS recursor
-  ansible.builtin.include_tasks: setup_recursor.yaml

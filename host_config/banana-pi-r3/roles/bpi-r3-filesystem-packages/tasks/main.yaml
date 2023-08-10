@@ -3,7 +3,7 @@
   community.general.opkg:
     name: openssh-sftp-server
     state: present
-  when: bpi_aditional_packages.openssh_sftp == "true"
+  when: install_sftp == "true"
 
 - name: Install filesystem manipulation packages
   community.general.opkg:

@@ -1,15 +1,22 @@
 ---
+- name: Upgrading packages
+  ansible.builtin.shell: |
+    set -o pipefail
+    opkg list-upgradable | cut -f 1 -d ' ' | xargs -r opkg upgrade
+  register: upgrade_packages
+  changed_when: upgrade_packages.rc == 0
+
 - name: Adding EDITOR=vi in /etc/profile
   ansible.builtin.blockinfile:
     path: /etc/profile
     insertafter: "EOF"
     block: |
-      EDITOR=vi
+      export EDITOR="vi"
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
 
 - name: Copying authorized_keys to /etc/dropbear
   ansible.builtin.copy:
-    src: ../../files/keys/authorized_keys
+    src: "{{ authorized_keys_path }}"
     dest: /etc/dropbear
     owner: root
     group: root
@@ -19,4 +26,4 @@
   ansible.builtin.user:
     name: root
     update_password: always
-    password: "{{ bpi_password|password_hash('sha512') }}"
+    password: "{{ bpi_password | password_hash('sha512') }}"

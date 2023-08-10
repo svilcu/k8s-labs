@@ -54,7 +54,7 @@
       - prometheus-node-exporter-lua-wifi
       - prometheus-node-exporter-lua-wifi_stations
     state: present
-  when: bpi_aditional_packages.prometheus_exporter == "true"
+  when: install_prometheus_exporter == "true"
 
 - name: Removing luci and dependencies
   community.general.opkg:
@@ -88,16 +88,7 @@
       - openvpn-easy-rsa
       - luci-app-openvpn
     state: present
-  when: bpi_aditional_packages.openvpn == "true"
-
-- name: Installing vsftpd package
-  community.general.opkg:
-    name:
-      - vsftpd
-    state: present
-  when: bpi_aditional_packages.vsftpd == "true"
-
-  # create and set local root for the server  “local_root=/srv/ftp”
+  when: install_openvpn == "true"
 
 - name: Installing PowerDNS packages
   community.general.opkg:

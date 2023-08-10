@@ -1,0 +1,6 @@
+---
+- name: Installing vsftpd package
+  community.general.opkg:
+    name:
+      - vsftpd
+    state: present

@@ -5,15 +5,14 @@
     state: present
   register: modprobe_nvme
   changed_when: modprobe_nvme == 0
- # when: nvme_present.stdout | int == 0
 
 - name: Checking if modprobe detected the NVMe
   ignore_errors: true
   ansible.builtin.shell: |
     set -o pipefail
     lsblk | grep disk | grep -c nvme0n1
-  register: bpi_nvme_detected
-  changed_when: bpi_nvme_detected.rc != 0
+  register: nvme_detected
+  changed_when: nvme_detected.rc != 0
 
 # if the os fails to report the presence of the NVMe after modprobe, we reboot.
 - name: Rebooting in order to detect all the devices
@@ -21,41 +20,41 @@
   ansible.builtin.command: "/sbin/reboot"
   async: 1
   poll: 0
-  when: bpi_nvme_detected.stdout | int == 0
+  when: nvme_detected.stdout | int == 0
   changed_when: true
 
 - name: Wait for reboot
   ansible.builtin.wait_for_connection:
     timeout: 300
     delay: 60
-  when: bpi_nvme_detected.stdout | int == 0
+  when: nvme_detected.stdout | int == 0
 
 # if the NVMe is not detected after reboot, you do not have NVMe
 - name: Checking if you have NVMe
   ansible.builtin.shell: |
     set -o pipefail
     lsblk -Nnr | wc -l
-  register: bpi_nvme_count
-  changed_when: bpi_nvme_count.rc != 0
+  register: nvme_count
+  changed_when: nvme_count.rc != 0
 
 - name: NVMe absent
   ansible.builtin.debug:
     msg: You have no NVMe disks installed
-  when: bpi_nvme_count.stdout | int == 0
+  when: nvme_count.stdout | int == 0
 
 - name: Checking if the NVMe is already mounted
   ignore_errors: true
   ansible.builtin.shell: |
     set -o pipefail
     mount | grep -c nvme0n1
-  register: bpi_nvme_mounted
-  changed_when: bpi_nvme_mounted.rc != 0
+  register: nvme_mounted
+  changed_when: nvme_mounted.rc != 0
 
 - name: NVMe already mounted
   ansible.builtin.debug:
     msg: Your NVMe is already mounted, skipping format and mount
-  when: bpi_nvme_mounted.stdout | int == 1
+  when: nvme_mounted.stdout | int == 1
 
 - name: Partitioning, formating and mounting NVMe
   ansible.builtin.include_tasks: additional_tasks.yaml
-  when: (bpi_nvme_count.stdout | int == 1) and (bpi_nvme_mounted.stdout | int == 0)
+  when: (nvme_count.stdout | int == 1) and (nvme_mounted.stdout | int == 0)

@@ -1,20 +1,24 @@
 ---
 certificate_path: "../../{{ cert_path }}"
+authorized_keys_path: "../../{{ key_path }}"
 bpi_password: "MaybeUw1llChangeThis!"
 bpi_hostname: "bpi-r3"
+
 # Radio
-bpi_radio_ssid: "bpi_test"
-bpi_radio_password: "1willModify!tS00n"
+radio_ssid: "bpi_test"
+radio_password: "1willModify!tS00n"
+
 # the bpi will get this address from the CIDR, as the final config
 bpi_ip: "1"
+
 # set this to false if you do not want the NVMe formated everytime.
-bpi_always_format_nvme: "true"
+always_format_nvme: "true"
 
 # Remove PowerDNS database
 pdns_remove_db: "true"
 
 # where to mount the NVMe
-bpi_nvme_mount_dir: "/srv"
+nvme_mount_dir: "/srv"
 
 # if you don't need full python installed, change this to "true"
 # if you set it to "true", add validate_certs=false to ansible.cfg
@@ -22,23 +26,25 @@ save_space_with_python3_light: "false"
 
 replace_dnsmasq_with_odhcpd: "false"
 
-# Aditional packages
-bpi_aditional_packages:
-  # if we do not install sftp, ansible will generate warnings
-  # fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
-  # or install openssh_sftp
-  openssh_sftp: "false"
-  openvpn: "false"
-  vsftpd: "false"
-  gitolite: :"false"
-  prometheus_exporter: "false"
+# by default, if we do not install sftp, ansible will generate warnings
+# fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
+# or install openssh_sftp
+install_sftp: "false"
+
+# Additional packages
+install_openvpn: "false"
+install_gitolite: :"false"
+install_prometheus_exporter: "false"
+
+### vsftpd
+vsftpd_install: "true"
+vsftpd_home: "/srv/ftp"
 
 ### PowerDNS configuration
 # PowerDNS schema location for SQLite
 pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
 
 # PowerDNS recommends installing its database in /var/lib/powerdns
-# for an unknown reason to me, after reboot, the directory /var/lib/powerdns is absent
-# so we will place the database on the NVMe
+# /var/ is mounted on /tmp and cleaned at every reboot
 pdns_db_path: "/usr/lib/powerdns"
 pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"

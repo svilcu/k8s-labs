@@ -1,7 +1,7 @@
 ---
-- name: Creating NVMe mount point "{{ bpi_nvme_mount_dir }}"
+- name: Creating NVMe mount point "{{ nvme_mount_dir }}"
   ansible.builtin.file:
-    path: "{{ bpi_nvme_mount_dir }}"
+    path: "{{ nvme_mount_dir }}"
     state: directory
     mode: '0755'
   changed_when: true
@@ -10,8 +10,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     lsblk -frn /dev/nvme0n1 | grep -wv nvme0n1 | wc -l
-  register: bpi_nvme_part_count
-  changed_when: bpi_nvme_part_count.rc != 0
+  register: nvme_part_count
+  changed_when: nvme_part_count.rc != 0
 
 - name: Parted - creating GPT partition table
   community.general.parted:
@@ -23,14 +23,14 @@
     part_type: "primary"
     fs_type: "ext4"
     state: "present"
-  when: bpi_nvme_part_count.stdout | int == 0 or bpi_always_format_nvme == "true"
+  when: nvme_part_count.stdout | int == 0 or always_format_nvme == "true"
   changed_when: true
 
 - name: Create a ext4 filesystem on /dev/nvme0n1p1
   community.general.filesystem:
     fstype: "ext4"
     dev: "/dev/nvme0n1p1"
-  when: bpi_nvme_part_count.stdout | int == 0 or bpi_always_format_nvme == "true"
+  when: nvme_part_count.stdout | int == 0 or always_format_nvme == "true"
   changed_when: true
 
 - name: UCI fstab - extracting id of the /mnt/nvme0n1p1 if it was created
@@ -42,7 +42,7 @@
   changed_when: mnt_nvme_uci_id.rc == 0
 
 - name: UCI fstab - remove "/mnt/nvme0n1p1" if it exists
-  ansible.builtin.command: "uci delete fstab.@mount[{{ mnt_nvme_uci_id.stdout }}]"
+  ansible.builtin.command: "uci delete fstab.@mount[{{ nvme_uci_id.stdout }}]"
   when: mnt_nvme_uci_id.rc == 0
   register: remove_mnt_nvme
   changed_when: remove_mnt_nvme.rc == 0
@@ -65,7 +65,7 @@
   changed_when: uci_fstab_add_uuid.rc == 0
 
 - name: UCI fstab - add target mount for NVMe
-  ansible.builtin.command: uci set fstab.@mount[-1].target="{{ bpi_nvme_mount_dir }}"
+  ansible.builtin.command: uci set fstab.@mount[-1].target="{{ nvme_mount_dir }}"
   register: uci_fstab_add_target
   changed_when: uci_fstab_add_target.rc == 0
 

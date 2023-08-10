@@ -66,19 +66,6 @@
     regexp: '^# local-port=.*'
     replace: "local-port=5300"
 
-- name: Acting as primary - master
-  ansible.builtin.replace:
-    path: /etc/powerdns/pdns.conf
-    regexp: '^# master=no'
-    replace: "master=yes"
-
-
-- name: Acting as primary - primary
-  ansible.builtin.replace:
-    path: /etc/powerdns/pdns.conf
-    regexp: '^# primary=no'
-    replace: "primary=yes"
-
 - name: Webserver listens only on localhost
   ansible.builtin.replace:
     path: /etc/powerdns/pdns.conf
