@@ -4,3 +4,134 @@
     name:
       - vsftpd
     state: present
+
+- name: Creating vsftpd home in {{ vsftpd_home }}
+  ansible.builtin.file:
+    path: "{{ vsftpd_home }}"
+    state: directory
+    mode: '0755'
+
+- name: Changing home for ftp user
+  ansible.builtin.user:
+    name: ftp
+    home: "{{ vsftpd_home }}"
+
+- name: Enabling anonymous ftp in /etc/vsftpd.conf
+  ansible.builtin.replace:
+    path: /etc/vsftpd.conf
+    regexp: '^anonymous_enable=.*'
+    replace: 'anonymous_enable=YES'
+
+# local_root
+- name: Checking if local_root does not exist in /etc/vsftpd.conf
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: '^local_root=.*'
+    state: absent
+  check_mode: true
+  register: local_root
+
+- name: Echoing local_root
+  ansible.builtin.debug:
+    msg: "{{ local_root }}"
+
+- name: Adding local_root in /etc/vsftpd.conf
+  ansible.builtin.blockinfile:
+    path: /etc/vsftpd.conf
+    insertafter: "EOF"
+    block: |
+      local_root={{ vsftpd_home }}
+    marker: "# {mark} local_root ANSIBLE MANAGED BLOCK"
+  when: local_root.changed is false # noqa: no-handler
+
+- name: Changing local_root in /etc/vsftpd.conf
+  ansible.builtin.replace:
+    path: /etc/vsftpd.conf
+    regexp: '^local_root=.*'
+    replace: "local_root={{ vsftpd_home }}"
+  when: local_root.changed is true # noqa: no-handler
+
+# pasv_mode
+- name: Checking if pasv_enable does not exist in /etc/vsftpd.conf
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: '^pasv_enable=.*'
+    state: absent
+  check_mode: true
+  register: pasv_enable
+
+- name: Adding pasv_enable=YES in /etc/vsftpd.conf
+  ansible.builtin.blockinfile:
+    path: /etc/vsftpd.conf
+    insertafter: "EOF"
+    block: |
+      pasv_enable=YES
+    marker: "# {mark} pasv_enable ANSIBLE MANAGED BLOCK"
+  when: pasv_enable.changed is false # noqa: no-handler
+
+- name: Changing pasv_enable in /etc/vsftpd.conf
+  ansible.builtin.replace:
+    path: /etc/vsftpd.conf
+    regexp: '^pasv_enable=.*'
+    replace: 'pasv_enable=YES'
+  when: pasv_enable.changed is true # noqa: no-handler
+
+# anon_root
+- name: Checking if anon_root does not exist in /etc/vsftpd.conf
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: '^anon_root=.*'
+    state: absent
+  check_mode: true
+  register: anon_root
+
+- name: Adding anon_root in /etc/vsftpd.conf
+  ansible.builtin.blockinfile:
+    path: /etc/vsftpd.conf
+    insertafter: "EOF"
+    block: |
+      anon_root={{ vsftpd_home }}
+    marker: "# {mark} anon_root ANSIBLE MANAGED BLOCK"
+  when: anon_root.changed is false # noqa: no-handler
+
+- name: Changing anon_root in /etc/vsftpd.conf
+  ansible.builtin.replace:
+    path: /etc/vsftpd.conf
+    regexp: '^anon_root=.*'
+    replace: "anon_root={{ vsftpd_home }}"
+  when: anon_root.changed is true # noqa: no-handler
+
+# chroot_local_user
+- name: Checking if chroot_local_user does not exist in /etc/vsftpd.conf
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: '^chroot_local_user=.*'
+    state: absent
+  check_mode: true
+  register: chroot_local_user
+
+- name: Adding chroot_local_user=YES in /etc/vsftpd.conf
+  ansible.builtin.blockinfile:
+    path: /etc/vsftpd.conf
+    insertafter: "EOF"
+    block: |
+      chroot_local_user=YES
+    marker: "# {mark} chroot_local_user ANSIBLE MANAGED BLOCK"
+  when: chroot_local_user.changed is false # noqa: no-handler
+
+- name: Changing pasv_enable in /etc/vsftpd.conf
+  ansible.builtin.replace:
+    path: /etc/vsftpd.conf
+    regexp: '^chroot_local_user=.*'
+    replace: 'chroot_local_user=YES'
+  when: chroot_local_user.changed is true # noqa: no-handler
+
+- name: Enabling vsftpd service
+  community.general.openwrt_init:
+    name: vsftpd
+    enabled: true
+
+- name: Restarting vsftpd service
+  community.general.openwrt_init:
+    name: vsftpd
+    state: restarted

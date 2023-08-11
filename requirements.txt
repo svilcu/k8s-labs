@@ -3,6 +3,7 @@ yamllint
 ansible-lint
 pyyaml
 passlib
+dnspython
 # molecule[docker,lint]
 # docker
 

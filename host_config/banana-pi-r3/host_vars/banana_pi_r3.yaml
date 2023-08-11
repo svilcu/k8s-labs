@@ -38,7 +38,7 @@ install_prometheus_exporter: "false"
 
 ### vsftpd
 vsftpd_install: "true"
-vsftpd_home: "/srv/ftp"
+vsftpd_home: "/srv/home/ftp"
 
 ### PowerDNS configuration
 # PowerDNS schema location for SQLite

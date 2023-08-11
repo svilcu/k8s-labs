@@ -38,3 +38,8 @@
   community.general.openwrt_init:
     name: pdns
     state: restarted
+
+- name: Checking if PowerDNS works.
+  ansible.builtin.debug:
+  # yamllint disable-line rule:line-length
+    msg: "Querying {{ bpi_network }}.{{ bpi_ip }} for IPv4 address for {{ bpi_hostname }}.{{ default_domain }} produces {{ lookup('community.general.dig', '{{ bpi_hostname }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"

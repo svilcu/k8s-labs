@@ -30,6 +30,7 @@
   community.general.filesystem:
     fstype: "ext4"
     dev: "/dev/nvme0n1p1"
+    force: true
   when: nvme_part_count.stdout | int == 0 or always_format_nvme == "true"
   changed_when: true
 
