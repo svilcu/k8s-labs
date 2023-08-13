@@ -28,7 +28,7 @@
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-mount-nvme
+    - nvme
 
 - name: Disabling IPv6
   hosts: openwrt
@@ -78,9 +78,9 @@
     - host_vars/banana_pi_r3.yaml
     - group_vars/global_vars.yaml
   roles:
-    - pdns-config
-    - pdns-recursor-config
-    - pdns-zones-add-records
+    - pdns
+    - pdns-recursor
+    - pdns-add-records
   tags:
     - pdns
 
@@ -91,5 +91,5 @@
     - host_vars/banana_pi_r3.yaml
     - group_vars/global_vars.yaml
   roles:
-    - role: vsftpd-config
+    - role: vsftpd
       when: vsftpd_install == "true"

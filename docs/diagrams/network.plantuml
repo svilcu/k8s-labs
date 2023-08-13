@@ -1,0 +1,77 @@
+@startuml AVA Network Wiring
+
+title k8s clusters network diagram
+footer v1.0 13-Aug-2023  
+
+skinparam handwritten false
+
+nwdiag {
+    Internet [ shape = cloud];
+    Internet -- CATV_modem
+    CATV_modem -- bpi_r3
+
+    network core {
+        bpi_r3;
+        sw1;
+        sw2;
+        nas [shape = "storage"];
+    }
+    
+    network PoE { 
+        group old_k8s {
+            color = "#FFaaaa";
+            rpi4b-1;
+            rpi4b-2;
+            rpi4b-3;
+            rpi4b-4;
+            rpi4b-5;
+            rpi4b-6;
+            rock3a-1;
+            vim3-1;
+        }
+        sw2;
+        rpi4b-1 [shape = "node"];
+        rpi4b-2 [shape = "node"];
+        rpi4b-3 [shape = "node"];
+        rpi4b-4 [shape = "node"];
+        rpi4b-5 [shape = "node"];
+        rpi4b-6 [shape = "node"];
+        rock3a-1 [shape = "node"];
+        vim3-1 [shape = "node"];
+    }
+
+    network 2.5Gbps {    
+        group new_k8s {
+            color = "#aaFFaa";
+            opi5-1;
+            opi5s-1;
+            rpi5b-1;
+            nPiT6-1;
+        }
+
+        sw1;
+        sw3;
+        opi5-1 [shape = "node"];
+        opi5s-1 [shape = "node"];
+        rpi5b-1 [shape = "node"];
+        nPiT6-1 [shape = "node"];
+    }
+
+    network workstations {
+        group single_node {
+            color = "#aaaaFF";
+            amd64;
+        }       
+
+        group openstack {
+            color = "Pink";
+            HPgen8;
+        }       
+
+        sw3;
+        HPgen8 [shape = "node"];
+        amd64 [shape = "node"];
+    }
+
+}
+@enduml

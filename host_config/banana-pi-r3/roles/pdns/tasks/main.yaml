@@ -1,5 +1,4 @@
 ---
-
 - name: Removing --guardian=no from /etc/init.d/pdns
   ansible.builtin.replace:
     path: /etc/init.d/pdns
