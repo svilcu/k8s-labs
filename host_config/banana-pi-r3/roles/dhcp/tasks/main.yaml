@@ -1,0 +1,43 @@
+---
+- name: Remove dnsmasq
+  community.general.opkg:
+    name:
+      - dnsmasq
+    state: absent
+
+- name: Remove settings related to dnsmasq
+  ansible.builtin.command: 'uci -q delete dhcp.@dnsmasq[0]'
+  ignore_errors: true
+  register: delete_dnsmasq
+  changed_when: delete_dnsmasq.rc == 0
+
+- name: Running opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Use odhcpd for DHCP
+  ansible.builtin.command: opkg install odhcpd --force-overwrite
+  register: opkg_install
+  changed_when: opkg_install.rc == 0
+
+- name: UCI -- set dhcp.lan.dhcpv4="server"
+  ansible.builtin.command: uci set dhcp.lan.dhcpv4="server"
+  register: set_dhcp
+  changed_when: set_dhcp.rc == 0
+
+- name: UCI -- set dhcp.odhcpd.maindhcp="1"
+  ansible.builtin.command: uci set dhcp.odhcpd.maindhcp="1"
+  register: set_dhcp
+  changed_when: set_dhcp.rc == 0
+
+- name: UCI -- commit dhcp
+  ansible.builtin.command: uci commit dhcp
+  register: commit_dhcp
+  changed_when: commit_dhcp.rc == 0
+
+- name: Restarting odhcpd
+  community.general.openwrt_init:
+    name: odhcpd
+    state: restarted

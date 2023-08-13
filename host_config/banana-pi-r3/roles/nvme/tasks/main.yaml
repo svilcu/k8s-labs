@@ -1,4 +1,24 @@
 ---
+- name: Running opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Install filesystem manipulation packages
+  community.general.opkg:
+    name:
+      - kmod-nvme
+      - mmc-utils
+      - kmod-mtd-rw
+      - kmod-fs-ext4
+      - lsblk
+      - parted
+      - blkid
+      - uvol
+      - autopart
+    state: present
+
 - name: Loading the kernel nvme module
   community.general.modprobe:
     name: nvme
@@ -6,13 +26,11 @@
   register: modprobe_nvme
   changed_when: modprobe_nvme == 0
 
-- name: Checking if modprobe detected the NVMe
+- name: Checking if modprobe detected the NVMe - lsblk -Nnr
   ignore_errors: true
-  ansible.builtin.shell: |
-    set -o pipefail
-    lsblk | grep disk | grep -c nvme0n1
-  register: nvme_detected
-  changed_when: nvme_detected.stdout | int != 0
+  ansible.builtin.command: lsblk -Nnr
+  register: lsblk_nnr
+  changed_when: lsblk_nnr.rc != 0
 
 # if the os fails to report the presence of the NVMe after modprobe, we reboot.
 - name: Rebooting in order to detect all the devices
@@ -20,41 +38,36 @@
   ansible.builtin.command: "/sbin/reboot"
   async: 1
   poll: 0
-  when: nvme_detected.stdout | int == 0
+  when: lsblk_nnr.stdout == ""
   changed_when: true
 
 - name: Wait for reboot
   ansible.builtin.wait_for_connection:
     timeout: 300
     delay: 60
-  when: nvme_detected.stdout | int == 0
+  when: lsblk_nnr.stdout == ""
 
 # if the NVMe is not detected after reboot, you do not have NVMe
-- name: Checking if you have NVMe
-  ansible.builtin.shell: |
-    set -o pipefail
-    lsblk -Nnr | wc -l
-  register: nvme_count
-  changed_when: nvme_count.rc != 0
+- name: Checking after reboot if you have NVMe
+  ansible.builtin.command: lsblk -Nnr 
+  register: lsblk_nnr
+  changed_when: lsblk_nnr.rc != 0
 
 - name: NVMe absent
   ansible.builtin.debug:
     msg: You have no NVMe disks installed
-  when: nvme_count.stdout | int == 0
+  when: lsblk_nnr.stdout | regex_findall ('.*nvme0n1.*', multiline=true) | split('\n') | length == 0
 
 - name: Checking if the NVMe is already mounted
-  ignore_errors: true
-  ansible.builtin.shell: |
-    set -o pipefail
-    mount | grep -c nvme0n1
+  ansible.builtin.command: mount 
   register: nvme_mounted
-  changed_when: nvme_mounted.stdout | int != 0
+  changed_when: nvme_mounted.rc == 1
 
 - name: NVMe already mounted
   ansible.builtin.debug:
     msg: Your NVMe is already mounted, skipping format and mount
-  when: nvme_mounted.stdout | int == 1
+  when: nvme_mounted.stdout | regex_findall ('.*nvme0n1.*', multiline=true) | length  == 1
 
 - name: Partitioning, formating and mounting NVMe
   ansible.builtin.include_tasks: additional_tasks.yaml
-  when: (nvme_count.stdout | int == 1) and (nvme_mounted.stdout | int == 0)
+  when: (lsblk_nnr.stdout.split('\n') | length == 1) and (nvme_mounted.stdout | regex_findall ('.*nvme0n1.*', multiline=true) | length == 0)

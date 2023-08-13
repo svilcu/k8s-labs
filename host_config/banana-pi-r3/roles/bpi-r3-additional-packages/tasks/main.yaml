@@ -1,47 +1,9 @@
 ---
-- name: Remove dnsmasq
-  community.general.opkg:
-    name:
-      - dnsmasq
-      - odhcpd-ipv6only
-    state: absent
-
-- name: Remove settings related to dnsmasq
-  ansible.builtin.command: 'uci -q delete dhcp.@dnsmasq[0]'
-  ignore_errors: true
-  register: ignore_errors_register
-  changed_when: ignore_errors_register != 0
-
 - name: Running opkg update
   ansible.builtin.command: opkg update
   ignore_errors: true
-  register: ignore_errors_register
-  changed_when: ignore_errors_register != 0
-
-- name: Use odhcpd for both DHCP and DHCPv6
-  ansible.builtin.command: opkg install odhcpd --force-overwrite
-  register: my_output
-  changed_when: my_output.rc != 0
-
-- name: Configure DHCPDv4
-  ansible.builtin.command: uci set dhcp.lan.dhcpv4="server"
-  register: my_output
-  changed_when: my_output.rc != 0
-
-- name: Configure DHCPDv4
-  ansible.builtin.command: uci set dhcp.odhcpd.maindhcp="1"
-  register: my_output
-  changed_when: my_output.rc != 0
-
-- name: Configure DHCPDv4
-  ansible.builtin.command: uci commit dhcp
-  register: my_output
-  changed_when: my_output.rc != 0
-
-- name: Restarting odhcpd
-  ansible.builtin.command: /etc/init.d/odhcpd restart
-  register: my_output
-  changed_when: my_output.rc != 0
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
 
 - name: Installing Prometheus exporter
   community.general.opkg:

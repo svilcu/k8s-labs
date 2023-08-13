@@ -1,4 +1,16 @@
 ---
+- name: Installing openssh-sftp-server
+  community.general.opkg:
+    name: openssh-sftp-server
+    state: present
+  when: install_sftp == "true"
+
+- name: Install openssl-util
+  community.general.opkg:
+    name:
+      - openssl-util
+    state: present
+
 - name: Upgrading packages
   ansible.builtin.shell: |
     set -o pipefail
@@ -12,7 +24,7 @@
     insertafter: "EOF"
     block: |
       export EDITOR="vi"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    marker: "# {mark} editor ANSIBLE MANAGED BLOCK"
 
 - name: Copying authorized_keys to /etc/dropbear
   ansible.builtin.copy:

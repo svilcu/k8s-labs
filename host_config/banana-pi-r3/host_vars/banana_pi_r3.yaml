@@ -8,13 +8,14 @@ bpi_hostname: "bpi-r3"
 radio_ssid: "bpi_test"
 radio_password: "1willModify!tS00n"
 
-# the bpi will get this address from the CIDR, as the final config
+# the bpi will get its network part from the CIDR
 bpi_ip: "1"
 
-# set this to false if you do not want the NVMe formated everytime.
+# set this to false if you do not want the NVMe formated everytime the site.yaml playbook is run.
 always_format_nvme: "true"
 
-# Remove PowerDNS database
+# Remove PowerDNS database everytime you run site.yaml playbook
+# The database will be removed after you run the update_os.yaml playbook
 pdns_remove_db: "true"
 
 # where to mount the NVMe
@@ -24,7 +25,7 @@ nvme_mount_dir: "/srv"
 # if you set it to "true", add validate_certs=false to ansible.cfg
 save_space_with_python3_light: "false"
 
-replace_dnsmasq_with_odhcpd: "false"
+replace_dnsmasq_with_odhcpd: "true"
 
 # by default, if we do not install sftp, ansible will generate warnings
 # fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
@@ -43,8 +44,7 @@ vsftpd_home: "/srv/home/ftp"
 ### PowerDNS configuration
 # PowerDNS schema location for SQLite
 pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
-
 # PowerDNS recommends installing its database in /var/lib/powerdns
-# /var/ is mounted on /tmp and cleaned at every reboot
+# /var/ is mounted on /tmp and cleaned at every reboot, so we will change that.
 pdns_db_path: "/usr/lib/powerdns"
 pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"

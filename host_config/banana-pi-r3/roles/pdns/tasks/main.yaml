@@ -1,4 +1,17 @@
 ---
+- name: Extracting network component from default_CIDR
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $1"."$2"."$3}'
+  register: network_component
+  changed_when: network_component.rc != 0
+
+- name: Registering LAN ip address as bpi_lan_ip fact
+  ansible.builtin.set_fact:
+    bpi_lan_ip: "{{ network_component.stdout }}.{{ bpi_ip }}"
+    bpi_network: "{{ network_component.stdout }}"
+    cacheable: true
+
 - name: Removing --guardian=no from /etc/init.d/pdns
   ansible.builtin.replace:
     path: /etc/init.d/pdns
@@ -51,3 +64,9 @@
 
 - name: Configuring PowerDNS in /etc/powerdns/pdns.conf
   ansible.builtin.include_tasks: setup_pdns.yaml
+
+- name: Configuring PowerDNS recursor /etc/powerdns/recursor.conf
+  ansible.builtin.include_tasks: setup_recursor.yaml
+
+- name: Adding zones and records ro PowerDNS
+  ansible.builtin.include_tasks: create_records.yaml
