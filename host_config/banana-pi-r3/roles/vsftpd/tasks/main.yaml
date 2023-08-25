@@ -31,10 +31,6 @@
   check_mode: true
   register: local_root
 
-- name: Echoing local_root
-  ansible.builtin.debug:
-    msg: "{{ local_root }}"
-
 - name: Adding local_root in /etc/vsftpd.conf
   ansible.builtin.blockinfile:
     path: /etc/vsftpd.conf

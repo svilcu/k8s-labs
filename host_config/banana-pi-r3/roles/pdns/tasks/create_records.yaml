@@ -1,19 +1,39 @@
 ---
-- name: Checking existence of zone {{ default_domain }}
+- name: Checking if zone already exists - {{ default_domain }}
   ignore_errors: true
+  ansible.builtin.command: "pdnsutil list-zone {{ default_domain }}"
+  register: pdnsutil_list_zone
+  changed_when: false
+
+- name: Creating zone {{ default_domain }}
   ansible.builtin.command: " pdnsutil create-zone {{ default_domain }} ns1.{{ default_domain }}"
   register: pdnsutil_create_zone
-  changed_when: pdnsutil_create_zone.rc != 0
+  changed_when: pdnsutil_create_zone.rc == 0
+  when: pdnsutil_list_zone.rc == 1
+
+- name: Restarting PowerDNS service in order to load the new domain
+  community.general.openwrt_init:
+    name: pdns
+    state: restarted
+  when: pdnsutil_list_zone.rc == 1
+
+- name: Checking if A record exists for ns1.{{ default_domain }}
+  ansible.builtin.set_fact:
+  # yamllint disable-line rule:line-length
+    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    dns_expect: "{{ bpi_network }}.{{ ns1 }}"
 
 - name: Creating entry for ns1.{{ default_domain }}
-  ansible.builtin.command: "pdnsutil add-record {{ default_domain }} ns1 A {{ ansible_facts['bpi_network'] }}.{{ ns1 }}"
+  ansible.builtin.command: "pdnsutil add-record {{ default_domain }} ns1 A {{ bpi_network }}.{{ ns1 }}"
   register: pdnsutil_add_ns_a
   changed_when: pdnsutil_add_ns_a.rc == 0
+  when: dns_response != dns_expect
 
 - name: Increasing serial on {{ default_domain }}
   ansible.builtin.command: "pdnsutil increase-serial {{ default_domain }}"
   register: pdnsutil_increase_serial
   changed_when: pdnsutil_increase_serial.rc == 0
+  when: dns_response != dns_expect
 
 - name: Creating A records in {{ default_domain }}
   ansible.builtin.include_tasks: create_A_records.yaml
@@ -24,22 +44,39 @@
   loop: "{{ cnames | dict2items }}"
 
 # in-addr.arpa
+- name: Checking if zone already exists - {{ in_addr_arpa }}
+  ignore_errors: true
+  ansible.builtin.command: "pdnsutil list-zone {{ in_addr_arpa }}"
+  register: pdnsutil_list_zone
+  changed_when: false
+
 - name: Creating zone {{ in_addr_arpa }}
   ansible.builtin.command: " pdnsutil create-zone {{ in_addr_arpa }} ns1.{{ default_domain }}"
   register: pdnsutil_create_zone
   changed_when: pdnsutil_create_zone.rc == 0
+  when: pdnsutil_list_zone.rc == 1
+
+- name: Restarting PowerDNS service in order to load the new domain
+  community.general.openwrt_init:
+    name: pdns
+    state: restarted
+  when: pdnsutil_list_zone.rc == 1
 
 - name: Creating PTR records in {{ in_addr_arpa }}
   ansible.builtin.include_tasks: create_PTR_records.yaml
   loop: "{{ static_hosts | dict2items }}"
 
-# we need to reload PowerDNS after we created the records, otherwise it will not work.
-- name: Reload PowerDNS service
+- name: Restarting PowerDNS service
   community.general.openwrt_init:
     name: pdns
     state: restarted
 
-- name: Checking if PowerDNS works.
+- name: Checking A record for ns1.{{ default_domain }}
+  ansible.builtin.set_fact:
+    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    dns_expect: "{{ bpi_network }}.{{ ns1 }}"
+
+- name: PowerDNS works
   ansible.builtin.debug:
-  # yamllint disable-line rule:line-length
-    msg: "Querying {{ bpi_network }}.{{ bpi_ip }} for IPv4 address for {{ bpi_hostname }}.{{ default_domain }} produces {{ lookup('community.general.dig', '{{ bpi_hostname }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    msg: Your PowerDNS is working!
+  when: dns_response == dns_expect

@@ -34,7 +34,7 @@
       when: disable_ipv6 == "true"
   tags:
     - ipv6
-  
+
 - name: Checking for NVMe and mounting it
   hosts: openwrt
   vars_files:

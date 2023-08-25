@@ -18,7 +18,7 @@
     regexp: '--guardian=no'
     replace: ''
 
-- name: Removing DB file
+- name: Removing DB file if pdns_remove_db is true
   ansible.builtin.file:
     path: "{{ pdns_db_path }}/pdns.sqlite3"
     state: absent
@@ -51,22 +51,196 @@
 - name: Creating default PowerDNS database from schema
   ansible.builtin.shell: |
     sqlite3 "{{ pdns_db_path }}/pdns.sqlite3" < "{{ pdns_db_path }}/schema.sqlite3.sql"
-    chown -R pdns:pdns "{{ pdns_db_path }}"
-    exit 0
   when: powerdns_db.stat.exists is false
   register: my_output
   changed_when: my_output.rc != 0
+
+- name: Changing ownership of the DB directory to pdns:pdns
+  ansible.builtin.file:
+    path: "{{ pdns_db_path }}"
+    owner: pdns
+    group: pdns
+    recurse: true
 
 - name: Removing the PowerDNS schema
   ansible.builtin.file:
     path: "{{ pdns_db_path }}/schema.sqlite3.sql"
     state: absent
 
-- name: Configuring PowerDNS in /etc/powerdns/pdns.conf
-  ansible.builtin.include_tasks: setup_pdns.yaml
+- name: Removing old /etc/powerdns/pdns.conf file
+  ansible.builtin.file:
+    path: /etc/powerdns/pdns.conf
+    state: absent
 
-- name: Configuring PowerDNS recursor /etc/powerdns/recursor.conf
-  ansible.builtin.include_tasks: setup_recursor.yaml
+- name: Copying pdns.conf from template /etc/powerdns/pdns.conf-dist
+  ansible.builtin.copy:
+    src: /etc/powerdns/pdns.conf-dist
+    dest: /etc/powerdns/pdns.conf
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: true
 
-- name: Adding zones and records ro PowerDNS
+- name: File pdns.conf - Configuring SQLite as backend
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# launch=.*'
+    replace: 'launch=gsqlite3'
+
+- name: File pdns.conf - Setting the location of the SQLite database
+  ansible.builtin.lineinfile:
+    path: /etc/powerdns/pdns.conf
+    search_string: '^$'
+    insertafter: 'launch=gsqlite3'
+    line: 'gsqlite3-database={{ pdns_db_path }}/pdns.sqlite3'
+
+- name: File pdns.conf - Enabling API
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# api=no.*'
+    replace: 'api=yes'
+
+- name: Generating API key
+  ansible.builtin.set_fact:
+    pdns_api_key: "{{ lookup('community.general.random_string', min_lower=1, min_upper=1, min_numeric=1, special=false, length=32) }}"
+
+- name: Saving API_KEY locally for the External_DNS configuration
+  delegate_to: localhost
+  ansible.builtin.copy:
+    content: "{{ pdns_api_key }}"
+    dest: "../../files/external_dns/api.key"
+    mode: "0600"
+
+- name: File pdns.conf - Setting API_KEY
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# api-key=.*'
+    replace: "api-key={{ pdns_api_key }}"
+
+- name: File pdns.conf - Setting default_soa_content
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# default-soa-content=.*'
+    replace: "default-soa-content={{ pdns_SOA }}"
+
+- name: File pdns.conf - Listerning only to localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# local-address=.*'
+    replace: "local-address=127.0.0.1"
+
+- name: File pdns.conf - Port to listen on
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# local-port=.*'
+    replace: "local-port=5300"
+
+- name: File pdns.conf - Webserver listens only on localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-address=127.0.0.1'
+    replace: "webserver-address=127.0.0.1"
+
+- name: File  pdns.conf - Webserver allows only from localhost
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-allow-from=.*'
+    replace: "webserver-allow-from=127.0.0.1"
+
+- name: File pdns.conf - webserver-port
+  ansible.builtin.replace:
+    path: /etc/powerdns/pdns.conf
+    regexp: '^# webserver-port=.*'
+    replace: "webserver-port=8081"
+
+- name: Restarting PowerDNS service
+  community.general.openwrt_init:
+    name: pdns
+    state: restarted
+
+- name: Creating in-addr.arpa zone name
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $3"."$2"."$1".in-addr.arpa"}'
+  register: in_addr
+  changed_when: in_addr.rc == 0
+
+- name: Registering in-addr.arpa as fact
+  ansible.builtin.set_fact:
+    in_addr_arpa: "{{ in_addr.stdout }}"
+    cacheable: true
+
+- name: Removing old /etc/powerdns/recursor.conf file if it exists
+  ansible.builtin.file:
+    path: /etc/powerdns/recursor.conf
+    state: absent
+
+- name: Copying /etc/powerdns/recursor.conf from template /etc/powerdns/recursor.conf-dist
+  ansible.builtin.copy:
+    src: /etc/powerdns/recursor.conf-dist
+    dest: /etc/powerdns/recursor.conf
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: true
+
+- name: File recursor.conf - Configuring allow-from localhost and default_CIDR
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# allow-from=.*'
+    replace: "allow-from=127.0.0.0/8, {{ default_CIDR }}"
+
+- name: File recursor.conf - Configuring socket-dir to /var/run/pdns
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# socket-dir=.*'
+    replace: "socket-dir=/var/run/pdns"
+
+- name: File recursor.conf - Setting config-dir
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# config-dir=.*'
+    replace: 'config-dir=/etc/powerdns/'
+
+- name: File recursor.conf - Setting forward zones
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# forward-zones=.*'
+    replace: "forward-zones={{ default_domain }}=127.0.0.1:5300, {{ in_addr_arpa }}=127.0.0.1:5300"
+
+- name: File recursor.conf - Listerning only to local IP
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# local-address=.*'
+    replace: "local-address=127.0.0.1,{{ ansible_facts['bpi_network'] }}.{{ ns1 }}"
+
+- name: File recursor.conf - Port to listen on
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# local-port=.*'
+    replace: "local-port=53"
+
+- name: File recursor.conf - Enabling serve-rfc1918
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# serve-rfc1918=.*'
+    replace: "serve-rfc1918=yes"
+
+- name: File recursor.conf - Setting search suffix to {{ default_domain }}
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# export-etc-hosts-search-suffix=.*'
+    replace: "export-etc-hosts-search-suffix={{ default_domain }}"
+
+- name: Enabling PowerDNS recursor service
+  community.general.openwrt_init:
+    name: pdns-recursor
+    enabled: true
+
+- name: Restarting PowerDNS recursor service
+  community.general.openwrt_init:
+    name: pdns-recursor
+    state: restarted
+
+- name: Adding zones and records to PowerDNS
   ansible.builtin.include_tasks: create_records.yaml

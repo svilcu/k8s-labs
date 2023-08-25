@@ -8,5 +8,5 @@ install_collections:
 	ansible-galaxy install -r galaxy-requirements.yaml
 
 create_ca:
-	cd Certificates_Authority
+	cd ownCA
 	ansible-playbook certificates.yaml

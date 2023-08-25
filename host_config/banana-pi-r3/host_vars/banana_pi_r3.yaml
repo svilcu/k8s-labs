@@ -16,7 +16,7 @@ always_format_nvme: "true"
 
 # Remove PowerDNS database everytime you run site.yaml playbook
 # The database will be removed after you run the update_os.yaml playbook
-pdns_remove_db: "true"
+pdns_remove_db: "false"
 
 # where to mount the NVMe
 nvme_mount_dir: "/srv"
@@ -38,7 +38,7 @@ install_gitolite: :"false"
 install_prometheus_exporter: "false"
 
 ### vsftpd
-vsftpd_install: "true"
+vsftpd_install: "false"
 vsftpd_home: "/srv/home/ftp"
 
 ### PowerDNS configuration
