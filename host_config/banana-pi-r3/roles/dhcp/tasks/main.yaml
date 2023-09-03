@@ -11,7 +11,7 @@
   register: delete_dnsmasq
   changed_when: delete_dnsmasq.rc == 0
 
-- name: Running opkg update
+- name: Run opkg update
   ansible.builtin.command: opkg update
   ignore_errors: true
   register: opkg_update
@@ -37,7 +37,7 @@
   register: commit_dhcp
   changed_when: commit_dhcp.rc == 0
 
-- name: Restarting odhcpd
+- name: Restart odhcpd
   community.general.openwrt_init:
     name: odhcpd
     state: restarted

@@ -28,23 +28,24 @@ save_space_with_python3_light: "false"
 replace_dnsmasq_with_odhcpd: "true"
 
 # by default, if we do not install sftp, ansible will generate warnings
-# fix this in ansible.cfg by seting transfer to "scp" instead of "sftp"
+# fix this in ansible.cfg by setting transfer to "scp" instead of "sftp"
 # or install openssh_sftp
 install_sftp: "false"
 
-# Additional packages
-install_openvpn: "false"
-install_gitolite: :"false"
-install_prometheus_exporter: "false"
+### PowerDNS configuration
+# PowerDNS schema location for SQLite
+pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
+# PowerDNS recommends to install its database in /var/lib/powerdns
+# /var/ is mounted on /tmp and cleaned at every reboot, so we will change that.
+pdns_db_path: "/usr/lib/powerdns"
+pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
 
 ### vsftpd
 vsftpd_install: "false"
 vsftpd_home: "/srv/home/ftp"
 
-### PowerDNS configuration
-# PowerDNS schema location for SQLite
-pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
-# PowerDNS recommends installing its database in /var/lib/powerdns
-# /var/ is mounted on /tmp and cleaned at every reboot, so we will change that.
-pdns_db_path: "/usr/lib/powerdns"
-pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
+# Additional packages
+install_openvpn: "false"
+install_gitolite: "false"
+install_prometheus_exporter: "false"
+

@@ -1,11 +1,11 @@
 ---
-- name: Removing odhcpd-ipv6only
+- name: Remove odhcpd-ipv6only
   community.general.opkg:
     name:
       - odhcpd-ipv6only
     state: absent
 
-- name: Retrieving the number of interfaces
+- name: Retrieve the number of interfaces
   ansible.builtin.shell: |
     set -o pipefail
     uci show network | grep '@device' | cut -f1 -d']' | cut -f2 -d'[' | sort -ru | head -1
@@ -46,7 +46,7 @@
   register: commit_network
   changed_when: commit_network.rc == 0
 
-- name: Restarting network
+- name: Restart network
   community.general.openwrt_init:
     name: network
     state: restarted
@@ -72,13 +72,13 @@
   register: commit_dhcp
   changed_when: commit_dhcp.rc == 0
 
-- name: Restarting odhcpd
+- name: Restart odhcpd
   community.general.openwrt_init:
     name: odhcpd
     state: restarted
-  when: replace_dnsmasq_with_odhcpd == "true"
+  when: replace_dnsmasq_with_odhcpd | bool
 
-- name: Restarting dnsmasq
+- name: Restart dnsmasq
   community.general.openwrt_init:
     name: dnsmasq
     state: restarted

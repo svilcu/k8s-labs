@@ -1,12 +1,12 @@
 ---
-- name: Creating directory for the CA
+- name: Create directory for the CA
   ansible.builtin.file:
     path: /usr/local/share/ca-certificates
     state: directory
     mode: '0755'
 
 # if the certificates are not created we will let this fail until we create the roles and dependencies
-- name: Copying own root CA to OpenWRT
+- name: Copy own root CA to OpenWRT
   ansible.builtin.copy:
     src: "{{ certificate_path }}/CA.pem"
     dest: /usr/local/share/ca-certificates/ownCA.cert
@@ -15,7 +15,7 @@
     mode: '0644'
     backup: true
 
-- name: Linking cert to the default location
+- name: Link cert to the default location
   ansible.builtin.file:
     src: /usr/local/share/ca-certificates/ownCA.cert
     dest: /etc/ssl/certs/ownCA.cert
@@ -23,12 +23,12 @@
     group: root
     state: link
 
-- name: Creating hash for ownCA
+- name: Create hash for ownCA
   ansible.builtin.command: "openssl x509 -hash -noout -in /etc/ssl/certs/ownCA.cert"
   register: ownca_hash
   changed_when: ownca_hash.rc != 0
 
-- name: Adding own root CA to the system's trust store
+- name: Add own root CA to the system's trust store
   ansible.builtin.file:
     src: /etc/ssl/certs/ownCA.cert
     dest: "/etc/ssl/certs/{{ ownca_hash.stdout }}"

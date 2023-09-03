@@ -41,6 +41,6 @@ base-files busybox ca-bundle dnsmasq dropbear e2fsprogs f2fsck firewall4 fstools
 
 pdns_server --daemon=no --guardian=no --loglevel=9
 
-### Creating repositories
+### Create repositories
 
 If we need to create DEB and RPM repositories we need to figure out how to instal "createrepo" and "dpkg-dev" on the OpenWRT

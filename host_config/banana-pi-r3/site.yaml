@@ -14,7 +14,7 @@
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-host-setup
+    - host-setup
 
 - name: Setup DHCP
   hosts: openwrt
@@ -24,18 +24,18 @@
   roles:
     - dhcp
 
-- name: Disabling IPv6
+- name: Disable IPv6
   hosts: openwrt
   vars_files:
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
-    - role: bpi-r3-disable-ipv6
-      when: disable_ipv6 == "true"
+    - role: disable-ipv6
+      when: disable_ipv6 | bool
   tags:
     - ipv6
 
-- name: Checking for NVMe and mounting it
+- name: Check for NVMe and mount it
   hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
@@ -44,22 +44,22 @@
   tags:
     - nvme
 
-- name: Installing Luci with NGinx and SSL
+- name: Install Luci with NGinx and SSL
   hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-additional-packages
+    - additional-packages
 
-- name: Copying and registering our own Certificate Authority
+- name: Copy and register our own Certificate Authority
   hosts: openwrt
   vars_files:
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
-    - bpi-r3-certs
+    - certificates
 
-- name: Configuring PowerDNS and its recursor
+- name: Configure PowerDNS and its recursor
   hosts: openwrt
   gather_facts: true
   vars_files:
@@ -70,7 +70,7 @@
   tags:
     - pdns
 
-- name: Configuring vsftpd
+- name: Configure vsftpd
   hosts: openwrt
   gather_facts: true
   vars_files:
@@ -78,4 +78,6 @@
     - group_vars/global_vars.yaml
   roles:
     - role: vsftpd
-      when: vsftpd_install == "true"
+      when: vsftpd_install | bool
+  tags:
+    - vsftpd

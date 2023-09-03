@@ -1,24 +1,24 @@
 ---
-- name: Installing openssh-sftp-server
+- name: Install openssh-sftp-server required to remove warning
   community.general.opkg:
     name: openssh-sftp-server
     state: present
-  when: install_sftp == "true"
+  when: install_sftp | bool
 
-- name: Install openssl-util
+- name: Install system package openssl-util required for generating hash
   community.general.opkg:
     name:
       - openssl-util
     state: present
 
-- name: Upgrading packages
+- name: Upgrade packages
   ansible.builtin.shell: |
     set -o pipefail
     opkg list-upgradable | cut -f 1 -d ' ' | xargs -r opkg upgrade
   register: upgrade_packages
   changed_when: upgrade_packages.rc == 0
 
-- name: Adding EDITOR=vi in /etc/profile
+- name: Add EDITOR=vi in /etc/profile
   ansible.builtin.blockinfile:
     path: /etc/profile
     insertafter: "EOF"
@@ -26,7 +26,7 @@
       export EDITOR="vi"
     marker: "# {mark} editor ANSIBLE MANAGED BLOCK"
 
-- name: Copying authorized_keys to /etc/dropbear
+- name: Copy authorized_keys to /etc/dropbear
   ansible.builtin.copy:
     src: "{{ authorized_keys_path }}"
     dest: /etc/dropbear
@@ -34,7 +34,7 @@
     group: root
     mode: "0644"
 
-- name: Changing root password
+- name: Change root password
   ansible.builtin.user:
     name: root
     update_password: always

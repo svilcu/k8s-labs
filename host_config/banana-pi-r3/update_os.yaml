@@ -1,12 +1,12 @@
 ---
-- name: Installing new OS image and reset to factory defaults
+- name: Install new OS image and reset to factory defaults
   hosts: openwrt
   gather_facts: false
   serial: 1
   ignore_unreachable: true
   vars:
     ansible_user: root
-    os_version: "23.05.0-rc2"
+    os_version: "23.05.0-rc3"
     image_name: "openwrt-{{ os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
     image_url: "https://downloads.openwrt.org/releases/{{ os_version }}/targets/mediatek/filogic/{{ image_name }}"
     image_path: "../../files/images"
@@ -16,19 +16,19 @@
   roles:
     - gekmihesg.openwrt
   tasks:
-    - name: Checking if the upgrade image is available on local machine
+    - name: Check if the upgrade image is available on local machine
       ansible.builtin.stat:
         path: "{{ image_path }}/sysupgrade.itb"
       register: sysupgrade
       delegate_to: localhost
 
-    - name: Downloading sysupgrade locally
+    - name: Download sysupgrade locally
       ansible.builtin.get_url:
         url: "{{ image_url }}"
         dest: "{{ image_path }}/sysupgrade.itb"
         mode: 600
       delegate_to: localhost
-      when: sysupgrade.stat.exists == "false"
+      when: not sysupgrade.stat.exists | bool
 
     - name: Copy openwrt image
     # yamllint disable-line rule:line-length
@@ -49,10 +49,10 @@
     - name: Reset equipment to factory defaults
       nohup:
         command: firstboot -y && reboot
-      when: remove_config == "true"
+      when: remove_config | bool
 
     - name: Wait for reboot after reset to factory defaults
       ansible.builtin.wait_for_connection:
         timeout: 300
         delay: 60
-      when: remove_config == "true"
+      when: remove_config | bool

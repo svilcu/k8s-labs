@@ -1,19 +1,19 @@
 ---
-- name: Creating NVMe mount point "{{ nvme_mount_dir }}"
+- name: Create NVMe mount point "{{ nvme_mount_dir }}"
   ansible.builtin.file:
     path: "{{ nvme_mount_dir }}"
     state: directory
     mode: '0755'
   changed_when: true
 
-- name: Checking if the device needs patitioning
+- name: Check if the device needs patitioning
   ansible.builtin.shell: |
     set -o pipefail
     lsblk -frn /dev/nvme0n1 | grep -wv nvme0n1 | wc -l
   register: nvme_part_count
   changed_when: nvme_part_count.rc != 0
 
-- name: Parted - creating GPT partition table
+- name: Parted - create GPT partition table
   community.general.parted:
     device: /dev/nvme0n1
     label: gpt
@@ -23,7 +23,7 @@
     part_type: "primary"
     fs_type: "ext4"
     state: "present"
-  when: nvme_part_count.stdout | int == 0 or always_format_nvme == "true"
+  when: nvme_part_count.stdout | int == 0 or always_format_nvme | bool
   changed_when: true
 
 - name: Create an ext4 filesystem on /dev/nvme0n1p1
@@ -31,10 +31,10 @@
     fstype: "ext4"
     dev: "/dev/nvme0n1p1"
     force: "{{ always_format_nvme }}"
-  when: nvme_part_count.stdout | int == 0 or always_format_nvme == "true"
+  when: nvme_part_count.stdout | int == 0 or always_format_nvme | bool
   changed_when: true
 
-- name: UCI fstab - extracting id of the /mnt/nvme0n1p1 if it was created
+- name: UCI fstab - extract id of the /mnt/nvme0n1p1 if it was created
   ignore_errors: true
   ansible.builtin.shell: |
     set -o pipefail
@@ -48,7 +48,7 @@
   register: remove_mnt_nvme
   changed_when: remove_mnt_nvme.rc == 0
 
-- name: Extracting the UUID of the new partition
+- name: Extract the UUID of the new partition
   ansible.builtin.shell: |
     set -o pipefail
     lsblk -f /dev/nvme0n1p1 | grep ext4 |awk '{print $3}'
@@ -95,7 +95,7 @@
   register: uci_fstab_commit
   changed_when: uci_fstab_commit.rc == 0
 
-- name: Running "block mount" - mounting the NVMe
+- name: Run "block mount" - mount NVMe
   ansible.builtin.command: block mount
   register: block_mount
   changed_when: block_mount.rc == 0
