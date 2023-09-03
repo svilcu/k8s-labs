@@ -17,7 +17,7 @@
   register: opkg_update
   changed_when: opkg_update.rc == 0
 
-- name: Use odhcpd for DHCP
+- name: Install package odhcpd instead of dnsmasq
   ansible.builtin.command: opkg install odhcpd --force-overwrite
   register: opkg_install
   changed_when: opkg_install.rc == 0

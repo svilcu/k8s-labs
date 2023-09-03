@@ -18,6 +18,7 @@ always_format_nvme: "true"
 # if you set it to "true", add validate_certs=false to ansible.cfg
 save_space_with_python3_light: "false"
 
+# use dnsmasq or odhcpd?
 replace_dnsmasq_with_odhcpd: "true"
 
 # by default, if we do not install sftp, ansible will generate warnings
@@ -27,8 +28,7 @@ sftp_install: "false"
 
 ### PowerDNS
 pdns_install: "true"
-# Remove PowerDNS database everytime you run site.yaml playbook
-# The database will be removed after you run the update_os.yaml playbook
+# Remove PowerDNS database everytime you run playbook, then create and populate it
 pdns_remove_db: "false"
 
 ### vsftpd
