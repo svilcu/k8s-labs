@@ -2,16 +2,20 @@
 - name: Check if CNAME record exists for {{ item.key }}
   ansible.builtin.set_fact:
     # yamllint disable-line rule:line-length
-    dns_response: "{{ lookup('community.general.dig', '{{ item.key }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='CNAME') }}"
+    dns_response: "{{ lookup('community.general.dig', '{{ item.key }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='CNAME', real_empty='true') }}"
+
+- name: Debug dns_response
+  ansible.builtin.debug:
+    msg: "{{ dns_response }}"
 
 - name: Create CNAME record for {{ item.key }}
   ansible.builtin.command: "pdnsutil add-record {{ default_domain }} {{ item.key }} CNAME {{ item.value }}.{{ default_domain }}"
   register: pdnsutil_cname_record
   changed_when: pdnsutil_cname_record.rc == 0
-  when: dns_response == "NXDOMAIN"
+  when: dns_response  | length == 0
 
 - name: Increase serial on {{ default_domain }}
   ansible.builtin.command: "pdnsutil increase-serial {{ default_domain }}"
   register: pdnsutil_increase_serial
   changed_when: pdnsutil_increase_serial.rc == 0
-  when: dns_response == "NXDOMAIN"
+  when: dns_response  | length == 0

@@ -2,8 +2,12 @@
 - name: Check if A record exists for {{ item.key }}
   ansible.builtin.set_fact:
     # yamllint disable-line rule:line-length
-    dns_response: "{{ lookup('community.general.dig', '{{ item.key }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    dns_response: "{{ lookup('community.general.dig', '{{ item.key }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', real_empty='true') }}"
     dns_expect: "{{ bpi_network }}.{{ item.value }}"
+
+- name: Debug dns_response
+  ansible.builtin.debug:
+    msg: "{{ dns_response }}"
 
 - name: Create A record for {{ item.key }}
   ansible.builtin.command: "pdnsutil add-record {{ default_domain }} {{ item.key }} A {{ bpi_network }}.{{ item.value }}"

@@ -39,7 +39,7 @@ base-files busybox ca-bundle dnsmasq dropbear e2fsprogs f2fsck firewall4 fstools
 
   If there are not exactly 1 partitions on the NVMe it will be partitioned to a single partition.
 
-pdns_server --daemon=no --guardian=no --loglevel=9
+pdns_server --daemon=no --loglevel=9
 
 ### Create repositories
 

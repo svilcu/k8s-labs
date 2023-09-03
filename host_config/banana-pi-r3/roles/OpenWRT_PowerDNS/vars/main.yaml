@@ -1,5 +1,4 @@
 ---
-default_domain: "home.arpa"
 # PowerDNS schema location for SQLite
 pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
 
@@ -9,5 +8,5 @@ pdns_db_path: "/usr/lib/powerdns"
 
 pdns_soa: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
 
-# Remove PowerDNS database everytime you run the playbook
+# Remove and recreate PowerDNS database everytime you run the playbook
 pdns_remove_db: "false"

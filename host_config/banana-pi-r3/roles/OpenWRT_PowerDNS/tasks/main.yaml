@@ -66,7 +66,7 @@
     group: pdns
     recurse: true
 
-- name: Remove PowerDNS schema after database creatiion
+- name: Remove PowerDNS schema after database creation
   ansible.builtin.file:
     path: "{{ pdns_db_path }}/schema.sqlite3.sql"
     state: absent
@@ -145,7 +145,7 @@
     regexp: '^# webserver-address=127.0.0.1'
     replace: "webserver-address=127.0.0.1"
 
-- name: File  pdns.conf - Webserver allows only from localhost
+- name: File pdns.conf - Webserver allows only from localhost
   ansible.builtin.replace:
     path: /etc/powerdns/pdns.conf
     regexp: '^# webserver-allow-from=.*'
@@ -165,7 +165,7 @@
 - name: Extract network component from default_CIDR
   ansible.builtin.shell: |
     set -o pipefail
-    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $1"."$2"."$3}'
+    echo "{{ default_CIDR }}" | awk 'BEGIN { FS = "." } ; {print $1"."$2"."$3}'
   register: network_component
   changed_when: network_component.rc != 0
 
@@ -178,7 +178,7 @@
 - name: Create in-addr.arpa zone name
   ansible.builtin.shell: |
     set -o pipefail
-    echo "{{ default_CIDR }}" |  awk 'BEGIN { FS = "." } ; {print $3"."$2"."$1".in-addr.arpa"}'
+    echo "{{ default_CIDR }}" | awk 'BEGIN { FS = "." } ; {print $3"."$2"."$1".in-addr.arpa"}'
   register: in_addr
   changed_when: in_addr.rc == 0
 

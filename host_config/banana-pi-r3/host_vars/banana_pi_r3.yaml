@@ -30,6 +30,9 @@ sftp_install: "false"
 pdns_install: "true"
 # Remove PowerDNS database everytime you run playbook, then create and populate it
 pdns_remove_db: "false"
+# Regenerate config files if already present?
+pdns_regen_pdns_conf: "false"
+pdns_regen_recursor_conf: "false"
 
 ### vsftpd
 vsftpd_install: "false"

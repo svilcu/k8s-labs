@@ -1,27 +1,36 @@
 ---
 - name: Check if zone already exists - {{ default_domain }}
   ignore_errors: true
-  ansible.builtin.command: "pdnsutil list-zone {{ default_domain }}"
-  register: pdnsutil_list_zone
-  changed_when: false
+  ansible.builtin.set_fact:
+  # yamllint disable-line rule:line-length
+    dns_response: "{{ lookup('community.general.dig', '{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='SOA') }}"
+
+# - name: Debug dns_response
+#   ansible.builtin.debug:
+#     msg: "{{ dns_response }}"
+#   when: dns_response is defined
 
 - name: Create zone {{ default_domain }}
   ansible.builtin.command: " pdnsutil create-zone {{ default_domain }} ns1.{{ default_domain }}"
   register: pdnsutil_create_zone
   changed_when: pdnsutil_create_zone.rc == 0
-  when: pdnsutil_list_zone.rc == 1
+  when: dns_response is not defined or dns_response | length == 0
 
 - name: Restart PowerDNS service in order to load the new domain
   community.general.openwrt_init:
     name: pdns
     state: restarted
-  when: pdnsutil_list_zone.rc == 1
+  when: dns_response is not defined or dns_response | length == 0
 
 - name: Check if A record exists for ns1.{{ default_domain }}
   ansible.builtin.set_fact:
   # yamllint disable-line rule:line-length
-    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', real_empty='true') }}"
     dns_expect: "{{ bpi_network }}.{{ ns1 }}"
+
+# - name: Debug dns_response
+#   ansible.builtin.debug:
+#     msg: "{{ dns_response }}"
 
 - name: Create entry for ns1.{{ default_domain }}
   ansible.builtin.command: "pdnsutil add-record {{ default_domain }} ns1 A {{ bpi_network }}.{{ ns1 }}"
@@ -71,12 +80,17 @@
     name: pdns
     state: restarted
 
+- name: Restart PowerDNS recursor service
+  community.general.openwrt_init:
+    name: pdns-recursor
+    state: restarted
+
 - name: Check A record for ns1.{{ default_domain }}
   ansible.builtin.set_fact:
-    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}') }}"
+    dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', real_empty='true') }}"
     dns_expect: "{{ bpi_network }}.{{ ns1 }}"
 
 - name: PowerDNS works
   ansible.builtin.debug:
-    msg: Your PowerDNS answer for ns1.{{ default_domain }} is {{ dns_response }} == {{ dns_expect }}
+    msg: Your PowerDNS answer for ns1.{{ default_domain }} is {{ dns_response }}
   # when: dns_response == dns_expect
