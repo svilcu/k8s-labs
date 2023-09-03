@@ -1,0 +1,31 @@
+---
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Remove luci with uhttpd and dependencies
+  community.general.opkg:
+    name:
+      - luci
+      - luci-ssl
+      - luci-light
+    state: absent
+
+- name: Install nginx-ssl and luci-ssl-nginx
+  community.general.opkg:
+    name:
+      - nginx-ssl
+      - luci-ssl-nginx
+      - luci-app-statistics
+      - luci-app-upnp
+      - luci-lib-nixio
+      - luci-lib-ip
+      - luci-lib-jsonc
+      - liblucihttp-lua
+      - luci-lib-base
+      - ucode-mod-lua
+      - luci-lua-runtime
+      - luci-compat
+    state: present

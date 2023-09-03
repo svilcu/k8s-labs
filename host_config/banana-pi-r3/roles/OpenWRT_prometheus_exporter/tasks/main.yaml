@@ -1,0 +1,18 @@
+---
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Install Prometheus exporter
+  community.general.opkg:
+    name:
+      - prometheus-node-exporter-lua
+      - prometheus-node-exporter-lua-nat_traffic
+      - prometheus-node-exporter-lua-netstat
+      - prometheus-node-exporter-lua-openwrt
+      - libiwinfo-lua
+      - prometheus-node-exporter-lua-wifi
+      - prometheus-node-exporter-lua-wifi_stations
+    state: present

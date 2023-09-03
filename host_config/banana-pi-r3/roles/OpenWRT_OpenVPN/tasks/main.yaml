@@ -1,0 +1,14 @@
+---
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Install OpenVPN packages
+  community.general.opkg:
+    name:
+      - openvpn-openssl
+      - openvpn-easy-rsa
+      - luci-app-openvpn
+    state: present

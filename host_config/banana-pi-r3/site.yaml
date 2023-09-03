@@ -8,12 +8,14 @@
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
-- name: Setup the host
+- name: Host setup
   hosts: openwrt
   vars_files:
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
+    - host_setup
+  tags:
     - host-setup
 
 - name: Setup DHCP
@@ -22,7 +24,7 @@
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
-    - dhcp
+    - dhcp_config
 
 - name: Disable IPv6
   hosts: openwrt
@@ -30,7 +32,7 @@
     - group_vars/global_vars.yaml
     - host_vars/banana_pi_r3.yaml
   roles:
-    - role: disable-ipv6
+    - role: disable_ipv6
       when: disable_ipv6 | bool
   tags:
     - ipv6
@@ -40,16 +42,25 @@
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - nvme
+    - OpenWRT_nvme
   tags:
     - nvme
+
+- name: Install Prometheus Node Exporter
+  hosts: openwrt
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+  roles:
+    - role: OpenWRT_prometheus_exporter
+      when: prometheus_exporter_install | bool
+
 
 - name: Install Luci with NGinx and SSL
   hosts: openwrt
   vars_files:
     - host_vars/banana_pi_r3.yaml
   roles:
-    - additional-packages
+    - OpenWRT_luci_nginx_ssl
 
 - name: Copy and register our own Certificate Authority
   hosts: openwrt
@@ -66,7 +77,7 @@
     - host_vars/banana_pi_r3.yaml
     - group_vars/global_vars.yaml
   roles:
-    - pdns
+    - OpenWRT_PowerDNS
   tags:
     - pdns
 
@@ -77,7 +88,19 @@
     - host_vars/banana_pi_r3.yaml
     - group_vars/global_vars.yaml
   roles:
-    - role: vsftpd
+    - role: OpenWRT_vsftpd
       when: vsftpd_install | bool
   tags:
     - vsftpd
+
+- name: Configure openVPN
+  hosts: openwrt
+  gather_facts: true
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
+  roles:
+    - role: OpenWRT_OpenVPN
+      when: openvpn_install | bool
+  tags:
+    - openvpn

@@ -1,0 +1,3 @@
+---
+# where to mount the NVMe
+nvme_mount_dir: "/srv"

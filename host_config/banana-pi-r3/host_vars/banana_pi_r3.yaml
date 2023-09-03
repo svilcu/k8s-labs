@@ -14,13 +14,6 @@ bpi_ip: "1"
 # set this to false if you do not want the NVMe formated everytime the site.yaml playbook is run.
 always_format_nvme: "true"
 
-# Remove PowerDNS database everytime you run site.yaml playbook
-# The database will be removed after you run the update_os.yaml playbook
-pdns_remove_db: "false"
-
-# where to mount the NVMe
-nvme_mount_dir: "/srv"
-
 # if you don't need full python installed, change this to "true"
 # if you set it to "true", add validate_certs=false to ansible.cfg
 save_space_with_python3_light: "false"
@@ -30,22 +23,18 @@ replace_dnsmasq_with_odhcpd: "true"
 # by default, if we do not install sftp, ansible will generate warnings
 # fix this in ansible.cfg by setting transfer to "scp" instead of "sftp"
 # or install openssh_sftp
-install_sftp: "false"
+sftp_install: "false"
 
-### PowerDNS configuration
-# PowerDNS schema location for SQLite
-pdns_schema_url: https://raw.githubusercontent.com/PowerDNS/pdns/master/modules/gsqlite3backend/schema.sqlite3.sql
-# PowerDNS recommends to install its database in /var/lib/powerdns
-# /var/ is mounted on /tmp and cleaned at every reboot, so we will change that.
-pdns_db_path: "/usr/lib/powerdns"
-pdns_SOA: "ns1.{{ default_domain }} hostmaster.{{ default_domain }} 0 10800 3600 604800 3600"
+### PowerDNS
+pdns_install: "true"
+# Remove PowerDNS database everytime you run site.yaml playbook
+# The database will be removed after you run the update_os.yaml playbook
+pdns_remove_db: "false"
 
 ### vsftpd
 vsftpd_install: "false"
-vsftpd_home: "/srv/home/ftp"
 
-# Additional packages
-install_openvpn: "false"
-install_gitolite: "false"
-install_prometheus_exporter: "false"
+### openVPN
+openvpn_install: "false"
 
+prometheus_exporter_install: "false"

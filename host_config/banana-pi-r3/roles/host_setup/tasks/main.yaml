@@ -1,11 +1,17 @@
 ---
-- name: Install openssh-sftp-server required to remove warning
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Install package openssh-sftp-server to remove warning
   community.general.opkg:
     name: openssh-sftp-server
     state: present
-  when: install_sftp | bool
+  when: sftp_install | bool
 
-- name: Install system package openssl-util required for generating hash
+- name: Install package openssl-util required for generating hash
   community.general.opkg:
     name:
       - openssl-util

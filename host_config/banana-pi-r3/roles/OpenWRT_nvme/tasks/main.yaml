@@ -69,5 +69,5 @@
   when: nvme_mounted.stdout | regex_findall ('.*nvme0n1.*', multiline=true) | length  == 1
 
 - name: Partition, format and mount NVMe
-  ansible.builtin.include_tasks: additional_tasks.yaml
+  ansible.builtin.include_tasks: mount_nvme.yaml
   when: (lsblk_nnr.stdout.split('\n') | length == 1) and (nvme_mounted.stdout | regex_findall ('.*nvme0n1.*', multiline=true) | length == 0)

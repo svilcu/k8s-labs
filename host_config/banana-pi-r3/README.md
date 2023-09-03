@@ -44,3 +44,7 @@ pdns_server --daemon=no --guardian=no --loglevel=9
 ### Create repositories
 
 If we need to create DEB and RPM repositories we need to figure out how to instal "createrepo" and "dpkg-dev" on the OpenWRT
+
+###
+
+install_gitolite: "false"
