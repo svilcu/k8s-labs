@@ -78,5 +78,5 @@
 
 - name: PowerDNS works
   ansible.builtin.debug:
-    msg: Your PowerDNS is working!
-  when: dns_response == dns_expect
+    msg: Your PowerDNS answer for ns1.{{ default_domain }} is {{ dns_response }} == {{ dns_expect }}
+  # when: dns_response == dns_expect

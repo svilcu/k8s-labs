@@ -93,6 +93,19 @@
   tags:
     - vsftpd
 
+- name: Create Docker Registry
+  hosts: openwrt
+  gather_facts: true
+  vars_files:
+    - host_vars/banana_pi_r3.yaml
+    - group_vars/global_vars.yaml
+  roles:
+    - role: OpenWRT_docker
+      when: docker_registry_install | bool
+  tags:
+    - docker_registry
+
+
 - name: Configure openVPN
   hosts: openwrt
   gather_facts: true

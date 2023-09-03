@@ -4,3 +4,5 @@ files/certs/*
 files/external_dns/*
 .VSCodeCounter/*
 .vscode
+
+output.txt

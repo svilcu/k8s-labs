@@ -1,4 +1,10 @@
 ---
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
 - name: Install vsftpd package
   community.general.opkg:
     name:

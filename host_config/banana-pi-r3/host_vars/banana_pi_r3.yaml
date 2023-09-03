@@ -38,3 +38,7 @@ vsftpd_install: "false"
 openvpn_install: "false"
 
 prometheus_exporter_install: "false"
+
+### Docker Registry
+docker_registry_install: "false"
+docker_home: /srv/docker

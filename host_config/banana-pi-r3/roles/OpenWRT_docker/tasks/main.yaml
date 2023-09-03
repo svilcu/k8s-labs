@@ -1,1 +1,17 @@
 ---
+- name: Run opkg update
+  ansible.builtin.command: opkg update
+  ignore_errors: true
+  register: opkg_update
+  changed_when: opkg_update.rc == 0
+
+- name: Install docker package
+  community.general.opkg:
+    name:
+      - docker
+      - dockerd
+      - luci-app-dockerman
+      - kmod-veth
+      - uxc
+      - procd-ujail
+    state: present

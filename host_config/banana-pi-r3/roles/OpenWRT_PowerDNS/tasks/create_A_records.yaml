@@ -15,3 +15,4 @@
   ansible.builtin.command: "pdnsutil increase-serial {{ default_domain }}"
   register: pdnsutil_increase_serial
   changed_when: pdnsutil_increase_serial.rc == 0
+  when: dns_response != dns_expect

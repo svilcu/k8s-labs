@@ -1,3 +1,4 @@
 ---
 # where to mount the NVMe
 nvme_mount_dir: "/srv"
+always_format_nvme: "false"
