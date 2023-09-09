@@ -16,15 +16,20 @@ static_hosts:
   bpi-r3: 1
   rpi-switch: 2
   ws-switch: 3
+  #
   rpi4b-1: 129
   rpi4b-2: 130 
   rpi4b-3: 131
   rpi4b-4: 132
   rpi4b-5: 133
-  rock3a-1: 145
-  rock5b-1: 146
-  vim4-1: 147
-  opi5-1: 148
+  rock3a-1: 134
+  vim4-1: 135
+  #
+  rock5b-1: 145
+  opi5-1: 146
+  opi5s-1: 147
+  nanopct6-1: 148
+  #
   nas: 197
   gitlab: 196
 

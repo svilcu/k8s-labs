@@ -4,15 +4,15 @@
   gather_facts: false
   become: false
   vars_files:
-    - host_vars/banana_pi_r3.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - role: 'johanneskastl.bootstrap_python_on_OpenWRT'
 
 - name: Host setup
   hosts: openwrt
   vars_files:
-    - group_vars/global_vars.yaml
-    - host_vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - host_setup
   tags:
@@ -21,16 +21,16 @@
 - name: Setup DHCP
   hosts: openwrt
   vars_files:
-    - group_vars/global_vars.yaml
-    - host_vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - dhcp_config
 
 - name: Disable IPv6
   hosts: openwrt
   vars_files:
-    - group_vars/global_vars.yaml
-    - host_vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - role: disable_ipv6
       when: disable_ipv6 | bool
@@ -40,7 +40,7 @@
 - name: Check for NVMe and mount it
   hosts: openwrt
   vars_files:
-    - host_vars/banana_pi_r3.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - OpenWRT_nvme
   tags:
@@ -49,7 +49,7 @@
 - name: Install Prometheus Node Exporter
   hosts: openwrt
   vars_files:
-    - host_vars/banana_pi_r3.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - role: OpenWRT_prometheus_exporter
       when: prometheus_exporter_install | bool
@@ -58,15 +58,15 @@
 - name: Install Luci with NGinx and SSL
   hosts: openwrt
   vars_files:
-    - host_vars/banana_pi_r3.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - OpenWRT_luci_nginx_ssl
 
-- name: Copy and register our own Certificate Authority
+- name: Copy and register already created own Certificate Authority
   hosts: openwrt
   vars_files:
-    - group_vars/global_vars.yaml
-    - host_vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
   roles:
     - certificates
 
@@ -74,8 +74,8 @@
   hosts: openwrt
   gather_facts: true
   vars_files:
-    - host_vars/banana_pi_r3.yaml
-    - group_vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
   roles:
     - OpenWRT_PowerDNS
   tags:
@@ -85,8 +85,8 @@
   hosts: openwrt
   gather_facts: true
   vars_files:
-    - host_vars/banana_pi_r3.yaml
-    - group_vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
   roles:
     - role: OpenWRT_vsftpd
       when: vsftpd_install | bool
@@ -97,8 +97,8 @@
   hosts: openwrt
   gather_facts: true
   vars_files:
-    - host_vars/banana_pi_r3.yaml
-    - group_vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
   roles:
     - role: OpenWRT_docker
       when: docker_registry_install | bool
@@ -110,8 +110,8 @@
   hosts: openwrt
   gather_facts: true
   vars_files:
-    - host_vars/banana_pi_r3.yaml
-    - group_vars/global_vars.yaml
+    - vars/banana_pi_r3.yaml
+    - vars/global_vars.yaml
   roles:
     - role: OpenWRT_OpenVPN
       when: openvpn_install | bool
