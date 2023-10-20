@@ -5,11 +5,6 @@
   # yamllint disable-line rule:line-length
     dns_response: "{{ lookup('community.general.dig', '{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='SOA') }}"
 
-# - name: Debug dns_response
-#   ansible.builtin.debug:
-#     msg: "{{ dns_response }}"
-#   when: dns_response is defined
-
 - name: Create zone {{ default_domain }}
   ansible.builtin.command: " pdnsutil create-zone {{ default_domain }} ns1.{{ default_domain }}"
   register: pdnsutil_create_zone
@@ -27,10 +22,6 @@
   # yamllint disable-line rule:line-length
     dns_response: "{{ lookup('community.general.dig', 'ns1.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', real_empty='true') }}"
     dns_expect: "{{ bpi_network }}.{{ ns1 }}"
-
-# - name: Debug dns_response
-#   ansible.builtin.debug:
-#     msg: "{{ dns_response }}"
 
 - name: Create entry for ns1.{{ default_domain }}
   ansible.builtin.command: "pdnsutil add-record {{ default_domain }} ns1 A {{ bpi_network }}.{{ ns1 }}"
@@ -93,4 +84,4 @@
 - name: PowerDNS works
   ansible.builtin.debug:
     msg: Your PowerDNS answer for ns1.{{ default_domain }} is {{ dns_response }}
-  # when: dns_response == dns_expect
+  when: dns_response == dns_expect

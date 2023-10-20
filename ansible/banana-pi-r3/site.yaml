@@ -103,7 +103,7 @@
     - role: OpenWRT_docker
       when: docker_registry_install | bool
   tags:
-    - docker_registry
+    - docker
 
 
 - name: Configure openVPN

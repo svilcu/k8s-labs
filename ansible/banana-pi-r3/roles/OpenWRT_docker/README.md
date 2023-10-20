@@ -3,7 +3,9 @@
 Install docker-ce and luci interface on OpenWRT
 
 ```bash
-opkg install docker luci-app-dockerman docker-compose dockerd --force-maintainer
+opkg install docker luci-app-dockerman docker-compose dockerd fuse-overlayfs kmod-nf-conntrack-netlink python3-docker python3-dockerpty --force-maintainer
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 ```
 

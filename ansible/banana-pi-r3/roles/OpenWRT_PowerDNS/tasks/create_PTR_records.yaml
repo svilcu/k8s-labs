@@ -2,18 +2,18 @@
 - name: Check if PTR record exists for {{ item.value }}
   ansible.builtin.set_fact:
     # yamllint disable-line rule:line-length
-    dns_response: "{{ lookup('community.general.dig', ' {{ item.value }}.{{ in_addr_arpa }}.', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='PTR', real_empty='true') }}"
+    dns_response: "{{ lookup('community.general.dig', '{{ bpi_network }}.{{ item.value }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='PTR', real_empty='true') }}"
 
 - name: Debug dns_response
   ansible.builtin.debug:
-    msg: "{{ dns_response }}"
+    msg: "{{ bpi_network }}.{{ item.value }} - {{ dns_response }}"
 
 - name: Create PTR records for {{ item.value }}
   ansible.builtin.command: "pdnsutil add-record {{ in_addr_arpa }} {{ item.value }} PTR {{ item.key }}.{{ default_domain }}"
   register: pdnsutil_ptr_record
   changed_when: pdnsutil_ptr_record.rc == 0
   when: dns_response | length == 0
-  
+
 - name: Increase serial on {{ in_addr_arpa }}
   ansible.builtin.command: "pdnsutil increase-serial {{ in_addr_arpa }}"
   register: pdnsutil_increase_serial_reverse

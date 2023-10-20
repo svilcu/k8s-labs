@@ -4,10 +4,6 @@
     # yamllint disable-line rule:line-length
     dns_response: "{{ lookup('community.general.dig', '{{ item.key }}.{{ default_domain }}', '@{{ bpi_network }}.{{ bpi_ip }}', qtype='CNAME', real_empty='true') }}"
 
-- name: Debug dns_response
-  ansible.builtin.debug:
-    msg: "{{ dns_response }}"
-
 - name: Create CNAME record for {{ item.key }}
   ansible.builtin.command: "pdnsutil add-record {{ default_domain }} {{ item.key }} CNAME {{ item.value }}.{{ default_domain }}"
   register: pdnsutil_cname_record

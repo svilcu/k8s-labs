@@ -249,6 +249,12 @@
     regexp: '^# export-etc-hosts-search-suffix=.*'
     replace: "export-etc-hosts-search-suffix={{ default_domain }}"
 
+- name: File recursor.conf - dnssec=off
+  ansible.builtin.replace:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^# dnssec=process.*'
+    replace: "dnssec=off"
+
 - name: Enable PowerDNS recursor service
   community.general.openwrt_init:
     name: pdns-recursor

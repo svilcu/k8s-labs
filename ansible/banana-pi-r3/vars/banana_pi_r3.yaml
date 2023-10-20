@@ -33,6 +33,8 @@ pdns_remove_db: "false"
 # Regenerate config files if already present?
 pdns_regen_pdns_conf: "false"
 pdns_regen_recursor_conf: "false"
+# we will access the PowerDNS api via https://pdns_virtualhost.default_domain/api
+pdns_virtualhost: pdns
 
 ### vsftpd
 vsftpd_install: "false"
@@ -43,5 +45,5 @@ openvpn_install: "false"
 prometheus_exporter_install: "false"
 
 ### Docker Registry
-docker_registry_install: "false"
+docker_registry_install: "true"
 docker_home: /srv/docker

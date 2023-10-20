@@ -7,3 +7,4 @@ files/templates/*
 .vscode
 .python-version
 output.txt
+ansible/banana-pi-r3/images/*

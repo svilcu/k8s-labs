@@ -45,3 +45,11 @@
     name: root
     update_password: always
     password: "{{ bpi_password | password_hash('sha512') }}"
+
+# - name: Add own records to /etc/hosts
+#   ansible.builtin.blockinfile:
+#     path: /etc/hosts
+#     insertafter: "EOF"
+#     block: |
+#       192.168,uuuu
+#     marker: "# {mark} editor ANSIBLE MANAGED BLOCK"

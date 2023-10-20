@@ -6,33 +6,35 @@
   ignore_unreachable: true
   vars:
     ansible_user: root
-    os_version: "23.05.0-rc3"
-    image_name: "openwrt-{{ os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
-    image_url: "https://downloads.openwrt.org/releases/{{ os_version }}/targets/mediatek/filogic/{{ image_name }}"
-    image_path: "../../files/images"
+    os_version: "23.05.0"
+    # yamllint disable-line rule:line-length
+    image_url: "https://downloads.openwrt.org/releases/{{ os_version }}/targets/mediatek/filogic/openwrt-{{ os_version }}-mediatek-filogic-bananapi_bpi-r3-squashfs-sysupgrade.itb"
+    image_path: "images"
     # set to true if you want your router to be reset to factory defaults
     remove_config: "true"
 
   roles:
     - gekmihesg.openwrt
   tasks:
-    - name: Check if the upgrade image is available on local machine
+    - name: Check if the upgrade image is available on local machine for release {{ os_version }}
       ansible.builtin.stat:
-        path: "{{ image_path }}/sysupgrade.itb"
+        path: "{{ image_path }}/{{ os_version }}.itb"
       register: sysupgrade
       delegate_to: localhost
 
     - name: Download sysupgrade locally
+      ignore_errors: true
       ansible.builtin.get_url:
         url: "{{ image_url }}"
-        dest: "{{ image_path }}/sysupgrade.itb"
+        dest: "{{ image_path }}/{{ os_version }}.itb"
         mode: 600
       delegate_to: localhost
+      register: image_download
       when: not sysupgrade.stat.exists | bool
 
     - name: Copy openwrt image
     # yamllint disable-line rule:line-length
-      ansible.builtin.command: "{{ openwrt_scp }} -o StrictHostKeyChecking=no {{ image_path }}/sysupgrade.itb {{ openwrt_user_host | quote }}:/tmp/sysupgrade.itb"
+      ansible.builtin.command: "{{ openwrt_scp }} -o StrictHostKeyChecking=no {{ image_path }}/{{ os_version }}.itb {{ openwrt_user_host | quote }}:/tmp/sysupgrade.itb"
       delegate_to: localhost
       register: copy_image
       changed_when: copy_image.rc != 0

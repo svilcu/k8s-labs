@@ -14,4 +14,9 @@
       - kmod-veth
       - uxc
       - procd-ujail
+      - docker-compose
+      - fuse-overlayfs
+      - kmod-nf-conntrack-netlink
+      - python3-docker
+      - python3-dockerpty
     state: present
